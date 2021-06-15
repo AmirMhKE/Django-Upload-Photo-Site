@@ -33,6 +33,10 @@ class CustomUser(AbstractUser):
     likes_count = models.PositiveBigIntegerField(verbose_name="تعداد پسند ها", null=True)
     comments_count = models.PositiveBigIntegerField(verbose_name="تعداد کامنت ها", null=True)
     posts_count = models.PositiveBigIntegerField(verbose_name="تعداد پست ها", null=True)
+    all_requests_count = models.PositiveBigIntegerField(verbose_name="تعداد کل درخواست ها", null=True)
+    requests_search_count = models.PositiveBigIntegerField(verbose_name="تعداد درخواست های جستجو", null=True)
+    requests_download_count = models.PositiveBigIntegerField(verbose_name="تعداد درخواست های دانلود کردن", null=True)
+    excessive_requests_count = models.PositiveBigIntegerField(verbose_name="تعداد درخواست های بیش از حد اندازه", null=True)
 
     objects = CustomUserManager()
 
