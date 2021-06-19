@@ -253,9 +253,22 @@ body {
     transition: all 0.5s ease !important;
 }
 
+.my-navbar .navbar-link {
+    color: var(--Main-Gray);
+    transition: all 0.5s ease !important;
+}
+
+.my-navbar .navbar-link:hover {
+    color: #fff;
+}
+
 .my-navbar ul li:hover {
-    background-color: var(--Main-Red);
-    color: var(--Main-White);
+background-color: var(--Main-Red);
+color: var(--Main-White);
+}
+
+.my-navbar ul li:not(li.other-link):hover a {
+    color: #fff;
 }
 
 .other-link > ul {
@@ -304,15 +317,11 @@ body {
     color: var(--Main-White);
 }
 
-.date span {
-    padding: 10px 5px;
-}
-
-.date p {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--Main-Gray);
-    padding: 10px 25px;
+.upload a {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 10px;
 }
 
 .registration {
@@ -326,10 +335,16 @@ body {
     color: #fff;
 }
 
+.upload,
+.registration {
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
 /* header */
 
 .main-title {
-    background-image: url(../images/25920-questions.gif);
+    background-image: url(../25920-questions.gif);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -495,6 +510,13 @@ body {
     text-align: center;
 }
 
+.slider-item-overlay h5 {
+    padding: 10px 0;
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: 600;
+}
+
 .slider-item-overlay p {
     font-size: 1rem;
     color: #fff;
@@ -510,8 +532,7 @@ body {
 }
 
 .owl-carousel {
-    padding: 5px 20px;
-    padding-top: 45px;
+    padding: 45px 20px;
     background-color: var(--Main-White);
     border-radius: 5px;
     -webkit-box-shadow: 0px 0px 15px -5px #444444;
@@ -597,7 +618,7 @@ button[id*="showAllImages-btn"]:hover {
 
 .suggestion-header h5 {
     color: var(--Main-Gray);
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 600;
     line-height: 30px;
 }
@@ -615,10 +636,6 @@ button[id*="showAllImages-btn"]:hover {
     width: 100%;
 }
 
-.suggestion-item:nth-child(5) img {
-    height: 195px;
-}
-
 .suggestion-item-overlay {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.6);
@@ -628,11 +645,6 @@ button[id*="showAllImages-btn"]:hover {
     top: 0;
     left: 5%;
     transition: all 0.3s ease-in-out;
-}
-
-.suggestion-item:nth-child(5) .suggestion-item-overlay {
-    width: 94%;
-    left: 3%;
 }
 
 .suggestion-item-overlay a {
@@ -648,11 +660,7 @@ button[id*="showAllImages-btn"]:hover {
     text-align: center;
 }
 
-.suggestion-item:nth-child(5) .suggestion-item-overlay a {
-    padding: 10px 25px;
-    font-size: 1rem;
-}
-
+.suggestion-item-overlay h5,
 .suggestion-item-overlay p {
     font-size: 1rem;
     color: #fff;
@@ -681,6 +689,11 @@ button[id*="showAllImages-btn"]:hover {
     overflow-y: auto;
     overflow-x: hidden;
     display: none;
+}
+
+.all-items h5 {
+    color: #fff;
+    font-weight: bold;
 }
 
 .all-items + .overlay {
@@ -797,6 +810,32 @@ button[id*="showAllImages-btn"]:hover {
     justify-content: center;
 }
 
+.empty {
+    color: var(--Main-Gray) !important;
+    padding: 15px;
+}
+
+.paginator a {
+    color: var(--Main-Gray);
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 5px 15px;
+    margin: 5px;
+    background-color: var(--Main-Blue);
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: .5s ease-in-out;
+}
+
+.paginator a.active {
+    background-color: var(--Main-Red);
+}
+
+.paginator a:hover {
+    background-color: var(--Main-Red);
+}
+
 /* responsive */
 
 @media screen and (max-width: 1399px) {
@@ -817,18 +856,6 @@ button[id*="showAllImages-btn"]:hover {
 @media screen and (max-width: 1199px) {
     .main-title .overlay h1 {
         font-size: 1.5rem;
-    }
-
-    .date {
-        margin-right: 20px;
-    }
-
-    .date p {
-        padding: 5px 20px;
-    }
-
-    .suggestion-header h5 {
-        font-size: 1.2rem;
     }
 
     .my-navbar ul {
@@ -900,6 +927,15 @@ button[id*="showAllImages-btn"]:hover {
         padding: 0;
         padding-right: 20px;
     }
+
+    .suggestion-header h5 {
+        font-size: 1.4rem;
+    }
+
+    .suggestion-item-overlay h5,
+    .suggestion-item-overlay p {
+        font-size: .95rem;
+    }
 }
 
 @media screen and (max-width: 991px) {
@@ -921,7 +957,7 @@ button[id*="showAllImages-btn"]:hover {
     }
 
     .suggestion-header h5 {
-        font-size: 1rem;
+        font-size: 1.3rem;
     }
 
     .owl-next {
@@ -934,6 +970,10 @@ button[id*="showAllImages-btn"]:hover {
 
     .contact-us {
         width: 80%;
+    }
+
+    .paginator li {
+        font-size: 1.1rem;
     }
 }
 
@@ -975,7 +1015,7 @@ button[id*="showAllImages-btn"]:hover {
     }
 
     .suggestion-header h5 {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
     }
 
     .footer p {
@@ -999,9 +1039,22 @@ button[id*="showAllImages-btn"]:hover {
     .login-google > div:nth-child(2) > a {
         font-size: 1.75em;
     }
+
+    .slider-item-overlay h5 {
+        font-size: 1.1rem;
+    }
+
+    .suggestion-item-overlay h5,
+    .suggestion-item-overlay p {
+        font-size: .9rem;
+    }
 }
 
 @media screen and (max-width: 575px) {
+    .slider-item-overlay h5 {
+        font-size: 1rem;
+    }
+
     .title {
         margin-right: 0;
     }
@@ -1015,12 +1068,8 @@ button[id*="showAllImages-btn"]:hover {
         font-size: 1.5rem;
     }
 
-    .date {
-        margin-right: 0;
-    }
-
     .registration,
-    .date p {
+    .upload a {
         font-size: .9rem;
     }
 
@@ -1046,5 +1095,14 @@ button[id*="showAllImages-btn"]:hover {
 
     .login-google > div:nth-child(2) > a {
         font-size: 1.25em;
+    }
+
+    .suggestion-item-overlay h5,
+    .suggestion-item-overlay p {
+        font-size: .8rem;
+    }
+
+    .paginator li {
+        font-size: 1rem;
     }
 }

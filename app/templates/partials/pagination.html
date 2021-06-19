@@ -1,0 +1,98 @@
+{% load tool_tags %}
+
+<!-- pagination -->
+<!-- num = 9 -->
+{% if paginator.num_pages > 1 %}
+    <div class="col-12 col-md-10 col-lg-8 mx-auto my-4">
+        <ul class="col d-flex flex-wrap justify-content-center paginator list-unstyled">
+            {% if page_obj.has_previous %}
+                <a class="d-flex page-link_" 
+                href="
+                {% if page_obj.has_previous %}
+                    {% if namespace == 'category_list' %}
+                        {% url 'category_list' category_slug 1 %}
+                    {% elif namespace == 'post_list' %}
+                        {% url 'post_list' 1 %}
+                    {% endif %}
+                {% endif %}
+                " 
+                title="اولین صفحه">
+                    <span><i class="fa fa-angle-double-right"></i></span>
+                </a>
+                <a title="صفحه قبل" class="d-flex page-link_" 
+                href="
+                {% if namespace == 'category_list' %}
+                    {% url 'category_list' category_slug page_obj.previous_page_number %}
+                {% elif namespace == 'post_list' %}
+                    {% url 'post_list' page_obj.previous_page_number %}
+                {% endif %}
+                ">
+                    <span><i class="fa fa-angle-right"></i></span>
+                </a>
+            {% endif %}
+
+            {% for page in paginator.page_range %}
+                {% if current_page <= 5 %}
+                    {% if page <= 9 %}
+                        <a class="d-flex page-link_ {% if current_page == page %}active{% endif %}" 
+                        href="
+                        {% if namespace == 'category_list' %}
+                            {% url 'category_list' category_slug page %}
+                        {% elif namespace == 'post_list' %}
+                            {% url 'post_list' page %}
+                        {% endif %}
+                        ">{{ page|en_nums_to_fa_nums }}</a>
+                    {% endif %}
+                {% elif current_page >= paginator.num_pages|add:"-4" %}
+                    {% if page > paginator.num_pages|add:"-9" %}
+                        <a class="d-flex page-link_ {% if current_page == page %}active{% endif %}" 
+                        href="
+                        {% if namespace == 'category_list' %}
+                            {% url 'category_list' category_slug page %}
+                        {% elif namespace == 'post_list' %}
+                            {% url 'post_list' page %}
+                        {% endif %}
+                        ">{{ page|en_nums_to_fa_nums }}</a> 
+                    {% endif %}
+                {% else %}
+                    {% if page >= current_page|add:"-4" and page <= current_page|add:"4" %}
+                        <a class="d-flex page-link_ {% if current_page == page %}active{% endif %}" 
+                        href="
+                        {% if namespace == 'category_list' %}
+                            {% url 'category_list' category_slug page %}
+                        {% elif namespace == 'post_list' %}
+                            {% url 'post_list' page %}
+                        {% endif %}
+                        ">{{ page|en_nums_to_fa_nums }}</a> 
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a class="d-flex page-link_" title="صفحه بعد" 
+                href="
+                {% if page.has_previous %}
+                    {% if namespace == 'category_list' %}
+                        {% url 'category_list' category_slug page_obj.previous_page_number %}
+                    {% elif namespace == 'post_list' %}
+                        {% url 'post_list' page_obj.previous_page_number %}
+                    {% endif %}
+                {% endif %}
+                ">
+                    <span><i class="fa fa-angle-left"></i></span>
+                </a>
+                <a class="d-flex page-link_" title="آخرین صفحه" 
+                href="
+                {% if namespace == 'category_list' %}
+                    {% url 'category_list' category_slug paginator.num_pages %}
+                {% elif namespace == 'post_list' %}
+                    {% url 'post_list' paginator.num_pages %}
+                {% endif %}
+                ">
+                    <span><i class="fa fa-angle-double-left"></i></span>
+                </a>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %}
+<!-- end pagination -->

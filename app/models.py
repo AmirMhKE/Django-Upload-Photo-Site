@@ -2,6 +2,7 @@ from comment.models import Comment
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
+from django.utils.html import format_html
 
 user = get_user_model()
 
@@ -47,8 +48,8 @@ class Post(models.Model):
     )
     title = models.CharField(max_length=100, verbose_name="عنوان عکس")
     slug = models.CharField(max_length=250, unique=True, verbose_name="آدرس عکس")
-    img = models.ImageField(verbose_name="عکس شما")
-    publisher = models.ForeignKey(user, on_delete=models.SET_NULL, null=True)
+    img = models.ImageField(upload_to="images", verbose_name="عکس شما")
+    publisher = models.ForeignKey(user, on_delete=models.SET_NULL, null=True, verbose_name="منتشر کننده")
     category = models.ForeignKey(Category, verbose_name="دسته بندی", related_name="posts", on_delete=models.SET_NULL, null=True)
     hits = models.ManyToManyField(Ip, blank=True, related_name="hits", verbose_name="بازدید ها")
     likes_count = models.ManyToManyField(user, blank=True, related_name="likes", 
@@ -68,3 +69,10 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def thumbnail_img(self):
+        return format_html(f"""
+            <img width=100 height=75 style='border-radius: 2px;border: 1px solid gray;'
+            src='{self.img.url}'>
+        """)
+    thumbnail_img.short_description = "عکس شما"
