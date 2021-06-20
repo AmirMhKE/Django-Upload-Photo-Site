@@ -155,6 +155,29 @@ $(".sign-up .close, .outer-sign-up").click(function (e) {
     }
 });
 
+// search
+$("#_search_").click(function () { 
+    search();
+});
+
+$("#_search_input_").keyup(function (e) { 
+    if(e.keyCode === 13) {
+        if($("#_search_input_").val().replace(/\s+/g, ' ').trim() === "") {
+            alert("لطفا چیزی وارد کنید!");
+        } else {
+            search();
+        }
+    }
+});
+
+function search() {
+    let search_name = $("#_search_input_").val().replace(/\s+/g, ' ').trim();
+    let url = "/search/" + search_name + "/";
+    let scrollNum = $("#scroll-target").offset().top - 100;
+    localStorage.setItem("scroll", scrollNum);
+    window.location.pathname = url;
+}
+
 // carousel
 $(".owl-carousel").owlCarousel({
     rtl: true,

@@ -11,6 +11,8 @@
                 {% if page_obj.has_previous %}
                     {% if namespace == 'category_list' %}
                         {% url 'category_list' category_slug 1 %}
+                    {% elif namespace == 'search_list' %}
+                        {% url 'search_list' search_name 1 %}
                     {% elif namespace == 'post_list' %}
                         {% url 'post_list' 1 %}
                     {% endif %}
@@ -23,6 +25,8 @@
                 href="
                 {% if namespace == 'category_list' %}
                     {% url 'category_list' category_slug page_obj.previous_page_number %}
+                {% elif namespace == 'search_list' %}
+                    {% url 'search_list' search_name page_obj.previous_page_number %}
                 {% elif namespace == 'post_list' %}
                     {% url 'post_list' page_obj.previous_page_number %}
                 {% endif %}
@@ -38,6 +42,8 @@
                         href="
                         {% if namespace == 'category_list' %}
                             {% url 'category_list' category_slug page %}
+                        {% elif namespace == 'search_list' %}
+                            {% url 'search_list' search_name page %}
                         {% elif namespace == 'post_list' %}
                             {% url 'post_list' page %}
                         {% endif %}
@@ -49,6 +55,8 @@
                         href="
                         {% if namespace == 'category_list' %}
                             {% url 'category_list' category_slug page %}
+                        {% elif namespace == 'search_list' %}
+                            {% url 'search_list' search_name page %}
                         {% elif namespace == 'post_list' %}
                             {% url 'post_list' page %}
                         {% endif %}
@@ -60,6 +68,8 @@
                         href="
                         {% if namespace == 'category_list' %}
                             {% url 'category_list' category_slug page %}
+                        {% elif namespace == 'search_list' %}
+                            {% url 'search_list' search_name page %}
                         {% elif namespace == 'post_list' %}
                             {% url 'post_list' page %}
                         {% endif %}
@@ -71,11 +81,13 @@
             {% if page_obj.has_next %}
                 <a class="d-flex page-link_" title="صفحه بعد" 
                 href="
-                {% if page.has_previous %}
+                {% if page_obj.has_next %}
                     {% if namespace == 'category_list' %}
-                        {% url 'category_list' category_slug page_obj.previous_page_number %}
+                        {% url 'category_list' category_slug page_obj.next_page_number %}
+                    {% elif namespace == 'search_list' %}
+                        {% url 'search_list' search_name page_obj.next_page_number %}
                     {% elif namespace == 'post_list' %}
-                        {% url 'post_list' page_obj.previous_page_number %}
+                        {% url 'post_list' page_obj.next_page_number %}
                     {% endif %}
                 {% endif %}
                 ">
@@ -85,6 +97,8 @@
                 href="
                 {% if namespace == 'category_list' %}
                     {% url 'category_list' category_slug paginator.num_pages %}
+                {% elif namespace == 'search_list' %}
+                    {% url 'search_list' search_name paginator.num_pages %}
                 {% elif namespace == 'post_list' %}
                     {% url 'post_list' paginator.num_pages %}
                 {% endif %}
