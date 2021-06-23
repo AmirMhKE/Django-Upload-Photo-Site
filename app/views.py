@@ -3,6 +3,7 @@ from django.views.generic import ListView
 from django.db.models import Q
 
 from .models import Category, Post
+from config import settings
 
 
 class PostList(ListView):
@@ -16,6 +17,13 @@ class PostList(ListView):
         context["title"] = "همه ی عکس ها"
         context["namespace"] = "post_list"
         context["current_page"] = self.kwargs.get("page", 1)
+        context["google_captcha_sitekey"] = settings.GOOGLE_RECAPTCHA_SITE_KEY
+        
+        try:
+            context["event"] = self.request.session.pop("event")
+        except KeyError:
+            context["event"] = {}
+
         return context
 
 class CategoryList(ListView):
@@ -35,6 +43,13 @@ class CategoryList(ListView):
         context["current_page"] = self.kwargs.get("page", 1)
         context["namespace"] = "category_list"
         context["category_slug"] = category.slug
+        context["google_captcha_sitekey"] = settings.GOOGLE_RECAPTCHA_SITE_KEY
+        
+        try:
+            context["event"] = self.request.session.pop("event")
+        except KeyError:
+            context["event"] = {}
+
         return context
 
 class SearchList(ListView):
@@ -54,4 +69,11 @@ class SearchList(ListView):
         context["current_page"] = self.kwargs.get("page", 1)
         context["namespace"] = "search_list"
         context["search_name"] = search_name
+        context["google_captcha_sitekey"] = settings.GOOGLE_RECAPTCHA_SITE_KEY
+        
+        try:
+            context["event"] = self.request.session.pop("event")
+        except KeyError:
+            context["event"] = {}
+
         return context

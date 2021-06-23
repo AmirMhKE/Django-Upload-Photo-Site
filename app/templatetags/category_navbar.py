@@ -7,10 +7,11 @@ from ..models import Category
 register = template.Library()
 
 @register.inclusion_tag("partials/navbar.html")
-def category():
+def category(request):
     categories = random_categories(5)
 
     return {
+        "request": request,
         "category": categories["category"],
         "other_category": categories["other_category"]
     }

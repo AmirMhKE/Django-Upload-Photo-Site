@@ -138,6 +138,8 @@ body {
     background-color: var(--Main-White);
     border-radius: 5px;
     color: var(--Main-Gray);
+    max-height: 90%;
+    overflow-y: scroll;
 }
 
 .contact-us .close,
@@ -162,6 +164,7 @@ body {
 .login button,
 .sign-up button {
     background-color: var(--Main-Blue);
+    color: #fff;
     font-weight: 600;
     transition: all .5s;
 }
@@ -836,6 +839,19 @@ button[id*="showAllImages-btn"]:hover {
     background-color: var(--Main-Red);
 }
 
+.swal2-styled.swal2-confirm {
+    background-color: var(--Main-Blue) !important;
+}
+
+.swal2-styled.swal2-confirm:focus {
+    box-shadow: none !important;
+}
+
+.swal2-title,
+.swal2-html-container {
+    color: var(--Main-Gray) !important;
+}
+
 /* responsive */
 
 @media screen and (max-width: 1399px) {
@@ -1048,6 +1064,10 @@ button[id*="showAllImages-btn"]:hover {
     .suggestion-item-overlay p {
         font-size: .9rem;
     }
+
+    .contact-us, .login, .sign-up {
+        width: 75%;
+    }
 }
 
 @media screen and (max-width: 575px) {
@@ -1104,5 +1124,9 @@ button[id*="showAllImages-btn"]:hover {
 
     .paginator li {
         font-size: 1rem;
+    }
+
+    .contact-us, .login, .sign-up {
+        width: 95%;
     }
 }

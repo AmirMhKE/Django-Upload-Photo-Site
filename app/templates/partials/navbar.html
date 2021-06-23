@@ -53,7 +53,13 @@
 
             <!-- registration -->
             <div class="registration">
-                <a href="#" class="login-link">ورود</a> / <a href="#" class="sign-up-link">ثبت نام</a>
+                {% if not request.user.is_authenticated %}
+                    <a href="#" class="login-link">ورود</a> / <a href="#" class="sign-up-link">ثبت نام</a>
+                {% else %}
+                    <a href="{% url 'account:logout' %}">
+                        <span><i class="fa fa-sign-out"></i></span> <span>{{ request.user.username }}</span>
+                    </a>
+                {% endif %}
             </div>
 
             <!-- search button -->

@@ -93,7 +93,8 @@ $(".contact-link").click(function () {
     $("body").css("overflow-y", "hidden");
 });
 
-$(".login-link").click(function () {
+$(".login-link").click(function (e) {
+    e.preventDefault();
     $(".outer-login + .overlay").fadeIn(500);
     $(".outer-login").css("display", "flex");
     $(".login").removeClass("animate__slideOutUp");
@@ -102,7 +103,8 @@ $(".login-link").click(function () {
     $("body").css("overflow-y", "hidden");
 });
 
-$(".sign-up-link").click(function () {
+$(".sign-up-link").click(function (e) {
+    e.preventDefault();
     $(".outer-sign-up + .overlay").fadeIn(500);
     $(".outer-sign-up").css("display", "flex");
     $(".sign-up").removeClass("animate__slideOutUp");
@@ -157,13 +159,27 @@ $(".sign-up .close, .outer-sign-up").click(function (e) {
 
 // search
 $("#_search_").click(function () { 
-    search();
+    if($("#_search_input_").val().replace(/\s+/g, ' ').trim() === "") {
+        Swal.fire({
+            "title": "ورودی خالی",
+            "text": "لطفا چیزی وارد کنید!",
+            "icon": "warning",
+            "confirmButtonText": "باشه"
+        });
+    } else {
+        search();
+    }
 });
 
 $("#_search_input_").keyup(function (e) { 
     if(e.keyCode === 13) {
         if($("#_search_input_").val().replace(/\s+/g, ' ').trim() === "") {
-            alert("لطفا چیزی وارد کنید!");
+            Swal.fire({
+                "title": "ورودی خالی",
+                "text": "لطفا چیزی وارد کنید!",
+                "icon": "warning",
+                "confirmButtonText": "باشه"
+            });
         } else {
             search();
         }
@@ -265,4 +281,33 @@ $(".other-link ul").mouseenter(function () {
 
 $(".other-link ul").mouseleave(function () { 
     $("body").css("overflow-y", "visible");
+});
+
+// validation
+$(".login form button").click(function (e) { 
+    if(!$(".login form input[name='username_or_email']").val().replace(/\s+/g, ' ').trim() ||
+    !$(".login form input[name='password']").val().replace(/\s+/g, ' ').trim()) {
+        e.preventDefault();
+        Swal.fire({
+            "title": "ورودی خالی",
+            "text": "لطفا هیچ بخشی را خالی نگذارید!",
+            "icon": "warning",
+            "confirmButtonText": "باشه"
+        });
+    }
+});
+
+$(".sign-up form button").click(function (e) { 
+    if(!$(".sign-up form input[name='username']").val().replace(/\s+/g, ' ').trim() ||
+    !$(".sign-up form input[name='email']").val().replace(/\s+/g, ' ').trim() ||
+    !$(".sign-up form input[name='password1']").val().replace(/\s+/g, ' ').trim() ||
+    !$(".sign-up form input[name='password2']").val().replace(/\s+/g, ' ').trim()) {
+        e.preventDefault();
+        Swal.fire({
+            "title": "ورودی خالی",
+            "text": "لطفا هیچ بخشی را خالی نگذارید!",
+            "icon": "warning",
+            "confirmButtonText": "باشه"
+        });
+    }
 });

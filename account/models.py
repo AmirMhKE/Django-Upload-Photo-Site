@@ -28,6 +28,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True, verbose_name="ایمیل شما")
     ip_address = models.GenericIPAddressField(verbose_name="آدرس آیپی", null=True)
     profile_image = models.ImageField(verbose_name="عکس پروفایل", null=True)
     likes_count = models.PositiveBigIntegerField(verbose_name="تعداد پسند ها", null=True)
