@@ -95,6 +95,9 @@ $(".contact-link").click(function () {
 
 $(".login-link").click(function (e) {
     e.preventDefault();
+    $(".outer-sign-up + .overlay").css("display", "none");
+    $(".outer-sign-up").css("display", "none");
+    $(".sign-up").css("display", "none");
     $(".outer-login + .overlay").fadeIn(500);
     $(".outer-login").css("display", "flex");
     $(".login").removeClass("animate__slideOutUp");
@@ -105,11 +108,30 @@ $(".login-link").click(function (e) {
 
 $(".sign-up-link").click(function (e) {
     e.preventDefault();
+    $(".outer-login + .overlay").css("display", "none");
+    $(".outer-login").css("display", "none");
+    $(".login").css("display", "none");
     $(".outer-sign-up + .overlay").fadeIn(500);
     $(".outer-sign-up").css("display", "flex");
     $(".sign-up").removeClass("animate__slideOutUp");
     $(".sign-up").addClass("animate__slideInDown");
     $(".sign-up").css("display", "block");
+    $("body").css("overflow-y", "hidden");
+});
+
+$(".password-reset-link").click(function (e) {
+    e.preventDefault();
+    $(".outer-sign-up + .overlay").css("display", "none");
+    $(".outer-sign-up").css("display", "none");
+    $(".outer-login + .overlay").css("display", "none");
+    $(".outer-login").css("display", "none");
+    $(".sign-up").css("display", "none");
+    $(".login").css("display", "none");
+    $(".outer-password-reset + .overlay").fadeIn(500);
+    $(".outer-password-reset").css("display", "flex");
+    $(".password-reset").removeClass("animate__slideOutUp");
+    $(".password-reset").addClass("animate__slideInDown");
+    $(".password-reset").css("display", "block");
     $("body").css("overflow-y", "hidden");
 });
 
@@ -152,6 +174,21 @@ $(".sign-up .close, .outer-sign-up").click(function (e) {
             $(".outer-sign-up + .overlay").fadeOut(300);
             $(".sign-up").css("display", "none");
             $(".outer-sign-up").css("display", "none");
+            $("body").css("overflow-y", "visible");
+        }, 300);
+    }
+});
+
+$(".password-reset .close, .outer-password-reset").click(function (e) {
+    if (e.target === document.querySelector(".password-reset .close i") ||
+     e.target === document.querySelector(".outer-password-reset")) {
+        $(".password-reset").removeClass("animate__slideInDown");
+        $(".password-reset").addClass("animate__slideOutUp");
+
+        setTimeout(() => {
+            $(".outer-password-reset + .overlay").fadeOut(300);
+            $(".password-reset").css("display", "none");
+            $(".outer-password-reset").css("display", "none");
             $("body").css("overflow-y", "visible");
         }, 300);
     }
@@ -309,5 +346,47 @@ $(".sign-up form button").click(function (e) {
             "icon": "warning",
             "confirmButtonText": "باشه"
         });
+    }
+});
+
+$(".password-reset form button").click(function (e) { 
+    if(!$(".password-reset form input[name='email']").val().replace(/\s+/g, ' ').trim()) {
+        e.preventDefault();
+        Swal.fire({
+            "title": "ورودی خالی",
+            "text": "لطفا هیچ بخشی را خالی نگذارید!",
+            "icon": "warning",
+            "confirmButtonText": "باشه"
+        });
+    }
+});
+
+$(".password-reset-confirm button").click(function (e) { 
+    if(!$(".password-reset-confirm input[name='new_password1']").val().replace(/\s+/g, ' ').trim() ||
+    !$(".password-reset-confirm input[name='new_password2']").val().replace(/\s+/g, ' ').trim()) {
+        e.preventDefault();
+        Swal.fire({
+            "title": "ورودی خالی",
+            "text": "لطفا هیچ بخشی را خالی نگذارید!",
+            "icon": "warning",
+            "confirmButtonText": "باشه"
+        });
+    }
+});
+
+// show / hide => input password
+$("form").click(function (e) {
+    if(e.target.classList.value === "form-check-input") {
+        for(item of $(this).children()) {
+            try {
+                if(item.type === "password" && item.name.indexOf("password") !== -1) {
+                    item.type = "text";
+                } else if(item.type === "text" && item.name.indexOf("password") !== -1) {
+                    item.type = "password";
+                }
+            } catch {
+                continue;
+            }
+        }
     }
 });

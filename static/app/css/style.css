@@ -121,7 +121,7 @@ body {
 }
 
 
-.outer-contact-us, .outer-login, .outer-sign-up {
+.outer-contact-us, .outer-login, .outer-sign-up, .outer-password-reset {
     width: 100%;
     height: 100%;
     position: fixed;
@@ -129,7 +129,7 @@ body {
     display: none;
 }
 
-.contact-us, .login, .sign-up {
+.contact-us, .login, .sign-up, .password-reset {
     display: none;
     position: fixed;
     width: 50%;
@@ -144,14 +144,17 @@ body {
 
 .contact-us .close,
 .login .close,
-.sign-up .close {
+.sign-up .close,
+.password-reset .close {
     font-size: 2rem;
 }
 
 .contact-us input:focus,
 .contact-us textarea:focus,
 .login input:focus,
-.sign-up input:focus {
+.sign-up input:focus,
+.password-reset input:focus,
+.password-reset-confirm input:focus {
     border-color: var(--Main-Blue) !important;
     outline-color: var(--Main-Blue) !important;
 }
@@ -162,7 +165,9 @@ body {
 
 .contact-us button,
 .login button,
-.sign-up button {
+.sign-up button,
+.password-reset button,
+.password-reset-confirm button {
     background-color: var(--Main-Blue);
     color: #fff;
     font-weight: 600;
@@ -171,7 +176,9 @@ body {
 
 .contact-us button:hover,
 .login button:hover,
-.sign-up button:hover {
+.sign-up button:hover,
+.password-reset button:hover,
+.password-reset-confirm button:hover {
     background-color: var(--Main-Red);
     color: #fff;
 }
@@ -184,7 +191,8 @@ body {
 
 .outer-contact-us + .overlay,
 .outer-login + .overlay,
-.outer-sign-up + .overlay {
+.outer-sign-up + .overlay,
+.outer-password-reset + .overlay {
     background-color: rgba(0, 0, 0, 0.5);
     width: 100%;
     height: 100%;
@@ -852,6 +860,18 @@ button[id*="showAllImages-btn"]:hover {
     color: var(--Main-Gray) !important;
 }
 
+.password-reset-confirm {
+    margin-top: 10%;
+    padding: 50px 50px;
+    background-color: var(--Main-White);
+    border-radius: 5px;
+    color: var(--Main-Gray);
+}
+
+.form-check-input {
+    transform: scale(1.5);
+}
+
 /* responsive */
 
 @media screen and (max-width: 1399px) {
@@ -1065,7 +1085,7 @@ button[id*="showAllImages-btn"]:hover {
         font-size: .9rem;
     }
 
-    .contact-us, .login, .sign-up {
+    .contact-us, .login, .sign-up, .password-reset {
         width: 75%;
     }
 }
@@ -1126,7 +1146,7 @@ button[id*="showAllImages-btn"]:hover {
         font-size: 1rem;
     }
 
-    .contact-us, .login, .sign-up {
+    .contact-us, .login, .sign-up, .password-reset {
         width: 95%;
     }
 }

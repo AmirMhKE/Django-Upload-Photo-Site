@@ -4,7 +4,7 @@ from random import randint
 
 register = template.Library()
 
-@register.inclusion_tag("partials/sidebar.html")
+@register.inclusion_tag("app/partials/sidebar.html")
 def sidebar(num):
         suggestion_items = set_suggestion_posts(num)
 

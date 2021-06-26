@@ -84,6 +84,54 @@ window.onload = function () {
                 "confirmButtonText": "باشه"
             })
             break;
+        case "email_not_found":
+            Swal.fire({
+                "title": "پیدا نشدن ایمیل",
+                "html": "کاربری با این ایمیل وجود ندارد!",
+                "icon": "error",
+                "confirmButtonText": "باشه"
+            }).then(() => {
+                $(".password-reset-link").click();
+            });
+            break;
+        case "password_reset_email_sended":
+            Swal.fire({
+                "title": "عملیات موفق",
+                "text": "لینک بازیابی رمز عبور اکانت شما به ایمیلتان ارسال شد!",
+                "icon": "success",
+                "confirmButtonText": "باشه"
+            });
+            break;
+        case "password_reset_done":
+            Swal.fire({
+                "title": "عملیات موفق",
+                "text": "رمز عبور جدید شما ثبت شد!",
+                "icon": "success",
+                "confirmButtonText": "باشه"
+            }).then(() => {
+                $(".login-link").click();
+            });
+            break;
+        case "password_reset_error":
+            content = setContent(json_object["content"]);
+
+            Swal.fire({
+                "title": "رمز عبور نادرست",
+                "html": content,
+                "icon": "error",
+                "confirmButtonText": "باشه"
+            })
+            break;
+        case "password_reset_invalid_token":
+            Swal.fire({
+                "title": "لینک منقضی",
+                "text": "لینک بازیابی رمز عبور منقضی شده است!",
+                "icon": "error",
+                "confirmButtonText": "باشه"
+            }).then(() => {
+                window.location.pathname = "";
+            });
+            break;
     }
     $("#event").remove();
 }

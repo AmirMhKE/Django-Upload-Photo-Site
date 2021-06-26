@@ -6,7 +6,7 @@ from ..models import Category
 
 register = template.Library()
 
-@register.inclusion_tag("partials/navbar.html")
+@register.inclusion_tag("app/partials/navbar.html")
 def category(request):
     categories = random_categories(5)
 

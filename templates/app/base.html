@@ -17,7 +17,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.green.min.css" integrity="sha512-C8Movfk6DU/H5PzarG0+Dv9MA9IZzvmQpO/3cIlGIflmtY3vIud07myMu4M/NTPJl8jmZtt/4mC9bAioMZBBdA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- My CSS Code -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+    {% block custom_style %}
+    {% endblock %}
 </head>
 <body>
     {% block float_items %}{% endblock %}
@@ -42,11 +44,14 @@
     </main>
 
     <footer>
-        <div class="mt-5 footer d-flex justify-content-center align-items-end">
-            <p class="text-center pb-3"><i class="fa fa-copyright"></i> تمام حقوق این سایت متعلق به امیرمحمد کشاورز امامی می باشد.</p>
-        </div>
+        {% block footer %}
+            <div class="mt-5 footer d-flex justify-content-center align-items-end">
+                <p class="text-center pb-3"><i class="fa fa-copyright"></i> تمام حقوق این سایت متعلق به <a href="https://github.com/AmirMhKE" target="_blank">AmirMhKE</a> می باشد.</p>
+            </div>
+        {% endblock %}
     </footer>
 </body>
+<input type="hidden" id="event" value="{{ event }}">
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- JS Carousel -->
@@ -58,6 +63,6 @@
 <!-- JS Google Captcha -->
 <script src="https://www.google.com/recaptcha/api.js?hl=fa" async defer></script>
 <!-- My JS Code -->
-<script src="{% static 'js/script.js' %}"></script>
-<script src="{% static 'js/alerts.js' %}"></script>
+<script src="{% static 'app/js/script.js' %}"></script>
+<script src="{% static 'app/js/alerts.js' %}"></script>
 </html>
