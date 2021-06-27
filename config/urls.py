@@ -7,6 +7,7 @@ from . import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include(('account.urls', 'account'), namespace='account')),
+    path('', include('social_django.urls', namespace="google_login")),
     path('', include('app.urls')),
 ]
 
