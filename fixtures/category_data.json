@@ -1,0 +1,222 @@
+[
+    {
+        "model": "app.category",
+        "pk": 1,
+        "fields": {
+            "title": "عکس طبیعت",
+            "slug": "nature",
+            "position": 0,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 2,
+        "fields": {
+            "title": "عکس کلاسیک",
+            "slug": "classic",
+            "position": 1,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 3,
+        "fields": {
+            "title": "عکس تکنولوژی",
+            "slug": "technology",
+            "position": 2,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 4,
+        "fields": {
+            "title": "عکس خلاقانه",
+            "slug": "innovative",
+            "position": 3,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 5,
+        "fields": {
+            "title": "عکس ورزشی",
+            "slug": "sports",
+            "position": 4,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 6,
+        "fields": {
+            "title": "عکس مفهومی",
+            "slug": "conceptual",
+            "position": 5,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 7,
+        "fields": {
+            "title": "عکس خبری یا مستند",
+            "slug": "news-or-documentary",
+            "position": 6,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 8,
+        "fields": {
+            "title": "عکس نجوم",
+            "slug": "astronomy",
+            "position": 7,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 9,
+        "fields": {
+            "title": "عکس سیاه و سفید",
+            "slug": "black-and-white",
+            "position": 8,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 10,
+        "fields": {
+            "title": "عکس هوایی",
+            "slug": "aerial",
+            "position": 9,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 11,
+        "fields": {
+            "title": "عکس ترکیبی",
+            "slug": "hybrid",
+            "position": 10,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 12,
+        "fields": {
+            "title": "عکس غذا",
+            "slug": "food",
+            "position": 11,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 13,
+        "fields": {
+            "title": "عکس معماری",
+            "slug": "architecture",
+            "position": 12,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 14,
+        "fields": {
+            "title": "عکس اشیاء",
+            "slug": "objects",
+            "position": 13,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 15,
+        "fields": {
+            "title": "عکس مد",
+            "slug": "fashion",
+            "position": 14,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 16,
+        "fields": {
+            "title": "عکس کودکان یا خانواده",
+            "slug": "children-or-family",
+            "position": 15,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 17,
+        "fields": {
+            "title": "عکس خیابانی",
+            "slug": "street",
+            "position": 16,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 18,
+        "fields": {
+            "title": "عکس عروسی",
+            "slug": "wedding",
+            "position": 17,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 19,
+        "fields": {
+            "title": "عکس تجاری",
+            "slug": "commercial",
+            "position": 18,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 20,
+        "fields": {
+            "title": "عکس آب و هوا",
+            "slug": "weather",
+            "position": 19,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 21,
+        "fields": {
+            "title": "عکس تکنیکی",
+            "slug": "technical",
+            "position": 20,
+            "status": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 22,
+        "fields": {
+            "title": "سایر عکس ها",
+            "slug": "others",
+            "position": 21,
+            "status": true
+        }
+    }
+]

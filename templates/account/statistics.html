@@ -1,0 +1,47 @@
+{% extends 'app/base.html' %}
+{% load tool_tags %}
+
+{% block title %}آمار حساب کاربری شما{% endblock %}
+
+{% block main %}
+    <div class="col-10 col-md-8 col-lg-6 mx-auto">
+        <h2 class="text-center statistics-title my-5 py-5"><span class="ml-3"><i class="fa fa-bar-chart"></i></span> 
+            آمار حساب کاربری شما</h2>
+        <table class="table statistics">
+            <tbody>
+                <tr>
+                    <th class="text-right"><span class="ml-2"><i class="fa fa-picture-o"></i></span> 
+                        تعداد پست ها</th>
+                    <td class="text-right">{{ post_count|en_nums_to_fa_nums }}</td>
+                </tr>
+                <tr>
+                    <th class="text-right"><span class="ml-2"><i class="fa fa-heart"></i></span>
+                         تعداد لایک ها</th>
+                    <td class="text-right">{{ like_count|en_nums_to_fa_nums }}</td>
+                </tr>
+                <tr>
+                    <th class="text-right"><span class="ml-2"><i class="fa fa-upload"></i></span> 
+                        تعداد تمام درخواست ها</th>
+                    <td class="text-right">{{ all_requests_count|en_nums_to_fa_nums }}</td>
+                </tr>
+                <tr>
+                    <th class="text-right"><span class="ml-2"><i class="fa fa-download"></i></span> 
+                        تعداد درخواست های دانلود</th>
+                    <td class="text-right">{{ requests_download_count|en_nums_to_fa_nums }}</td>
+                </tr>
+                <tr>
+                    <th class="text-right"><span class="ml-2"><i class="fa fa-search"></i></span> 
+                        تعداد درخواست های جستجو</th>
+                    <td class="text-right">{{ requests_search_count|en_nums_to_fa_nums }}</td>
+                </tr>
+                {% if not request.user.is_superuser %}
+                    <tr>
+                        <th class="text-right"><span class="ml-2"><i class="fa fa-ban"></i></span> 
+                            تعداد درخواست های غیر مجاز</th>
+                        <td class="text-right">{{ excessive_requests_count|en_nums_to_fa_nums }}</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

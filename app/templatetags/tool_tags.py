@@ -17,3 +17,7 @@ def en_nums_to_fa_nums(value):
             result += s
 
     return result
+
+@register.filter
+def first_letter_to_upper(value):
+    return value[0].upper()

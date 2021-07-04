@@ -223,6 +223,7 @@ body {
 /* navbar */
 
 .title {
+    margin: 0 2em;
     margin-bottom: 10px;
     margin-right: 30px;
 }
@@ -312,6 +313,7 @@ color: var(--Main-White);
 
 .search-btn,
 .menu-bar {
+    margin: 0 .5em;
     margin-bottom: 10px;
 }
 
@@ -332,6 +334,7 @@ color: var(--Main-White);
     font-size: 1.1rem;
     font-weight: bold;
     color: #fff;
+    margin: 0 .5em;
     margin-bottom: 10px;
 }
 
@@ -339,6 +342,7 @@ color: var(--Main-White);
     color: #fff;
     font-size: 1.1rem;
     font-weight: bold;
+    margin: 0 .5em;
     margin-bottom: 10px;
 }
 
@@ -381,6 +385,7 @@ color: var(--Main-White);
 }
 
 .main-title .overlay > div > div {
+    margin: 4em 0;
     transition: all 0.5s ease;
     min-height: 10vh;
 }
@@ -872,6 +877,61 @@ button[id*="showAllImages-btn"]:hover {
     transform: scale(1.5);
 }
 
+.profile {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--Main-Red);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin: 0 .5em;
+}
+
+.profile > h5 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin: 0;
+    text-decoration: none !important;
+}
+
+.profile .dropdown-item {
+    color: var(--Main-Gray);
+}
+
+.profile .dropdown-item:hover {
+    background-color: var(--Main-Red);
+    color: #fff;
+}
+
+.statistics-title {
+    color: var(--Main-Gray);
+}
+
+.statistics {
+    color: var(--Main-Gray);
+    font-size: 1.2em;
+}
+
+.statistics tr {
+    cursor: pointer;
+    transition: all .5s ease-in-out;
+}
+
+.statistics tr:hover {
+    color: #fff;
+}
+
+.statistics tr:hover {
+    background-color: var(--Main-Red);
+}
+
+.statistics th,
+.statistics tr {
+    padding: 20px 10px;
+}
+
 /* responsive */
 
 @media screen and (max-width: 1399px) {
@@ -931,6 +991,10 @@ button[id*="showAllImages-btn"]:hover {
         height: 200%;
         background-color: rgba(0, 0, 0, 0.5);
         z-index: 15;
+    }
+
+    .my-navbar .navbar-link {
+        color: #fff;
     }
 
     .other-link {
@@ -1087,6 +1151,15 @@ button[id*="showAllImages-btn"]:hover {
 
     .contact-us, .login, .sign-up, .password-reset {
         width: 75%;
+    }
+
+    .profile {
+        width: 40px;
+        height: 40px;
+    }
+
+    .profile > h5 {
+        font-size: 1.5em;
     }
 }
 

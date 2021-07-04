@@ -1,4 +1,5 @@
 {% load category_navbar %}
+{% load tool_tags %}
 <nav class="my-navbar">
     <div class="container-fluid">
         <div class="row col-12 d-flex justify-content-between align-items-center">
@@ -16,7 +17,12 @@
 
             <!-- upload -->
             <div class="row upload">
-                <a href="#"><span><i class="fa fa-upload"></i></span> آپلود عکس</a>
+                {% if not request.user.is_authenticated %}
+                    <a href="#" onclick="$('.login-link').click()">
+                        <span><i class="fa fa-upload"></i></span> آپلود عکس</a>
+                {% else %}
+                    <a href="#"><span><i class="fa fa-upload"></i></span> آپلود عکس</a>
+                {% endif %}
             </div>
 
             <!-- category -->
@@ -56,9 +62,22 @@
                 {% if not request.user.is_authenticated %}
                     <a href="#" class="login-link">ورود / ثبت نام</a>
                 {% else %}
-                    <a href="{% url 'account:logout' %}?next={{ request.path }}">
-                        <span><i class="fa fa-sign-out"></i></span> <span>{{ request.user.username }}</span>
-                    </a>
+                    <div class="dropdown profile" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% if not request.user.img %}
+                            <h5>
+                                {{ request.user.username|first_letter_to_upper }}
+                            </h5>
+                        {% endif %}
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item text-right" href="#"><span style="margin-left: 5px;"><i class="fa fa-tasks"></i></span> مدیریت عکس های شما</a>
+                            <a class="dropdown-item text-right" href="#"><span style="margin-left: 5px;"><i class="fa fa-cog"></i></span> تنظیمات حساب کاربری</a>
+                            <a class="dropdown-item text-right" href="{% url 'account:statistics' %}"><span style="margin-left: 5px;"><i class="fa fa-bar-chart"></i></span> آمار حساب شما</a>
+                            <a class="dropdown-item text-right" 
+                            href="{% url 'account:logout' %}?next={{ request.path }}">
+                            <span style="margin-left: 5px;"><i class="fa fa-sign-out"></i></span> خروج</a>
+                          </div>
+                    </div>
                 {% endif %}
             </div>
 

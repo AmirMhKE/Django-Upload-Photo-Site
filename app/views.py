@@ -1,9 +1,14 @@
-from config import settings
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
+from django.views import View
+from django.http import HttpResponse
+from django.utils.encoding import smart_str
 
+from PIL import Image
+from account.mixins import LoginRequiredMixin
 from .models import Category, Post
+import os
 
 
 class PostList(ListView):
@@ -17,7 +22,6 @@ class PostList(ListView):
         context["title"] = "همه ی عکس ها"
         context["namespace"] = "post_list"
         context["current_page"] = self.kwargs.get("page", 1)
-        context["google_captcha_sitekey"] = settings.GOOGLE_RECAPTCHA_SITE_KEY
         return context
 
 class CategoryList(ListView):
@@ -37,7 +41,6 @@ class CategoryList(ListView):
         context["current_page"] = self.kwargs.get("page", 1)
         context["namespace"] = "category_list"
         context["category_slug"] = category.slug
-        context["google_captcha_sitekey"] = settings.GOOGLE_RECAPTCHA_SITE_KEY
         return context
 
 class SearchList(ListView):
@@ -57,5 +60,20 @@ class SearchList(ListView):
         context["current_page"] = self.kwargs.get("page", 1)
         context["namespace"] = "search_list"
         context["search_name"] = search_name
-        context["google_captcha_sitekey"] = settings.GOOGLE_RECAPTCHA_SITE_KEY
         return context
+
+class DownloadView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        obj = get_object_or_404(Post.objects.all(), slug=kwargs.get("slug"))
+        dir_name = os.path.dirname(obj.img.path)
+        file_name = os.path.join(dir_name, f"{obj.slug}-akscade.jpg")
+        img = open(file_name, "rb")
+        
+        response = HttpResponse(img.read(), content_type="application/force-download")
+        response["Content-Disposition"] = f"attachment; filename={os.path.basename(file_name)}"
+        response["X-Sendfile"] = smart_str(img)
+
+        obj.download_count.add(request.user)
+        obj.save()
+
+        return response

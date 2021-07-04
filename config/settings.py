@@ -39,9 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'account.apps.AccountConfig',
-    'app.apps.AppConfig',
-    'comment.apps.CommentConfig',
     'social_django',
+    'app.apps.AppConfig',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'app.middleware.RequestProcessMiddleWare',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'app.context_processors.custom_context',
             ],
         },
     },

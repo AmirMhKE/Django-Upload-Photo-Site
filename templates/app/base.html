@@ -34,6 +34,19 @@
         <span><i class="fa fa-angle-up"></i></span>
     </div>
 
+     <!-- searchbox -->
+     <div class="search-box animate__animated">
+        <div>
+            <span><i class="fa fa-close"></i></span>
+        </div>
+
+        <div id="_search_">
+            <span><i class="fa fa-search"></i></span>
+        </div>
+
+        <input id="_search_input_" type="text" autocomplete="off" placeholder="متن جستجوی خود را وارد کنید ..." />
+    </div>
+
     <header>
         {% category request %}
         {% block header %}{% endblock %}
@@ -51,8 +64,11 @@
         {% endblock %}
     </footer>
 </body>
+<input type="hidden" name="event" value="{{ event }}">
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- JS Bootstrap -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js" integrity="sha512-wV7Yj1alIZDqZFCUQJy85VN+qvEIly93fIQAN7iqDFCPEucLCeNFz4r35FCo9s6WrpdDQPi80xbljXB8Bjtvcg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- JS Carousel -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- JS Animation -->
@@ -63,4 +79,7 @@
 <script src="https://www.google.com/recaptcha/api.js?hl=fa" async defer></script>
 <!-- My JS Code -->
 <script src="{% static 'app/js/script.js' %}"></script>
+<script src="{% static 'app/js/alerts.js' %}"></script>
+{% block custom_script %}
+{% endblock %}
 </html>
