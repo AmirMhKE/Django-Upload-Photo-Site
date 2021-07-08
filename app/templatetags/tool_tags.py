@@ -1,4 +1,7 @@
+import json
+
 from django import template
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
@@ -21,3 +24,7 @@ def en_nums_to_fa_nums(value):
 @register.filter
 def first_letter_to_upper(value):
     return value[0].upper()
+
+@register.filter
+def js(value):
+    return mark_safe(json.dumps(value))

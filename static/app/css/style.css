@@ -1,125 +1,4 @@
-/* root */
-
-:root {
-    --Main-Gray: #444444;
-    --Main-Red: #f30067;
-    --Main-Blue: #00d1cd;
-    --Main-White: #eaeaea;
-}
-
-@font-face {
-    font-family: Yekan;
-    src: url(../fonts/Yekan/Yekan.ttf) format("ttf");
-    src: url(../fonts/Yekan/Yekan.eot) format("eot");
-    src: url(../fonts/Yekan/Yekan.woff) format("woff");
-}
-
-* {
-    direction: rtl;
-    font-family: Yekan, Arial, sans-serif;
-    user-select: none;
-}
-
-/* width */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: var(--Main-White);
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: var(--Main-Red);
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: var(--Main-Red);
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    overflow-y: hidden;
-    overflow-x: hidden;
-}
-
-.loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background-color: var(--Main-White);
-    z-index: 1000;
-}
-
-.loading-circle {
-    width: 100px;
-    height: 100px;
-    border-top: 10px solid var(--Main-Blue);
-    border-left: 10px solid var(--Main-Blue);
-    border-bottom: 10px solid var(--Main-Red);
-    border-right: 10px solid var(--Main-Red);
-    border-radius: 50%;
-    animation-name: rotate;
-    animation-duration: 750ms;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-}
-
-.angle-up-animation {
-    animation-name: angle-up;
-    animation-duration: 500ms;
-    animation-iteration-count: 1;
-    animation-timing-function: linear;
-    transform: rotate(180deg);
-}
-
-.angle-down-animation {
-    animation-name: angle-down;
-    animation-duration: 500ms;
-    animation-iteration-count: 1;
-    animation-timing-function: linear;
-    transform: rotate(0deg);
-}
-
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes angle-up {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(180deg);
-    }
-}
-
-@keyframes angle-down {
-    from {
-        transform: rotate(180deg);
-    }
-
-    to {
-        transform: rotate(0deg);
-    }
-}
-
+@import url(root.css);
 
 .outer-contact-us, .outer-login, .outer-sign-up, .outer-password-reset {
     width: 100%;
@@ -497,7 +376,7 @@ color: var(--Main-White);
 }
 
 .slider-item img {
-    height: 250px;
+    height: 20em;
     border: 4px solid var(--Main-Gray);
     border-radius: 2px;
 }
@@ -514,9 +393,13 @@ color: var(--Main-White);
 }
 
 .slider-item-overlay a {
+    color: #fff;
+}
+
+.slider-item-overlay > a {
     cursor: pointer;
     padding: 10px 25px;
-    color: var(--Main-White);
+    color: #fff;
     background-color: var(--Main-Red);
     border-radius: 20px;
     text-decoration: none !important;
@@ -527,8 +410,9 @@ color: var(--Main-White);
 }
 
 .slider-item-overlay h5 {
+    line-height: 40px;
     padding: 10px 0;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: #fff;
     font-weight: 600;
 }
@@ -648,7 +532,7 @@ button[id*="showAllImages-btn"]:hover {
 .suggestion-item img {
     border: 4px solid var(--Main-Gray);
     border-radius: 2px;
-    height: 145px;
+    height: 15em;
     width: 100%;
 }
 
@@ -664,9 +548,13 @@ button[id*="showAllImages-btn"]:hover {
 }
 
 .suggestion-item-overlay a {
+    color: #fff;
+}
+
+.suggestion-item-overlay > a {
     cursor: pointer;
     padding: 5px 10px;
-    color: var(--Main-White);
+    color: #fff;
     background-color: var(--Main-Red);
     border-radius: 20px;
     text-decoration: none !important;
@@ -676,9 +564,17 @@ button[id*="showAllImages-btn"]:hover {
     text-align: center;
 }
 
-.suggestion-item-overlay h5,
+.suggestion-item-overlay h5 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 1em 0;
+}
 .suggestion-item-overlay p {
     font-size: 1rem;
+}
+.suggestion-item-overlay h5,
+.suggestion-item-overlay p,
+.suggestion-item-overlay small {
     color: #fff;
 }
 
@@ -729,7 +625,7 @@ button[id*="showAllImages-btn"]:hover {
 
 .all-items img {
     width: 90%;
-    height: 250px;
+    height: 20em;
     border: 4px solid var(--Main-Gray);
     border-radius: 2px;
 }
@@ -749,10 +645,14 @@ button[id*="showAllImages-btn"]:hover {
     transition: all 0.3s ease-in-out;
 }
 
-.all-items-img .overlay  a {
+.all-items-img .overlay a {
+    color: #fff;
+}
+
+.all-items-img .overlay > a {
     cursor: pointer;
     padding: 10px 25px;
-    color: var(--Main-White);
+    color: #fff;
     background-color: var(--Main-Red);
     border-radius: 20px;
     text-decoration: none !important;
@@ -760,6 +660,11 @@ button[id*="showAllImages-btn"]:hover {
     opacity: 0;
     transition: all 0.3s ease-in-out;
     text-align: center;
+}
+
+.all-items-img .overlay h5 {
+    font-size: 1.5rem;
+    line-height: 40px;
 }
 
 .all-items-img .overlay p {
@@ -903,33 +808,6 @@ button[id*="showAllImages-btn"]:hover {
 .profile .dropdown-item:hover {
     background-color: var(--Main-Red);
     color: #fff;
-}
-
-.statistics-title {
-    color: var(--Main-Gray);
-}
-
-.statistics {
-    color: var(--Main-Gray);
-    font-size: 1.2em;
-}
-
-.statistics tr {
-    cursor: pointer;
-    transition: all .5s ease-in-out;
-}
-
-.statistics tr:hover {
-    color: #fff;
-}
-
-.statistics tr:hover {
-    background-color: var(--Main-Red);
-}
-
-.statistics th,
-.statistics tr {
-    padding: 20px 10px;
 }
 
 /* responsive */
@@ -1140,11 +1018,6 @@ button[id*="showAllImages-btn"]:hover {
         font-size: 1.75em;
     }
 
-    .slider-item-overlay h5 {
-        font-size: 1.1rem;
-    }
-
-    .suggestion-item-overlay h5,
     .suggestion-item-overlay p {
         font-size: .9rem;
     }
@@ -1164,10 +1037,6 @@ button[id*="showAllImages-btn"]:hover {
 }
 
 @media screen and (max-width: 575px) {
-    .slider-item-overlay h5 {
-        font-size: 1rem;
-    }
-
     .title {
         margin-right: 0;
     }
@@ -1194,11 +1063,11 @@ button[id*="showAllImages-btn"]:hover {
         right: 6.5%;
     }
 
-    .slider-item-overlay a {
+    .slider-item-overlay > a {
         font-size: .8rem;
     }
 
-    .suggestion-item-overlay a {
+    .suggestion-item-overlay > a {
         font-size: .7rem;
     }
 

@@ -1,5 +1,6 @@
 {% load sidebar_tags %}
 {% load tool_tags %}
+{% load jformat %}
 
  <!-- suggestions -->
  <div class="col-12 col-md-10 col-lg-6 col-xl-5 my-5 mx-auto">
@@ -19,12 +20,14 @@
                     <div class="suggestion-item col-6">
                         <img class="img-fluid" src="{{ obj.img.url }}" alt="{{ obj.title }}" />
                         <div class="suggestion-item-overlay d-flex flex-column justify-content-center align-items-center">
-                            <h5 class="text-center pt-4 px-4">{{ obj.title }}</h5>
-                            <a href="{% url 'download' obj.slug %}?next={{ request.path }}">بارگیری این عکس</a>
+                            <h5 class="text-center pt-4 px-4">{{ obj.title|truncatechars:"50" }}</h5>
+                            <a href="{% url 'post_detail' obj.slug %}">مشاهده این عکس</a>
                             <div class="d-flex">
-                                <p class="mt-3 mx-2">0 <i class="fa fa-download"></i></p>
-                                <p class="mx-2 mt-3">0 <i class="fa fa-eye"></i></p>
+                                <p class="mt-3 mx-2">{{ obj.download_count.count|en_nums_to_fa_nums }} <i class="fa fa-download mr-1"></i></p>
+                                <p class="mx-2 mt-3">{{ obj.likes_count.count|en_nums_to_fa_nums }} <i class="fa fa-heart mr-1"></i></p>
+                                <p class="mx-2 mt-3">{{ obj.hits.count|en_nums_to_fa_nums }} <i class="fa fa-eye mr-1"></i></p>
                             </div>
+                            <small class="mb-5 px-4 text-right"><span class="ml-1"><i class="fa fa-clock-o"></i></span> منتشر شده توسط <a class="publisher" href="{% url 'publisher_list' obj.publisher %}"><b>{{ obj.publisher.get_name_or_username }}</b></a> در تاریخ {{ obj.created|jformat:"%Y/%m/%d"|en_nums_to_fa_nums}} در ساعت {{ obj.created.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</small>
                         </div>
                     </div>
                 {% empty %}

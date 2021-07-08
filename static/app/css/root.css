@@ -1,0 +1,121 @@
+/* root */
+
+:root {
+    --Main-Gray: #444444;
+    --Main-Red: #f30067;
+    --Main-Blue: #00d1cd;
+    --Main-White: #eaeaea;
+}
+
+@font-face {
+    font-family: Yekan;
+    src: url(../fonts/Yekan/Yekan.ttf) format("ttf");
+    src: url(../fonts/Yekan/Yekan.eot) format("eot");
+    src: url(../fonts/Yekan/Yekan.woff) format("woff");
+}
+
+* {
+    direction: rtl;
+    font-family: Yekan, Arial, sans-serif;
+    user-select: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: var(--Main-White);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--Main-Red);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--Main-Red);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: var(--Main-White);
+    z-index: 1000;
+}
+
+.loading-circle {
+    width: 100px;
+    height: 100px;
+    border-top: 10px solid var(--Main-Blue);
+    border-left: 10px solid var(--Main-Blue);
+    border-bottom: 10px solid var(--Main-Red);
+    border-right: 10px solid var(--Main-Red);
+    border-radius: 50%;
+    animation-name: rotate;
+    animation-duration: 750ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+.angle-up-animation {
+    animation-name: angle-up;
+    animation-duration: 500ms;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+    transform: rotate(180deg);
+}
+
+.angle-down-animation {
+    animation-name: angle-down;
+    animation-duration: 500ms;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+    transform: rotate(0deg);
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes angle-up {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes angle-down {
+    from {
+        transform: rotate(180deg);
+    }
+
+    to {
+        transform: rotate(0deg);
+    }
+}

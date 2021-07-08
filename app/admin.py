@@ -48,7 +48,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ["title", "slug", "thumbnail_img", "publisher", "category", "status"]
+    list_display = ["title", "slug", "thumbnail_img", "publisher", "category"]
     actions = [make_back, make_publish]
 
 admin.site.register(Ip)

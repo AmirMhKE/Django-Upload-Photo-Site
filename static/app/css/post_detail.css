@@ -1,0 +1,98 @@
+@import url(root.css);
+
+.viewer-title {
+    overflow: visible;
+}
+
+.out {
+    border-right: 2px dashed var(--Main-Gray);
+    border-left: 2px dashed var(--Main-Gray);
+    margin: 0 5em;
+}
+
+.top {
+    color: var(--Main-Gray);
+}
+
+.img-detail {
+    border: 5px solid var(--Main-Blue);
+    border-radius: 20px;
+    margin-top: 1em;
+    padding: 0;
+}
+
+.img-detail img {
+    padding: 0;
+    border-radius: 15px;
+    height: 40em;
+    cursor: pointer;
+}
+
+.title {
+    font-size: 2em;
+    font-weight: bold;
+    line-height: 50px;
+}
+
+.bottom {
+    color: var(--Main-Gray);
+}
+
+.operation a {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: #fff;
+    transition: all .2s ease;
+    border: none;
+    text-decoration: none;
+}
+
+.operation a:nth-child(1) {
+    background-color: var(--Main-Red);
+}
+
+.operation a:nth-child(2) {
+    background-color: var(--Main-Blue);
+}
+
+.operation a:hover {
+    box-shadow: 0px 0px 20px 0px rgba(68,68,68,0.5);
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(68,68,68,0.5);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(68,68,68,0.5);
+}
+
+@media screen and (max-width: 1199px) {
+    .title {
+        font-size: 1.75em;
+    }
+
+    .img-detail img {
+        height: 35em;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .out {
+        margin: 0 2em;
+    }
+
+    .img-detail img {
+        height: 30em;
+    }
+
+    .title {
+        font-size: 1.5em;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .out {
+        margin: 0 1em;
+    }
+
+    .img-detail img {
+        height: 25em;
+    }
+}

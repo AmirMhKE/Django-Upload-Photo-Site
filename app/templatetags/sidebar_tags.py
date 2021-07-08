@@ -15,7 +15,7 @@ def sidebar(request, num):
 
 def set_suggestion_posts(num):
     num = int(num)
-    query = Post.objects.published()
+    query = Post.objects.all()
     random_items = []
         
     # Set random items

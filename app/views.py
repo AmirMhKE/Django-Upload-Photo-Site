@@ -1,18 +1,19 @@
-from django.db.models import Q
-from django.shortcuts import get_object_or_404
-from django.views.generic import ListView
-from django.views import View
-from django.http import HttpResponse
-from django.utils.encoding import smart_str
-
-from PIL import Image
-from account.mixins import LoginRequiredMixin
-from .models import Category, Post
+from app.middleware import User
 import os
+
+from account.mixins import LoginRequiredMixin
+from django.db.models import Q
+from django.http import HttpResponse, JsonResponse, request
+from django.shortcuts import get_object_or_404
+from django.utils.encoding import smart_str
+from django.views import View
+from django.views.generic import ListView, DetailView
+
+from .models import Category, Post, Ip
 
 
 class PostList(ListView):
-    queryset = Post.objects.published()
+    model = Post
     template_name = "app/post_list.html"
     context_object_name = "post_list"
     paginate_by = 5
@@ -24,6 +25,73 @@ class PostList(ListView):
         context["current_page"] = self.kwargs.get("page", 1)
         return context
 
+class PostDetail(DetailView):
+    model = Post
+    template_name = "app/post_detail.html"
+    context_object_name = "post"
+
+    def get_client_ip(self):
+        x_forwarded_for = self.request.META.get("HTTP_X_FORWARDED_FOR")
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(",")[0]
+        else:
+            ip = self.request.META.get("REMOTE_ADDR")
+
+        return ip
+
+    def get_obj(self):
+        slug = self.kwargs.get("slug")
+        obj = get_object_or_404(Post.objects.all(), slug=slug)
+        return obj
+
+    def get_queryset(self):
+        ip_obj = Ip.objects.get(ip_address=self.get_client_ip())
+        obj = self.get_obj()
+        obj.hits.add(ip_obj)
+        obj.save()
+        return super().get_queryset()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        global is_downloaded, is_liked
+        is_downloaded = False
+        is_liked = False
+        obj = self.get_obj()
+
+        if self.request.user.is_authenticated:
+            username = self.request.user.username
+            email = self.request.user.email
+            user = User.objects.get(username=username, email=email)
+
+            if user in obj.download_count.all():
+                is_downloaded = True
+
+            if user in obj.likes_count.all():
+                is_liked = True
+
+        context["is_downloaded"] = is_downloaded
+        context["is_liked"] = is_liked
+        return context
+
+class PublisherList(ListView):
+    template_name = "app/post_list.html"
+    context_object_name = "post_list"
+    paginate_by = 5
+
+    def get_queryset(self):
+        global publisher, username
+        username = self.kwargs.get("username")
+        publisher = get_object_or_404(User.objects.all(), username=username)
+        return publisher.posts.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"عکس های {publisher.get_name_or_username}"
+        context["current_page"] = self.kwargs.get("page", 1)
+        context["namespace"] = "publisher_list"
+        context["username"] = username
+        return context
+
 class CategoryList(ListView):
     template_name = "app/post_list.html"
     context_object_name = "post_list"
@@ -33,7 +101,7 @@ class CategoryList(ListView):
         global category
         slug = self.kwargs.get("slug")
         category = get_object_or_404(Category.objects.active(), slug=slug)
-        return category.posts.published()
+        return category.posts.all()
         
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,7 +119,8 @@ class SearchList(ListView):
     def get_queryset(self):
         global search_name
         search_name = self.kwargs.get("search")
-        query = Post.objects.filter(Q(title__icontains=search_name) | Q(category__title__icontains=search_name))
+        query = Post.objects.filter(Q(title__icontains=search_name) | 
+        Q(category__title__icontains=search_name))
         return query
 
     def get_context_data(self, **kwargs):
@@ -77,3 +146,17 @@ class DownloadView(LoginRequiredMixin, View):
         obj.save()
 
         return response
+
+class LikeView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        obj = get_object_or_404(Post.objects.all(), slug=kwargs.get("slug"))
+        username = request.user.username
+        email = request.user.email
+        user = User.objects.get(username=username, email=email)
+
+        if user in obj.likes_count.all():
+            obj.likes_count.remove(user)
+            return JsonResponse({"action": "dislike", "count": obj.likes_count.count()})
+        else:
+            obj.likes_count.add(user)
+            return JsonResponse({"action": "like", "count": obj.likes_count.count()})

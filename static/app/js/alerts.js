@@ -1,5 +1,5 @@
 $(function () {
-    var event = JSON.parse($("input[name='event']").val());
+    var event = JSON.parse($("#event").val());
 
     switch (event["type"]) {
         case "login_required":

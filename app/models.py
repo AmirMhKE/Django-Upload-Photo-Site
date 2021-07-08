@@ -9,13 +9,10 @@ from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
 from django.utils.crypto import get_random_string
 from django.utils.html import format_html
+from django_jalali.db import models as jmodels
 from PIL import Image
 
 user = get_user_model()
-
-class PostManager(models.Manager):
-    def published(self):
-        return self.filter(status="p")
 
 class CategoryManager(models.Manager):
     def active(self):
@@ -58,11 +55,6 @@ def upload_location(instance, filename):
         return f"images/{instance.slug}/{instance.slug}.{extension}"
 
 class Post(models.Model):
-    STATUS_CHOICES = (
-        ("p", "منتشر شده"),
-        ("i", "در حال بررسی"),
-        ("b", "برگشت داده شده"),
-    )
     title = models.CharField(max_length=100, verbose_name="عنوان عکس")
     slug = models.CharField(max_length=250, unique=True, verbose_name="آدرس عکس", blank=True)
     img = models.ImageField(upload_to=upload_location, verbose_name="عکس شما")
@@ -73,11 +65,8 @@ class Post(models.Model):
     likes_count = models.ManyToManyField(user, blank=True, related_name="likes", 
     verbose_name="تعداد پسند ها")
     download_count = models.ManyToManyField(user, blank=True, related_name="downloads", verbose_name="تعداد دانلود ها")
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, verbose_name="وضعیت انتشار")
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
-    objects = PostManager()
+    created = jmodels.jDateTimeField(auto_now_add=True)
+    updated = jmodels.jDateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = "پست"
@@ -95,11 +84,13 @@ class Post(models.Model):
     thumbnail_img.short_description = "عکس شما"
 
     def save(self, *args, **kwargs):
-        self.slug_save()
-        super().save(*args, **kwargs)
+        # ? if model not created, override save method
+        if not self.pk:
+            self.slug_save()
+            super().save(*args, **kwargs)
 
-        self.img_save()
-        super().save(*args, **kwargs)
+            self.img_save()
+            super().save(*args, **kwargs)
 
     def slug_save(self):
         MIN_LENGTH = 25
@@ -125,12 +116,13 @@ class Post(models.Model):
         dowload_image = Image.open(self.img)
         dowload_image.save(file_name)
 
+        # ? Save size image
+        height, width = dowload_image.size
+        self.original_size_image = f"{str(width)} × {str(height)}"
+
         # ? This image for show in site
         with Image.open(self.img) as img:
-            height, width = img.size
-            self.original_size_image = f"{str(width)} × {str(height)}"
-
-            img.thumbnail((500, 500))
+            img.thumbnail((750, 750))
             img.save(self.img.path)
             img.close()
 

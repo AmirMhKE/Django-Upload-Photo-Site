@@ -47,9 +47,32 @@
         <input id="_search_input_" type="text" autocomplete="off" placeholder="متن جستجوی خود را وارد کنید ..." />
     </div>
 
+    {% if not request.user.is_authenticated %}
+         <!-- register -->
+        <div class="outer-login justify-content-center align-items-center">
+            <div class="login container-fluid animate__animated">
+                <span class="close"><i class="fa fa-close"></i></span>
+                <form class="col-12 mt-5">
+                    <h3 class="text-center mt-3 login-google-title">ورود یا ثبت نام با گوگل</h3>
+                    <div class="row login-google mt-1 d-flex justify-content-between align-items-center">
+                        <div class="col-5"></div>
+                        <div class="col-2">
+                            <a href="{% url 'google_login:begin' 'google-oauth2' %}?next={{ request.path }}">
+                                <p class="mx-auto"><i class="fa fa-google-plus"></i></p>
+                            </a>
+                        </div>
+                        <div class="col-5"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="overlay"></div>
+    {% endif %}
+
     <header>
-        {% category request %}
-        {% block header %}{% endblock %}
+        {% block header %}
+            {% category request %}
+        {% endblock %}
     </header>
 
     <main>
@@ -64,7 +87,7 @@
         {% endblock %}
     </footer>
 </body>
-<input type="hidden" name="event" value="{{ event }}">
+<input type="hidden" id="event" value="{{ event }}">
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- JS Bootstrap -->

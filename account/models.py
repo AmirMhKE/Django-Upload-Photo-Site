@@ -11,3 +11,10 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+
+    @property
+    def get_name_or_username(self):
+        if self.first_name:
+            return f"{self.first_name} {self.last_name}".strip()
+        else:
+            return self.username

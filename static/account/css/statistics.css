@@ -1,0 +1,26 @@
+.statistics-title {
+    color: var(--Main-Gray);
+}
+
+.statistics {
+    color: var(--Main-Gray);
+    font-size: 1.2em;
+}
+
+.statistics tr {
+    cursor: pointer;
+    transition: all .5s ease-in-out;
+}
+
+.statistics tr:hover {
+    color: #fff;
+}
+
+.statistics tr:hover {
+    background-color: var(--Main-Red);
+}
+
+.statistics th,
+.statistics tr {
+    padding: 20px 10px;
+}

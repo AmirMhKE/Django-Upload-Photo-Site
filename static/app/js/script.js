@@ -51,7 +51,7 @@ $("#goTop").click(function () {
 });
 
 // Scroll when page load ...
-$(".page-link_").click(function () {
+$(".page-link_, .publisher").click(function () {
     let href = this.href; 
     let scrollNum = $(window).scrollTop();
     localStorage.setItem("scroll", scrollNum);
@@ -184,10 +184,10 @@ $("#_search_input_").keyup(function (e) {
 function search() {
     let search_name = $("#_search_input_").val().replace(/\s+/g, ' ').trim();
     let url = "/search/" + search_name + "/";
-    let scrollNum = 0;
+    var scrollNum = 0;
 
     try {
-        let scrollNum = $("#scroll-target").offset().top - 100;
+        scrollNum = $("#scroll-target").offset().top - 100;
     } catch(TypeError) {
         // ***
     } finally {

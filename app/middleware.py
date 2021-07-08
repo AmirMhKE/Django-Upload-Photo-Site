@@ -19,7 +19,8 @@ class RequestProcessMiddleWare:
     # ? Save request count user in database
     def process_view(self, request, view_func, view_args, view_kwargs):
         user = None
-        view_lists = ["PostList", "CategoryList", "SearchList", "DownloadView", "StatisticsView"]
+        view_lists = ["PostList", "PostDetail", "PublisherList", "CategoryList", "SearchList", 
+        "DownloadView", "LikeView", "StatisticsView"]
 
         if view_func.__name__ in view_lists:
             self.process_client_ip(request)
@@ -31,28 +32,19 @@ class RequestProcessMiddleWare:
 
         # ? Count all requests
         if user and view_func.__name__ in view_lists:
-            if not user.all_requests_count:
-                user.all_requests_count = 1
-            else:
-                user.all_requests_count += 1
+            user.all_requests_count += 1
 
             user.save()
 
         # ? Count all search requests
         if user and view_func.__name__ == "SearchList":
-            if not user.requests_search_count:
-                user.requests_search_count = 1
-            else:
-                user.requests_search_count += 1
+            user.requests_search_count += 1
 
             user.save()
 
         # ? Count all download requests
         if user and view_func.__name__ == "DownloadView":
-            if not user.requests_download_count:
-                user.requests_download_count = 1
-            else:
-                user.requests_download_count += 1
+            user.requests_download_count += 1
 
             user.save()
 
@@ -93,7 +85,9 @@ class RequestProcessMiddleWare:
 
                 # ? Save excessive count request user
                 if obj.excessive_requests_count == max_count and request.user.is_authenticated:
-                    user = User.objects.get(username=request.user.username)
+                    username = request.user.username
+                    email = request.user.email
+                    user = User.objects.get(username=username, email=email)
                     user.excessive_requests_count += 1
                     user.save()
             else:

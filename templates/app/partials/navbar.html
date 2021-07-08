@@ -65,7 +65,7 @@
                     <div class="dropdown profile" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {% if not request.user.img %}
                             <h5>
-                                {{ request.user.username|first_letter_to_upper }}
+                                {{ request.user.get_name_or_username|first_letter_to_upper }}
                             </h5>
                         {% endif %}
 

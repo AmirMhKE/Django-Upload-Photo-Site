@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'account.apps.AccountConfig',
     'social_django',
+    'django_jalali',
+    'account.apps.AccountConfig',
     'app.apps.AppConfig',
 ]
 

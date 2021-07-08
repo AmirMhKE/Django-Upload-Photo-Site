@@ -8,7 +8,9 @@ class StatisticsView(LoginRequiredMixin, TemplateView):
     template_name = "account/statistics.html"
 
     def get_context_data(self, **kwargs):
-        this_user = User.objects.get(username=self.request.user.username, email=self.request.user.email)
+        username = self.request.user.username
+        email = self.request.user.email
+        this_user = User.objects.get(username=username, email=email)
         context = super().get_context_data(**kwargs)
         context.update({
             "post_count": this_user.posts.count(),
