@@ -5,8 +5,6 @@ from random import randint
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models.signals import pre_delete
-from django.dispatch.dispatcher import receiver
 from django.utils.crypto import get_random_string
 from django.utils.html import format_html
 from django_jalali.db import models as jmodels
@@ -125,9 +123,3 @@ class Post(models.Model):
             img.thumbnail((750, 750))
             img.save(self.img.path)
             img.close()
-
-# ? delete folder image when post object deleted
-@receiver(pre_delete, sender=Post)
-def image_delete(sender, instance, **kwargs):
-    dir_name = os.path.dirname(instance.img.path)
-    shutil.rmtree(dir_name)

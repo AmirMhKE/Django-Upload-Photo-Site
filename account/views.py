@@ -1,6 +1,9 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, UpdateView, View
 from django.contrib.auth import get_user_model
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from .mixins import LoginRequiredMixin
+from .forms import UserUpdateForm
 
 User = get_user_model()
 
@@ -21,3 +24,24 @@ class StatisticsView(LoginRequiredMixin, TemplateView):
             "excessive_requests_count": this_user.excessive_requests_count,
         })
         return context
+
+class UserSettingsView(LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = "account/user_settings.html"
+    form_class = UserUpdateForm
+    success_url = reverse_lazy("account:settings")
+
+    def get_object(self):
+        return User.objects.get(pk=self.request.user.pk)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request
+        kwargs["user"] = self.request.user
+        return kwargs
+
+class UserDeleteView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        user = User.objects.get(pk=self.request.user.pk)
+        user.delete()
+        return redirect("/")

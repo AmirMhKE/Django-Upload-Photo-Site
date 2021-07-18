@@ -63,16 +63,18 @@
                     <a href="#" class="login-link">ورود / ثبت نام</a>
                 {% else %}
                     <div class="dropdown profile" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {% if not request.user.img %}
+                        {% if not request.user.profile_image %}
                             <h5>
                                 {{ request.user.get_name_or_username|first_letter_to_upper }}
                             </h5>
+                        {% else %}
+                            <div class="img" style="background-image: url('{{ request.user.profile_image.url }}');"></div>
                         {% endif %}
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <a class="dropdown-item text-right" href="#"><span style="margin-left: 5px;"><i class="fa fa-tasks"></i></span> مدیریت عکس های شما</a>
-                            <a class="dropdown-item text-right" href="#"><span style="margin-left: 5px;"><i class="fa fa-cog"></i></span> تنظیمات حساب کاربری</a>
-                            <a class="dropdown-item text-right" href="{% url 'account:statistics' %}"><span style="margin-left: 5px;"><i class="fa fa-bar-chart"></i></span> آمار حساب شما</a>
+                            <a class="dropdown-item text-right" href="{% url 'account:settings' %}"><span style="margin-left: 5px;"><i class="fa fa-cog"></i></span> تنظیمات حساب کاربری</a>
+                            <a class="dropdown-item text-right" href="{% url 'account:statistics' %}"><span style="margin-left: 5px;"><i class="fa fa-bar-chart"></i></span> آمار حساب کاربری شما</a>
                             <a class="dropdown-item text-right" 
                             href="{% url 'account:logout' %}?next={{ request.path }}">
                             <span style="margin-left: 5px;"><i class="fa fa-sign-out"></i></span> خروج</a>

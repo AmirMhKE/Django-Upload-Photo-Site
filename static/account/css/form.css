@@ -1,0 +1,115 @@
+@import url(../../app/css/root.css);
+
+.user-settings form {
+    padding: 5em;
+    border: 1px dashed var(--Main-Gray);
+    border-radius: 5px;
+}
+
+.user-settings {
+    color: var(--Main-Gray);
+}
+
+.user-settings input {
+    width: 100%;
+    padding: 5px;
+    border: 3px solid #808080;
+    border-radius: 5px;
+    outline: none;
+    transition: all .25s ease-in-out;
+}
+
+.user-settings input:hover {
+    border-color: var(--Main-Blue);
+}
+
+.user-settings input:focus {
+    border-color: var(--Main-Red);
+}
+
+
+.user-settings .delete_account-btn {
+    background-color: var(--Main-Red);
+}
+
+.user-settings button {
+    background-color: var(--Main-Blue);
+}
+
+.user-settings button,
+.user-settings .delete_account-btn {
+    color: #fff;
+    font-weight: 600;
+    transition: all .5s;
+    width: 100%;
+}
+
+.user-settings .delete_account-btn:hover {
+    background-image: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .1));
+}
+
+.user-settings button:hover {
+    background-color: var(--Main-Red);
+    color: #fff;
+}
+
+.user-profile {
+    width: 10rem;
+    height: 10rem;
+    background-color: var(--Main-Red);
+    border-radius: 50%;
+    background-color: var(--Main-Red);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.user-profile > h5 {
+    font-size: 5rem;
+    color: #fff;
+}
+
+#delete_profile-btn, #add_profile-btn {
+    width: 1em;
+    height: 1em;
+    color: #fff;
+    padding: .8em;
+    font-size: 2em;
+    position: absolute;
+    border-radius: 50%;
+    cursor: pointer;
+    top: 3.5em;
+    left: 3.5em;
+}
+
+#delete_profile-btn {
+    background-color: var(--Main-Red);
+}
+
+#add_profile-btn {
+    background-color: var(--Main-Blue);
+}
+
+.delete_account-btn {
+    background-color: var(--Main-Red) !important;
+}
+
+small {
+    color: var(--Main-Gray);
+}
+
+label.is_change::before {
+    content: "*";
+    font-size: 1.5em;
+    color: red;
+}
+
+@media screen and (max-width: 767px) {
+    .user-settings form {
+        padding: 2em;
+    }
+}

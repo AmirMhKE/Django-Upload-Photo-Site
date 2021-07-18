@@ -20,6 +20,11 @@
     user-select: none;
 }
 
+::selection {
+    color: #fff;
+    background-color: var(--Main-Blue);
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 10px;

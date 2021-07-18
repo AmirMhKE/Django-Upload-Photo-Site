@@ -1,3 +1,5 @@
+import importlib
+import inspect
 from datetime import datetime, timedelta
 
 from django.contrib.auth import get_user_model
@@ -7,7 +9,7 @@ from .models import Ip
 
 User = get_user_model()
 
-class RequestProcessMiddleWare:
+class RequestProcessMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -19,8 +21,7 @@ class RequestProcessMiddleWare:
     # ? Save request count user in database
     def process_view(self, request, view_func, view_args, view_kwargs):
         user = None
-        view_lists = ["PostList", "PostDetail", "PublisherList", "CategoryList", "SearchList", 
-        "DownloadView", "LikeView", "StatisticsView"]
+        view_lists = self.get_apps_views()
 
         if view_func.__name__ in view_lists:
             self.process_client_ip(request)
@@ -47,6 +48,16 @@ class RequestProcessMiddleWare:
             user.requests_download_count += 1
 
             user.save()
+
+    def get_apps_views(self):
+        result, apps = [], ["app", "account"]
+
+        for app in apps:
+            for name, cls in inspect.getmembers(importlib.import_module(app + ".views"), inspect.isclass):
+                if cls.__module__ == app + ".views":
+                    result.append(name)
+
+        return result
 
     def process_client_ip(self, request):
         x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")

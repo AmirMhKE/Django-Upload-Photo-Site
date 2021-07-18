@@ -758,16 +758,46 @@ button[id*="showAllImages-btn"]:hover {
 }
 
 .swal2-styled.swal2-confirm {
-    background-color: var(--Main-Blue) !important;
+    background-color: var(--Main-Blue);
 }
 
-.swal2-styled.swal2-confirm:focus {
+.swal2-styled.swal2-deny {
+    background-color: var(--Main-Red);
+}
+
+.swal2-styled.swal2-cancel {
+    background-color: var(--Main-Gray);
+}
+
+.swal2-styled.swal2-confirm:focus,
+.swal2-styled.swal2-deny:focus {
     box-shadow: none !important;
 }
 
 .swal2-title,
 .swal2-html-container {
     color: var(--Main-Gray) !important;
+}
+
+.swal2-input {
+    border: 3px solid #808080 !important;
+    border-radius: 5px !important;
+    outline: none !important;
+    transition: all .25s ease-in-out !important;
+    box-shadow: none !important;
+}
+
+.swal2-input:hover {
+    border-color: var(--Main-Blue) !important;
+}
+
+.swal2-input:focus {
+    border-color: var(--Main-Red) !important;
+}
+
+.swal2-validation-message {
+    background-color: var(--Main-White);
+    color: var(--Main-Gray);
 }
 
 .password-reset-confirm {
@@ -801,6 +831,15 @@ button[id*="showAllImages-btn"]:hover {
     text-decoration: none !important;
 }
 
+.profile > .img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .profile .dropdown-item {
     color: var(--Main-Gray);
 }
@@ -808,6 +847,11 @@ button[id*="showAllImages-btn"]:hover {
 .profile .dropdown-item:hover {
     background-color: var(--Main-Red);
     color: #fff;
+}
+
+.btn:disabled {
+    opacity: .5;
+    pointer-events: none;
 }
 
 /* responsive */

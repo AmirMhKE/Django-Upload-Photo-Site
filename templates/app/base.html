@@ -16,10 +16,6 @@
     <!-- CSS Carousel -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.green.min.css" integrity="sha512-C8Movfk6DU/H5PzarG0+Dv9MA9IZzvmQpO/3cIlGIflmtY3vIud07myMu4M/NTPJl8jmZtt/4mC9bAioMZBBdA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- My CSS Code -->
-    <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
-    {% block custom_style %}
-    {% endblock %}
 </head>
 <body>
     {% block float_items %}{% endblock %}
@@ -103,6 +99,10 @@
 <!-- My JS Code -->
 <script src="{% static 'app/js/script.js' %}"></script>
 <script src="{% static 'app/js/alerts.js' %}"></script>
+<!-- My CSS Code -->
+<link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+{% block custom_style %}
+{% endblock %}
 {% block custom_script %}
 {% endblock %}
 </html>

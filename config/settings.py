@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'app.middleware.RequestProcessMiddleWare',
+    'app.middleware.RequestProcessMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
