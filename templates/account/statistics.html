@@ -5,9 +5,9 @@
 {% block title %}آمار حساب کاربری شما{% endblock %}
 
 {% block main %}
-    <div class="col-10 col-md-8 col-lg-6 mx-auto">
+    <div class="col-10 col-md-8 col-lg-6 mx-auto wow animate__animated animate__fadeInDown">
         <h2 class="text-center statistics-title my-5 py-5"><span class="ml-3"><i class="fa fa-bar-chart"></i></span> 
-            آمار حساب کاربری شما</h2>
+            آمار حساب کاربری {{ username }}</h2>
         <table class="table statistics">
             <tbody>
                 <tr>
@@ -35,7 +35,7 @@
                         تعداد درخواست های جستجو</th>
                     <td class="text-right">{{ requests_search_count|en_nums_to_fa_nums }}</td>
                 </tr>
-                {% if not request.user.is_superuser %}
+                {% if not user.is_superuser %}
                     <tr>
                         <th class="text-right"><span class="ml-2"><i class="fa fa-ban"></i></span> 
                             تعداد درخواست های غیر مجاز</th>

@@ -15,8 +15,13 @@
             {% for obj in post_list %}
                 <div class="col-12 col-sm-10 col-md-6 col-lg-4 all-items-img mb-4 mx-auto">
                     <img class="img-fluid" src="{{ obj.img.url }}" alt="{{ obj.title }}" />
-                    <div class="overlay d-flex flex-column justify-content-center align-items-center">
-                        <h5 class="text-center pb-4 px-4">{{ obj.title|truncatechars:"50" }}</h5>
+                    <div class="overlay d-flex flex-column align-items-center">
+                        <div class="pt-4 pb-0 mb-0">
+                            <a href="#" class="user-profile text-center" 
+                            style="background-image: url('{{ obj.publisher.profile_image.url }}');
+                            width: 3rem;height: 3rem;"><b class="text-center">{{ obj.publisher.username }}</b></a>
+                        </div>
+                        <h5 class="text-center pb-4 px-4 mt-5">{{ obj.title|truncatechars:"50" }}</h5>
                         <a href="{% url 'post_detail' obj.slug %}">مشاهده این عکس</a>
                         <div class="d-flex">
                             <p class="mt-3 mx-2">{{ obj.download_count.count|en_nums_to_fa_nums }} <i class="fa fa-download mr-1"></i></p>
@@ -76,8 +81,13 @@
                         {% for obj in post_list %}
                             <div class="slider-item">
                                 <img src="{{ obj.img.url }}" alt="{{ obj.title }}" />
-                                <div class="slider-item-overlay d-flex flex-column justify-content-center align-items-center">
-                                    <h5 class="text-center px-4 pb-4">{{ obj.title }}</h5>
+                                <div class="slider-item-overlay d-flex flex-column align-items-center">
+                                    <div class="pt-4 pb-0 mb-0">
+                                        <a href="#" class="user-profile text-center" 
+                                        style="background-image: url('{{ obj.publisher.profile_image.url }}');
+                                        width: 3rem;height: 3rem;"><b class="text-center">{{ obj.publisher.username }}</b></a>
+                                    </div>
+                                    <h5 class="text-center px-4 pb-4 mt-4">{{ obj.title }}</h5>
                                     <a href="{% url 'post_detail' obj.slug %}">مشاهده این عکس</a>
                                     <div class="d-flex">
                                         <p class="mt-3 mx-2">{{ obj.download_count.count|en_nums_to_fa_nums }} <i class="fa fa-download mr-1"></i></p>

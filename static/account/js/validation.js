@@ -22,8 +22,6 @@ if(add_profile_fi !== null) {
 
     add_profile_fi.onchange = function () {
         if(this.value !== "") {
-            document.body.style.overflowY = "hidden";
-
             extension_file = this.value.split(".").slice(-1)[0];
             if(extension_file !== "jpg") {
                 Swal.fire({
@@ -31,9 +29,7 @@ if(add_profile_fi !== null) {
                     title: "فایل غیر مجاز",
                     text: "شما فقط می توانید فایلی با پسوند jpg آپلود کنید!",
                     confirmButtonText: "باشه"
-                }).then(() => {
-                    document.body.style.overflowY = "visible";
-                });
+                })
             } else {
                 var preview_image = this.files[0];
                 var reader = new FileReader();
@@ -53,7 +49,6 @@ if(add_profile_fi !== null) {
                         if(result.isConfirmed)
                             updateProfile();
                             
-                        document.body.style.overflowY = "visible";
                         this.value = "";
                     });
                 }
@@ -65,7 +60,6 @@ if(add_profile_fi !== null) {
 // Clear profile
 if(clear_profile_ch !== null) {
     delete_profile_btn.onclick = function () {
-        document.body.style.overflowY = "hidden";
         Swal.fire({
             icon: "error",
             title: "حذف عکس پروفایل",
@@ -80,7 +74,6 @@ if(clear_profile_ch !== null) {
                 }
                 updateProfile();
             }
-            document.body.style.overflowY = "visible";
         });
     };
 }
@@ -116,10 +109,20 @@ function userUpdateFormValidation() {
     )
     let last_name_is_empty = this["last_name"].value.trim() === "";
 
+    let superuser_is_changed, staff_is_changed;
+    try {
+        superuser_is_changed = this["is_superuser"].checked !== JSON.parse(this["is_superuser"].getAttribute("initial"))
+        staff_is_changed = this["is_staff"].checked !== JSON.parse(this["is_staff"].getAttribute("initial"))
+    } catch {
+        superuser_is_changed = false
+        staff_is_changed = false
+    }
+
     if(((username_condition && first_name_is_empty && last_name_is_empty) || 
     (username_condition && (!first_name_is_empty && first_name_condition) && 
     (!last_name_is_empty && last_name_condition))) && 
-    (username_is_changed || first_name_is_changed || last_name_is_changed)) {
+    (username_is_changed || first_name_is_changed || last_name_is_changed || 
+    superuser_is_changed || staff_is_changed)) {
         submit_btn.removeAttribute("disabled");
     } else {
         submit_btn.setAttribute("disabled", "");

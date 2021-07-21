@@ -3,8 +3,9 @@ import os
 
 from account.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.http import HttpResponse, JsonResponse, request
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
+from django.conf import settings
 from django.utils.encoding import smart_str
 from django.views import View
 from django.views.generic import ListView, DetailView
@@ -134,12 +135,10 @@ class SearchList(ListView):
 class DownloadView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         obj = get_object_or_404(Post.objects.all(), slug=kwargs.get("slug"))
-        dir_name = os.path.dirname(obj.img.path)
-        file_name = os.path.join(dir_name, f"{obj.slug}-akscade.jpg")
-        img = open(file_name, "rb")
+        img = open((settings.DOWNLOAD_ROOT / f"{obj.slug}/{obj.slug}-akscade.jpg"), "rb")
         
         response = HttpResponse(img.read(), content_type="application/force-download")
-        response["Content-Disposition"] = f"attachment; filename={os.path.basename(file_name)}"
+        response["Content-Disposition"] = f"attachment; filename={os.path.basename(f'{obj.slug}-akscade.jpg')}"
         response["X-Sendfile"] = smart_str(img)
 
         obj.download_count.add(request.user)

@@ -13,7 +13,12 @@
 {% block main %}
     <div class="out">
         <div class="col-11 col-sm-10 mx-auto my-5 d-flex flex-column align-items-center top animate__animated animate__fadeInDown">
-            <h1 class="title m-2 text-center">{{ post.title }}</h1>
+            <div class="pt-4 pb-0 mb-0">
+                <a href="#" class="user-profile text-center" 
+                style="background-image: url('{{ post.publisher.profile_image.url }}');
+                width: 5rem;height: 5rem;"><b style="color: var(--Main-Gray);top: 6.5em;" class="text-center">{{ post.publisher.username }}</b></a>
+            </div>
+            <h1 class="title m-2 text-center mt-5">{{ post.title }}</h1>
             <div class="m-0 p-0 d-flex flex-column flex-lg-row justify-content-center">
                 <b class="m-2 text-center"><span class="ml-1"><i class="fa fa-user"></i></span> منتشر کننده: {{ post.publisher.get_name_or_username }}</b>
                 <b class="m-2 text-center"><span class="ml-1"><i class="fa fa-clock-o"></i></span> تاریخ انتشار: {{ post.created.date|jformat:"%Y/%m/%d"|en_nums_to_fa_nums }}</b> 
@@ -41,7 +46,7 @@
                 <b class="m-2"><span class="ml-1"><i class="fa fa-download"></i></span> تعداد دانلود ها: <span id="download_count">{{ post.download_count.count|en_nums_to_fa_nums }}</span></b>
             </div>
             
-            <div class="col-11 col-sm-10 col-md-8 col-lg-7 my-4 d-flex flex-column flex-sm-row mx-auto justify-content-center operation">
+            <div class="col-11 col-sm-10 col-md-8 col-lg-7 my-4 d-flex flex-column flex-xl-row mx-auto justify-content-center operation">
                 <a href="
                 {% url 'like' post.slug %}{% if not request.user.is_authenticated %}?next={{ request.path }}{% endif %}" 
                 class="m-4 text-center" id="like">
@@ -54,6 +59,18 @@
                 <a href="
                 {% url 'download' post.slug %}{% if not request.user.is_authenticated %}?next={{ request.path }}{% endif %}" 
                 class="m-4 text-center" id="download"><span class="ml-1"><i class="fa fa-download"></i></span> بارگیری عکس</a>
+                <div class="dropdown share p-0 m-0">
+                    <button class="m-4 text-center" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="ml-1"><i class="fa fa-share-alt"></i></span> اشتراک گذاری عکس</button>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item text-right"
+                        href="https://t.me/share/url?url={{ request.META.HTTP_HOST }}{{ request.path }}&text={{ post.title }}
+                        "><span class="ml-1"><i class="fa fa-paper-plane"></i></span> اشتراک گذاری در تلگرام</a>
+                        <a class="dropdown-item text-right" 
+                        href="https://twitter.com/intent/tweet?url={{ request.META.HTTP_HOST }}{{ request.path }}&text={{ post.title }}"><span class="ml-1"><i class="fa fa-twitter"></i></span> اشتراک گذاری در توییتر</a>
+                        <a class="dropdown-item text-right" href="https://www.facebook.com/sharer/sharer.php?u={{ request.META.HTTP_HOST }}{{ request.path }}"><span class="ml-1"><i class="fa fa-facebook"></i></span> اشتراک گذاری در فیسبوک</a>
+                      </div>
+                </div>
             </div>    
         </div>
     </div>

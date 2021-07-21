@@ -10,7 +10,7 @@ User = get_user_model()
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "username", "profile_image"]
+        fields = ["first_name", "last_name", "username", "profile_image", "is_superuser", "is_staff"]
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
@@ -71,7 +71,39 @@ class UserUpdateForm(forms.ModelForm):
             
         return username
 
+    def clean_is_superuser(self):
+        data = self.cleaned_data["is_superuser"]
+        if ((self.request.user.is_superuser and self.request.user != self.user) \
+        and (not self.user.is_superuser or self.request.user.is_admin)) or self.user.is_superuser == data:
+            return data
+            
+        raise ValidationError(
+            "شما نمی توانید سطح دسترسی خود را تغییر دهید.",
+            code="permission_error"
+        )
+
+    def clean_is_staff(self):
+        data = self.cleaned_data["is_staff"]
+        if ((self.request.user.is_superuser and self.request.user != self.user) \
+        and (not self.user.is_superuser or self.request.user.is_admin)) or self.user.is_staff == data:
+            return data
+
+        raise ValidationError(
+            "شما نمی توانید سطح دسترسی خود را تغییر دهید.",
+            code="permission_error"
+        )
+
     def is_valid(self):
-        event = {"type": "user_profile_updated", "content": None}
-        self.request.session["event"] = json.dumps(event)
-        return super().is_valid()
+        is_data_valid = super().is_valid()
+
+        if is_data_valid:
+            content = ""
+            if self.request.user == self.user:
+                content = "حساب کاربری شما با موفقیت ویرایش شد."
+            else:
+                content = f"حساب کاربری {self.user.get_name_or_username} با موفقیت آپدیت شد."
+
+            event = {"type": "user_profile_updated", "content": content}
+            self.request.session["event"] = json.dumps(event)
+
+        return is_data_valid

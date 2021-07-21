@@ -38,7 +38,7 @@
     color: var(--Main-Gray);
 }
 
-.operation a {
+.operation a:not(.dropdown-item), .operation button {
     font-size: 1.2em;
     font-weight: bold;
     padding: 10px 15px;
@@ -49,18 +49,23 @@
     text-decoration: none;
 }
 
-.operation a:nth-child(1) {
+.operation a:nth-child(1):not(.dropdown-item) {
     background-color: var(--Main-Red);
 }
 
-.operation a:nth-child(2) {
+.operation a:nth-child(2):not(.dropdown-item) {
     background-color: var(--Main-Blue);
 }
 
-.operation a:hover {
+.operation a:hover:not(.dropdown-item), .operation button:hover {
     box-shadow: 0px 0px 20px 0px rgba(68,68,68,0.5);
     -webkit-box-shadow: 0px 0px 20px 0px rgba(68,68,68,0.5);
     -moz-box-shadow: 0px 0px 20px 0px rgba(68,68,68,0.5);
+}
+
+.share button {
+    background-color: var(--Main-Gray);
+    width: 90%;
 }
 
 @media screen and (max-width: 1199px) {
@@ -70,6 +75,12 @@
 
     .img-detail img {
         height: 35em;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .share button {
+        width: 89%;
     }
 }
 

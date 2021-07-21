@@ -1,9 +1,9 @@
 import os
-import shutil
 from random import randint
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.conf import settings
 from django.db import models
 from django.utils.crypto import get_random_string
 from django.utils.html import format_html
@@ -109,10 +109,12 @@ class Post(models.Model):
 
     def img_save(self):
         # ? This image for download
-        dir_name = os.path.dirname(self.img.path)
-        file_name = os.path.join(dir_name, f"{self.slug}-akscade.jpg")
+        if not os.path.exists(settings.DOWNLOAD_ROOT):
+            os.makedirs(settings.DOWNLOAD_ROOT)
+
+        os.makedirs(settings.DOWNLOAD_ROOT / self.slug)
         dowload_image = Image.open(self.img)
-        dowload_image.save(file_name)
+        dowload_image.save(settings.DOWNLOAD_ROOT / f"{self.slug}/{self.slug}-akscade.jpg")
 
         # ? Save size image
         height, width = dowload_image.size

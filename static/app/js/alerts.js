@@ -16,7 +16,15 @@ $(function () {
             Swal.fire({
                 title: "ویرایش حساب کاربری",
                 icon: "success",
-                text: "حساب کاربری شما با موفقیت ویرایش شد.",
+                text: event["content"],
+                confirmButtonText: "باشه"
+            });
+            break;
+        case "permission_denied":
+            Swal.fire({
+                title: "خطای دسترسی",
+                icon: "error",
+                text: "شما دسترسی ندارید!",
                 confirmButtonText: "باشه"
             });
             break;

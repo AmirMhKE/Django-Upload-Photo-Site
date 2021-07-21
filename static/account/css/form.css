@@ -10,13 +10,18 @@
     color: var(--Main-Gray);
 }
 
-.user-settings input {
+.user-settings input:not([type="checkbox"]) {
     width: 100%;
     padding: 5px;
     border: 3px solid #808080;
     border-radius: 5px;
     outline: none;
     transition: all .25s ease-in-out;
+}
+
+.user-settings input[type="checkbox"] {
+    transform: scale(1.5);
+    margin: 0 .5em;
 }
 
 .user-settings input:hover {
@@ -100,6 +105,10 @@
 
 small {
     color: var(--Main-Gray);
+}
+
+label.ch {
+    direction: ltr;
 }
 
 label.is_change::before {

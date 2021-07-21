@@ -102,7 +102,7 @@ class RequestProcessMiddleware:
                     user.excessive_requests_count += 1
                     user.save()
             else:
-                difference_block_time = obj.last_excessive_request_time + timedelta(minutes=block_time_minute)
+                difference_block_time = obj.last_excessive_request_time + timedelta(seconds=10)
 
                 if datetime.now().timestamp() < difference_block_time.timestamp():
                     diffrence = difference_block_time.timestamp() - datetime.now().timestamp()

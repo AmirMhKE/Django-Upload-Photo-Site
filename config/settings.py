@@ -170,3 +170,5 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
 )
+
+DOWNLOAD_ROOT = BASE_DIR / 'download'
