@@ -10,7 +10,7 @@
     color: var(--Main-Gray);
 }
 
-.user-settings input:not([type="checkbox"]) {
+.user-settings input:not([type="checkbox"]), .user-settings textarea {
     width: 100%;
     padding: 5px;
     border: 3px solid #808080;
@@ -19,16 +19,20 @@
     transition: all .25s ease-in-out;
 }
 
+.user-settings textarea {
+    min-height: 10em;
+}
+
 .user-settings input[type="checkbox"] {
     transform: scale(1.5);
     margin: 0 .5em;
 }
 
-.user-settings input:hover {
+.user-settings input:hover, .user-settings textarea:hover {
     border-color: var(--Main-Blue);
 }
 
-.user-settings input:focus {
+.user-settings input:focus, .user-settings textarea:focus {
     border-color: var(--Main-Red);
 }
 
@@ -101,6 +105,10 @@
 
 .delete_account-btn {
     background-color: var(--Main-Red) !important;
+}
+
+.show-image {
+    max-height: 30em;
 }
 
 small {

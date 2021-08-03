@@ -14,9 +14,14 @@
     <div class="out">
         <div class="col-11 col-sm-10 mx-auto my-5 d-flex flex-column align-items-center top animate__animated animate__fadeInDown">
             <div class="pt-4 pb-0 mb-0">
-                <a href="#" class="user-profile text-center" 
-                style="background-image: url('{{ post.publisher.profile_image.url }}');
-                width: 5rem;height: 5rem;"><b style="color: var(--Main-Gray);top: 6.5em;" class="text-center">{{ post.publisher.username }}</b></a>
+                <a href="{% url 'account:about' post.publisher.username %}" class="user-profile text-center" 
+                    style="{% if post.publisher.profile_image %}background-image: url('{{ post.publisher.profile_image.url }}');{% endif %}
+                    width: 5rem;height: 5rem;">
+                    {% if not post.publisher.profile_image %}
+                        <h1>{{ post.publisher.get_name_or_username|first_letter_to_upper }}</h1>
+                    {% endif %}
+                    <b class="text-center" style="top: 40%;color: var(--Main-Gray);">{{ post.publisher.username }}</b>
+                </a>
             </div>
             <h1 class="title m-2 text-center mt-5">{{ post.title }}</h1>
             <div class="m-0 p-0 d-flex flex-column flex-lg-row justify-content-center">
@@ -27,10 +32,7 @@
         </div>
     
         <div class="wow animate__animated animate__fadeInLeft">
-            <div class="col-11 col-sm-10 row line mx-auto mb-5">
-                <div class="col-5"></div>
-                <div class="col-7"></div>
-            </div>
+            <div class="col-11 col-sm-10 row line mx-auto mb-5"></div>
     
             <div class="col-11 col-sm-10 col-md-8 col-lg-7 mx-auto img-detail">
                 <img class="col" id="image" src="{{ post.img.url }}" alt="{{ post.title }}">
@@ -63,12 +65,12 @@
                     <button class="m-4 text-center" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="ml-1"><i class="fa fa-share-alt"></i></span> اشتراک گذاری عکس</button>
 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item text-right"
+                        <a target="_blank" class="dropdown-item text-right"
                         href="https://t.me/share/url?url={{ request.META.HTTP_HOST }}{{ request.path }}&text={{ post.title }}
                         "><span class="ml-1"><i class="fa fa-paper-plane"></i></span> اشتراک گذاری در تلگرام</a>
-                        <a class="dropdown-item text-right" 
+                        <a target="_blank" class="dropdown-item text-right" href="https://api.whatsapp.com/send/?phone&text={{ request.META.HTTP_HOST }}{{ request.path }}&app_absent=0"><span class="ml-1"><i class="fa fa-whatsapp"></i></span> اشتراک گذاری در واتساپ</a>
+                        <a target="_blank" class="dropdown-item text-right" 
                         href="https://twitter.com/intent/tweet?url={{ request.META.HTTP_HOST }}{{ request.path }}&text={{ post.title }}"><span class="ml-1"><i class="fa fa-twitter"></i></span> اشتراک گذاری در توییتر</a>
-                        <a class="dropdown-item text-right" href="https://www.facebook.com/sharer/sharer.php?u={{ request.META.HTTP_HOST }}{{ request.path }}"><span class="ml-1"><i class="fa fa-facebook"></i></span> اشتراک گذاری در فیسبوک</a>
                       </div>
                 </div>
             </div>    
@@ -79,6 +81,7 @@
 <input type="hidden" id="is_downloaded" value="{{ is_downloaded|js }}">
 <input type="hidden" id="download_number" value="{{ post.download_count.count }}">
 <input type="hidden" id="is_auth" value="{{ request.user.is_authenticated|js }}">
+<input type="hidden" id="img_size" value="{{ post.original_size_image|en_nums_to_fa_nums }}">
 {% endblock %}
 
 {% block custom_script %}

@@ -1,0 +1,157 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load tool_tags %}
+{% load jformat %}
+
+{% block title %}
+    درباره {{ user.get_name_or_username }}
+{% endblock title %}
+
+{% block main %}
+    <div class="d-flex flex-column flex-lg-row justify-content-lg-around">
+        <div class="col-10 col-sm-8 col-lg-4 col-xl-3 mx-auto mx-lg-0 about mt-5 wow animate__animated animate__fadeInRight sticky-top">
+            <div class="public-profile col"
+            {% if user.profile_image %} 
+            style="background-image: url('{{ user.profile_image.url }}');"
+            {% endif %}>
+                {% if not user.profile_image %}
+                    <h1 class="text-center">{{ user.get_name_or_username|first_letter_to_upper }}</h1>
+                {% endif %}
+            </div>
+    
+            <div class="body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <h5 class="text-right">نام کاربری:</h5>
+                            </td>
+                            <td>
+                                <h5 class="text-center">{{ user.username }}</h5>
+                            </td>
+                        </tr>
+                        {% if user.first_name and user.last_name %}
+                            <tr>
+                                <td>
+                                    <h5 class="text-right">نام کامل:</h5>
+                                </td>
+                                <td>
+                                    <h5 class="text-center">{{ user.first_name }} {{ user.last_name }}</h5>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td>
+                                <h5 class="text-right">تاریخ عضویت:</h5>
+                            </td>
+                            <td>
+                                <h5 class="text-center">
+                                    {{ user.date_joined|jformat:"%-d"|en_nums_to_fa_nums }} 
+                                    {{ user.date_joined|jformat:"%-m"|get_jalali_month|en_nums_to_fa_nums }} 
+                                    {{ user.date_joined|jformat:"%Y"|en_nums_to_fa_nums }}
+                                </h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h5 class="text-right">تعداد عکس ها:</h5>
+                            </td>
+                            <td>
+                                <h5 class="text-center">
+                                    {% if user.posts.count %}
+                                        {{ user.posts.count|en_nums_to_fa_nums }}
+                                    {% else %}
+                                        فاقد عکس
+                                    {% endif %}
+                                </h5>
+                            </td>
+                        </tr>
+                        {% if user.about_me %}
+                            <tr>
+                                <td>
+                                    <h5 class="text-right">درباره:</h5>
+                                </td>
+                                <td>
+                                    <h5 class="text-center">{{ user.about_me|en_nums_to_fa_nums }}</h5>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <div class="col-10 col-sm-8 col-lg-7 mx-auto mx-lg-0 mt-5">
+            <div class="col-12 row line mb-4 mx-0 mx-md-2 wow animate__animated animate__fadeInLeft"></div>
+        
+            <div class="suggestion px-4 px-md-5 wow animate__animated animate__fadeInLeft">
+                <div class="suggestion-header">
+                    <h1 class="text-center">پست های اخیر</h1>
+                </div>
+        
+                <div class="suggestion-body">
+                    <div class="row d-flex justify-content-center">
+                        {% for obj in last_posts %}
+                            <div class="suggestion-item col-6 mx-auto">
+                                <img class="img-fluid" src="{{ obj.img.url }}" alt="{{ obj.title }}" />
+                                <div class="suggestion-item-overlay d-flex flex-column align-items-center">
+                                    <div class="pt-4 pb-0 mb-0">
+                                        <a href="{% url 'account:about' obj.publisher.username %}" class="user-profile text-center" 
+                                            style="{% if obj.publisher.profile_image %}background-image: url('{{ obj.publisher.profile_image.url }}');{% endif %}
+                                            width: 3rem;height: 3rem;">
+                                            {% if not obj.publisher.profile_image %}
+                                                <h5>{{ obj.publisher.get_name_or_username|first_letter_to_upper }}</h5>
+                                            {% endif %}
+                                            <b class="text-center" style="top: 24%;">{{ obj.publisher.username }}</b>
+                                        </a>
+                                    </div>
+                                    <h5 class="text-center pt-4 px-4 mt-4">{{ obj.title|truncatechars:"50" }}</h5>
+                                    <a href="{% url 'post_detail' obj.slug %}">مشاهده این عکس</a>
+                                    <div class="d-flex">
+                                        <p class="mt-3 mx-2">{{ obj.download_count.count|en_nums_to_fa_nums }} <i class="fa fa-download mr-1"></i></p>
+                                        <p class="mx-2 mt-3">{{ obj.likes_count.count|en_nums_to_fa_nums }} <i class="fa fa-heart mr-1"></i></p>
+                                        <p class="mx-2 mt-3">{{ obj.hits.count|en_nums_to_fa_nums }} <i class="fa fa-eye mr-1"></i></p>
+                                    </div>
+                                    <small class="mb-5 px-4 text-right"><span class="ml-1"><i class="fa fa-clock-o"></i></span> منتشر شده توسط <a class="publisher" href="{% url 'publisher_list' obj.publisher %}"><b>{{ obj.publisher.get_name_or_username }}</b></a> در تاریخ {{ obj.created|jformat:"%Y/%m/%d"|en_nums_to_fa_nums}} در ساعت {{ obj.created.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</small>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <h5 class="text-center empty">محتوایی موجود نیست ...</h5>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-12 mt-4 mx-0">
+                <button class="btn-block showAllImages" target="{% url 'publisher_list' user.username %}">نمایش همه</button>
+            </div>
+        </div>
+    </div>
+{% endblock main %}
+
+{% block custom_style %}
+    <link rel="stylesheet" href="{% static 'account/css/about.css' %}">
+{% endblock custom_style %}
+
+{% block custom_script %}
+    <script>
+        var public_profile = $(".public-profile");
+        var body_profile_height = $(".about .body").outerHeight();
+        var public_profile_width = public_profile.outerWidth();
+        $(".about").outerHeight(`${body_profile_height + public_profile_width + 4}px`);
+        public_profile.outerHeight(public_profile_width);
+
+        $(window).resize(() => {
+            body_profile_height = $(".about .body").outerHeight();
+            public_profile_width = public_profile.outerWidth();
+            $(".about").outerHeight(`${body_profile_height + public_profile_width + 4}px`);
+            public_profile.outerHeight(public_profile_width);
+        });
+
+        // Show all Images
+        var show_all_btn = document.querySelector(".showAllImages");
+        show_all_btn.onclick = function () {
+            window.location.pathname = this.getAttribute("target");
+        }
+    </script>
+{% endblock custom_script %}

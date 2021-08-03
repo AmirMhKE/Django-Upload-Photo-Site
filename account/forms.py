@@ -1,63 +1,46 @@
 import json
-import re
 
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
+from PIL import Image
+
 User = get_user_model()
 
 class UserUpdateForm(forms.ModelForm):
+    first_name = forms.CharField(min_length=3, max_length=20, label="نام", required=False)
+    last_name = forms.CharField(min_length=3, max_length=30, label="نام خانوادگی", required=False)
+
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "username", "profile_image", "is_superuser", "is_staff"]
+        fields = ("first_name", "last_name", "username", "about_me", "profile_image", "is_superuser", "is_staff")
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         self.user = kwargs.pop("user")
         super().__init__(*args, **kwargs)
 
-    def clean_first_name(self):
-        first_name = self.cleaned_data["first_name"]
-        MIN_LENGTH, MAX_LENGTH = 3, 20
+    def clean_profile_image(self):
+        data = self.cleaned_data["profile_image"]
 
-        if first_name.strip() != "":
-            if not (MIN_LENGTH <= len(first_name) <= MAX_LENGTH):
-                raise ValidationError(
-                    f"نام شما حداقل باید از {MIN_LENGTH} حروف و حداکثر از {MAX_LENGTH} حروف تشکیل شده باشد.",
-                    code="first_name_invalid"
-                ) 
+        if data:
+            image = Image.open(data.file)
+            height, width = image.size
 
-            # ? if first name not persian alphabet
-            pattern = r"^[آ-ی ء چ]+$"
-            if re.match(pattern, first_name) is None:
+            if image.format != "JPEG":
                 raise ValidationError(
-                    "نام خود را به صورت حروف فارسی وارد کنید.",
-                    code="first_name_invalid"
+                    "شما فقط می توانید فایلی با نوع JPEG آپلود کنید!",
+                    code="extension_invalid"
                 )
 
-        return first_name
-
-    def clean_last_name(self):
-        last_name = self.cleaned_data["last_name"]
-        MIN_LENGTH, MAX_LENGTH = 3, 30
-
-        if last_name.strip() != "":
-            if not (MIN_LENGTH <= len(last_name) <= MAX_LENGTH):
+            if width < 300 or height < 300:
                 raise ValidationError(
-                    f"نام خانوادگی شما حداقل باید از {MIN_LENGTH} حروف و حداکثر از {MAX_LENGTH} حروف تشکیل شده باشد.",
-                    code="last_name_invalid"
-                ) 
-
-            # ? if last name not persian alphabet
-            pattern = r"^[آ-ی ء چ]+$"
-            if re.match(pattern, last_name) is None:
-                raise ValidationError(
-                    "نام خانوادگی خود را به صورت حروف فارسی وارد کنید.",
-                    code="last_name_invalid"
+                    "شما باید فایلی آپلود کنید که حداقل طول و عرض آن ۳۰۰ باشد.",
+                    code="size_invalid"
                 )
-
-        return last_name
+            
+        return data
 
     def clean_username(self):
         username = self.cleaned_data["username"]
@@ -70,6 +53,22 @@ class UserUpdateForm(forms.ModelForm):
             )
             
         return username
+
+    def check_full_name(self):
+        first_name = self.request.POST.get("first_name")
+        last_name = self.request.POST.get("last_name")
+
+        if first_name or last_name:
+            if not (first_name and last_name):
+                raise ValidationError(
+                    "لطفا دو فیلد نام و نام خانوادگی را با یکدیگر وارد کنید.",
+                    code="full_name_invalid"
+                )
+
+    def clean_first_name(self):
+        date = self.cleaned_data["first_name"]
+        self.check_full_name()
+        return date
 
     def clean_is_superuser(self):
         data = self.cleaned_data["is_superuser"]

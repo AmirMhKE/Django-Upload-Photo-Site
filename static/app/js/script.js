@@ -10,8 +10,13 @@ $(".dropdown-item").click(function (e) {
     e.preventDefault();
 
     let href = $(this).attr("href");
-    if(href !== "#")
-    window.location.href = href;
+    let target = $(this).attr("target");
+
+    if(target === "_blank") {
+        window.open(href);
+    } else {
+        window.location.href = href;
+    }
 });
 
 // animation

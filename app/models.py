@@ -1,13 +1,12 @@
 import os
-from random import randint
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from django.conf import settings
 from django.db import models
-from django.utils.crypto import get_random_string
 from django.utils.html import format_html
 from django_jalali.db import models as jmodels
+from extensions.utils import get_random_str
 from PIL import Image
 
 user = get_user_model()
@@ -45,12 +44,12 @@ class Ip(models.Model):
         return self.ip_address
 
 def upload_location(instance, filename):
-        extension = filename.split(".")[1]
+        formt_type = Image.open(instance.img).format
 
-        if extension != "jpg":
-            raise ValidationError(f"شما می توانید فقط فایل هایی با پسوند jpg آپلود کنید.")
+        if formt_type != "JPEG":
+            raise ValidationError(f"شما می توانید فقط فایلی با نوع JPEG آپلود کنید.")
 
-        return f"images/{instance.slug}/{instance.slug}.{extension}"
+        return f"images/{instance.slug}/{filename}"
 
 class Post(models.Model):
     title = models.CharField(max_length=100, verbose_name="عنوان عکس")
@@ -91,18 +90,13 @@ class Post(models.Model):
             super().save(*args, **kwargs)
 
     def slug_save(self):
-        MIN_LENGTH = 25
-        MAX_LENGTH = 35
-
-        alph_l = "".join([chr(l).upper() if not c else chr(l).lower() for l in range(65, 91) for c in range(2)])
-
         if not self.slug:
-            random_slug = get_random_string(randint(MIN_LENGTH, MAX_LENGTH), alph_l)
+            random_slug = get_random_str(25, 35)
             query = Post.objects.filter(slug=random_slug).exists()
 
             # ? if random slug wasn't unique
             while query:
-                random_slug = get_random_string(randint(MIN_LENGTH, MAX_LENGTH), alph_l)
+                random_slug = get_random_str(25, 35)
                 query = Post.objects.filter(slug=random_slug).exists()
 
             self.slug = random_slug

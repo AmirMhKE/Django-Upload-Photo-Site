@@ -4,10 +4,7 @@
 
  <!-- suggestions -->
  <div class="col-12 col-md-10 col-lg-6 col-xl-5 my-5 mx-auto">
-    <div class="col-12 row line mb-4 mx-0 mx-md-2 wow animate__animated animate__fadeInLeft">
-        <div class="col-9"></div>
-        <div class="col-3"></div>
-    </div>
+    <div class="col-12 row line mb-4 mx-0 mx-md-2 wow animate__animated animate__fadeInLeft"></div>
 
     <div class="suggestion px-4 px-md-5 wow animate__animated animate__fadeInLeft">
         <div class="suggestion-header">
@@ -17,13 +14,18 @@
         <div class="suggestion-body">
             <div class="row d-flex justify-content-center">
                 {% for obj in suggestion_items %}
-                    <div class="suggestion-item col-9 col-sm-8 col-md-6">
+                    <div class="suggestion-item col-10">
                         <img class="img-fluid" src="{{ obj.img.url }}" alt="{{ obj.title }}" />
                         <div class="suggestion-item-overlay d-flex flex-column align-items-center">
                             <div class="pt-4 pb-0 mb-0">
-                                <a href="#" class="user-profile text-center" 
-                                style="background-image: url('{{ obj.publisher.profile_image.url }}');
-                                width: 3rem;height: 3rem;"><b class="text-center" style="top: 24%;">{{ obj.publisher.username }}</b></a>
+                                <a href="{% url 'account:about' obj.publisher.username %}" class="user-profile text-center" 
+                                    style="{% if obj.publisher.profile_image %}background-image: url('{{ obj.publisher.profile_image.url }}');{% endif %}
+                                    width: 3rem;height: 3rem;">
+                                    {% if not obj.publisher.profile_image %}
+                                        <h5>{{ obj.publisher.get_name_or_username|first_letter_to_upper }}</h5>
+                                    {% endif %}
+                                    <b class="text-center" style="top: 24%;">{{ obj.publisher.username }}</b>
+                                </a>
                             </div>
                             <h5 class="text-center pt-4 px-4 mt-4">{{ obj.title|truncatechars:"50" }}</h5>
                             <a href="{% url 'post_detail' obj.slug %}">مشاهده این عکس</a>

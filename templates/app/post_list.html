@@ -1,5 +1,6 @@
 {% extends 'app/base.html' %}
 {% load category_navbar %}
+{% load public_statistics_tag %}
 {% load sidebar_tags %}
 {% load tool_tags %}
 {% load jformat %}
@@ -17,9 +18,14 @@
                     <img class="img-fluid" src="{{ obj.img.url }}" alt="{{ obj.title }}" />
                     <div class="overlay d-flex flex-column align-items-center">
                         <div class="pt-4 pb-0 mb-0">
-                            <a href="#" class="user-profile text-center" 
-                            style="background-image: url('{{ obj.publisher.profile_image.url }}');
-                            width: 3rem;height: 3rem;"><b class="text-center">{{ obj.publisher.username }}</b></a>
+                            <a href="{% url 'account:about' obj.publisher.username %}" class="user-profile text-center" 
+                                style="{% if obj.publisher.profile_image %}background-image: url('{{ obj.publisher.profile_image.url }}');{% endif %}
+                                width: 3rem;height: 3rem;">
+                                {% if not obj.publisher.profile_image %}
+                                    <h5>{{ obj.publisher.get_name_or_username|first_letter_to_upper }}</h5>
+                                {% endif %}
+                                <b class="text-center">{{ obj.publisher.username }}</b>
+                            </a>
                         </div>
                         <h5 class="text-center pb-4 px-4 mt-5">{{ obj.title|truncatechars:"50" }}</h5>
                         <a href="{% url 'post_detail' obj.slug %}">مشاهده این عکس</a>
@@ -46,15 +52,7 @@
 {% block header %}
     {% category request %}
     <!-- title -->
-    <div class="main-title">
-        <div class="overlay container-fluid d-flex">
-            <div class="col-12 d-flex flex-wrap align-content-around">
-                <div class="col-12 col-md-8 wow animate__animated animate__fadeInRight" data-wow-delay="200ms"><h1 class="text-right">این سایت برای به اشتراک گذاشتن عکس های شماست!</h1></div>
-                <div class="col-12 col-md-8 wow animate__animated animate__fadeInRight" data-wow-delay="400ms"><h1 class="text-right">در این سایت می توانید عکس هایی که کاربران آپلود کرده اند را دانلود کنید!</h1></div>
-                <div class="col-12 col-md-8 wow animate__animated animate__fadeInRight" data-wow-delay="600ms"><h1 class="text-right">شما می توانید با ثبت نام کردن در سایت عکس آپلود کنید!</h1></div>
-            </div>
-        </div>
-    </div>
+    {% public_statistics request %}
 {% endblock %}
 
 {% block main %}
@@ -66,10 +64,7 @@
                 </aside>
                 <!-- slider -->
                 <div class="col-12 col-md-10 mx-auto mt-5 mt-md-0 wow animate__animated animate__fadeInUp">
-                    <div class="col-12 row line mb-4 mx-0 mx-md-2">
-                        <div class="col-5"></div>
-                        <div class="col-7"></div>
-                    </div>
+                    <div class="col-12 row line mb-4 mx-0 mx-md-2"></div>
 
                     <div class="lbl col-6 col-sm-5 col-md-4 col-lg-3 mx-0 mx-md-4 target-1">
                         <p class="text-center p-0 m-0" id="scroll-target">{{ title }}</p>
@@ -83,9 +78,14 @@
                                 <img src="{{ obj.img.url }}" alt="{{ obj.title }}" />
                                 <div class="slider-item-overlay d-flex flex-column align-items-center">
                                     <div class="pt-4 pb-0 mb-0">
-                                        <a href="#" class="user-profile text-center" 
-                                        style="background-image: url('{{ obj.publisher.profile_image.url }}');
-                                        width: 3rem;height: 3rem;"><b class="text-center">{{ obj.publisher.username }}</b></a>
+                                        <a href="{% url 'account:about' obj.publisher.username %}" class="user-profile text-center" 
+                                            style="{% if obj.publisher.profile_image %}background-image: url('{{ obj.publisher.profile_image.url }}');{% endif %}
+                                            width: 3rem;height: 3rem;">
+                                            {% if not obj.publisher.profile_image %}
+                                                <h5>{{ obj.publisher.get_name_or_username|first_letter_to_upper }}</h5>
+                                            {% endif %}
+                                            <b class="text-center">{{ obj.publisher.username }}</b>
+                                        </a>
                                     </div>
                                     <h5 class="text-center px-4 pb-4 mt-4">{{ obj.title }}</h5>
                                     <a href="{% url 'post_detail' obj.slug %}">مشاهده این عکس</a>

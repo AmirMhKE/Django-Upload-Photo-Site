@@ -1,12 +1,13 @@
 import json
-from django.http import request
 
-from django.views.generic import TemplateView, UpdateView, View
-from django.contrib.auth import get_user_model, login, authenticate
+from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
-from .mixins import LoginRequiredMixin, SuperUserOrUserMixin
+from django.views.generic import DetailView, TemplateView, UpdateView, View
+from extensions.utils import convert_base64_image_to_django_form_file
+
 from .forms import UserUpdateForm
+from .mixins import LoginRequiredMixin, SuperUserOrUserMixin
 
 User = get_user_model()
 
@@ -37,6 +38,7 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         user = User.objects.get(username__iexact=kwargs.get("username", request.user.username))
         username = kwargs.get("username") 
+        self.set_profile_image(request)
 
         # ? Check permission when submit form
         if not any([request.user == user, request.user.is_superuser and not user.is_superuser, 
@@ -50,6 +52,13 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
             return redirect("account:settings", username)
 
         return super().post(request, *args, **kwargs)
+
+    def set_profile_image(self, request):
+        profile_image = request.POST.get("profile_image")
+
+        if profile_image:
+            data = profile_image.split("base64")[1][1:-1] + profile_image.split("base64")[1][-1]
+            request.FILES["profile_image"] = convert_base64_image_to_django_form_file(data)
 
     def get_success_url(self):
         username = self.kwargs.get("username")
@@ -84,8 +93,18 @@ class UserDeleteView(LoginRequiredMixin, View):
         user.delete()
         return redirect("/")
 
-# ? For debug mode
-def login_(request, username, password):
-    user = authenticate(request, username=username, password=password)
-    login(request, user)
-    return redirect("/")
+class UserAboutView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = "account/user_about.html"
+    context_object_name = "user"
+
+    def get_object(self):
+        username = self.kwargs.get("username", self.request.user.username)
+        user = get_object_or_404(User.objects.all(), username=username)
+        return user
+
+    def get_context_data(self, **kwargs):
+        user = self.get_object()
+        context = super().get_context_data(**kwargs)
+        context["last_posts"] = user.posts.all()[:6]
+        return context

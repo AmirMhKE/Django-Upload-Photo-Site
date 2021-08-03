@@ -2,6 +2,10 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
+from django_jalali.db import models as jmodels
+from django.utils import timezone
+from extensions.utils import get_random_str
+from .validators import persian_name_validator, persian_text_validator
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password, **extra_fields):
@@ -39,11 +43,15 @@ def upload_location(instance, filename):
     if extension != "jpg":
         raise ValidationError(f"شما می توانید فقط فایل هایی با پسوند jpg آپلود کنید.")
 
-    return f"user_profiles/{instance.username.lower()}/{instance.username.lower()}.{extension}"
+    return f"user_profiles/{instance.username.lower()}/{get_random_str(5, 10)}.{extension}"
 
 class CustomUser(AbstractUser):
+    first_name = models.CharField(max_length=20, validators=[persian_name_validator], verbose_name="نام", blank=True)
+    last_name = models.CharField(max_length=30, validators=[persian_name_validator], verbose_name="نام خانوادگی", blank=True)
     email = models.EmailField(unique=True, verbose_name="ایمیل شما")
+    date_joined = jmodels.jDateTimeField("تاریخ عضویت", default=timezone.now)
     profile_image = models.ImageField(upload_to=upload_location, verbose_name="عکس پروفایل", null=True, blank=True)
+    about_me = models.TextField(validators=[persian_text_validator], max_length=150, verbose_name="درباره من", null=True, blank=True)
     all_requests_count = models.PositiveBigIntegerField(verbose_name="تعداد کل درخواست ها", null=True, blank=True, default=0)
     requests_search_count = models.PositiveBigIntegerField(verbose_name="تعداد درخواست های جستجو", null=True, blank=True, default=0)
     requests_download_count = models.PositiveBigIntegerField(verbose_name="تعداد درخواست های دانلود کردن", null=True, blank=True, default=0)

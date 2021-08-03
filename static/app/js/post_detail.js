@@ -1,4 +1,5 @@
 // Image viewer
+const img_size = document.getElementById("img_size").value;
 const viewer = new Viewer(document.getElementById('image'), {
     viewed () {
         let image = document.querySelector(".viewer-canvas img");
@@ -22,7 +23,7 @@ const viewer = new Viewer(document.getElementById('image'), {
         let marginLeft = image.style.marginLeft;
         image.style.marginRight = marginLeft;
     },
-    title: [0, (image) => image.alt],
+    title: [0, (image) => `${image.alt} (${img_size})`],
     slideOnTouch: false
 });
 
@@ -33,22 +34,6 @@ var is_downloaded = JSON.parse(document.getElementById("is_downloaded").value);
 var download_number = Number(document.getElementById("download_number").value);
 
 download_btn.onclick = downloadImage;
-
-function en_nums_to_fa_nums(value) {
-    result = "";
-    shapes = {"0": "۰", "1": "۱", "2": "۲", "3": "۳", "4": "۴", "5": "۵",
-            "6": "۶", "7": "۷", "8": "۸", "9": "۹"}
-
-    for(item of String(value)) {
-        if(shapes[item] !== undefined) {
-            result += shapes[item]
-        } else {
-            result += item
-        }
-    }
-
-    return result;
-}
 
 function downloadImage() {
     if(!is_downloaded) {

@@ -342,17 +342,25 @@ color: var(--Main-White);
     background-color: #fff;
 }
 
-.line div:nth-child(1) {
+.line div {
     height: 20px;
+}
+
+.line div:nth-child(1) {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+}
+
+.line div:last-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.line .blue {
     background-color: var(--Main-Blue);
 }
 
-.line div:nth-child(2) {
-    height: 20px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+.line .red {
     background-color: var(--Main-Red);
 }
 
@@ -485,7 +493,7 @@ color: var(--Main-White);
     background: var(--Main-Red) !important;
 }
 
-button[id*="showAllImages-btn"] {
+button[id*="showAllImages-btn"], .showAllImages {
     color: var(--Main-White);
     background-color: var(--Main-Gray);
     border: none !important;
@@ -493,9 +501,10 @@ button[id*="showAllImages-btn"] {
     padding: 10px 15px;
     border-radius: 5px;
     transition: all 0.3s;
+    text-decoration: none !important;
 }
 
-button[id*="showAllImages-btn"]:hover {
+button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     background-color: var(--Main-Red);
     color: var(--Main-White);
     -webkit-box-shadow: 0px 0px 15px -5px var(--Main-Blue);
@@ -540,11 +549,11 @@ button[id*="showAllImages-btn"]:hover {
 .suggestion-item-overlay {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.6);
-    width: 89%;
+    width: 97%;
     height: 100%;
     visibility: hidden;
     top: 0;
-    left: 5%;
+    left: 1%;
     transition: all 0.3s ease-in-out;
     overflow-y: auto;
 }
@@ -803,6 +812,15 @@ button[id*="showAllImages-btn"]:hover {
     color: var(--Main-Gray);
 }
 
+.swal2-close {
+    color: var(--Main-White) !important;
+    transition: all .2s ease-in-out;
+}
+
+.swal2-close:hover {
+    color: var(--Main-Red) !important;
+}
+
 .password-reset-confirm {
     margin-top: 10%;
     padding: 50px 50px;
@@ -863,9 +881,21 @@ button[id*="showAllImages-btn"]:hover {
     background-size: cover;
     display: flex;
     justify-content: center;
+    align-items: center;
     border-radius: 50%;
     padding: 0;
     text-decoration: none;
+    background-color: var(--Main-Red);
+    color: #fff;
+    text-decoration: none !important;
+}
+
+.user-profile:hover {
+    color: #fff;
+}
+
+.user-profile h5 {
+    font-weight: bold;
 }
 
 .user-profile b {
