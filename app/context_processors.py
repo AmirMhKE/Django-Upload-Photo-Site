@@ -9,3 +9,4 @@ def custom_context(request):
     return {
         "event": event
     }
+    

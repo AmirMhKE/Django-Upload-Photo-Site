@@ -1,5 +1,4 @@
 @import url(../../app/css/root.css);
-
 .about {
     background-color: var(--Main-Gray);
     border: 2px solid var(--Main-Gray);
@@ -7,7 +6,6 @@
     border-radius: 5px;
     padding: 0;
 }
-
 .public-profile {
     display: flex;
     justify-content: center;
@@ -21,54 +19,52 @@
     background-size: cover;
     background-repeat: no-repeat;
 }
-
 .public-profile h1 {
     font-size: 15em;
     font-weight: bolder;
 }
-
 .about .body .table {
     color: #fff;
     border-radius: 5px;
     cursor: pointer;
     margin-bottom: 0;
 }
-
 .about .body .table tr:last-child td:nth-child(1) {
     border-bottom-right-radius: 4px;
 }
-
 .about .body .table tr:last-child td:nth-child(2) {
     border-bottom-left-radius: 4px;
 }
 .about .body .table td {
     padding: 1em;
 }
-
 .about .body .table h5 {
     font-weight: bold;
 }
-
 .about .body .table td {
     border-top: none;
 }
-
 .about .body .table tbody tr:hover {
     background-image: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .1));
 }
-
 .about .body .table tbody tr:nth-child(odd) {
     background-color: var(--Main-Red);
 }
-
 .about .body .table tbody tr:nth-child(even) {
     background-color: var(--Main-Blue);
 }
-
+.user-profile b {
+    top: 24%;
+}
+.profile-about {
+    background-color: var(--Main-Gray);
+}
 .suggestion {
     position: static;
 }
-
 .suggestion h1 {
     color: var(--Main-Gray);
+}
+.no-radius {
+    border-radius: 0 !important;
 }

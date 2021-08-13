@@ -1,0 +1,17 @@
+{% load tool_tags %}
+
+{% if form.errors %}
+<script>
+    Swal.fire({
+        icon: "error",
+        title: "اطلاعات اشتباه",
+        html: `
+        {% for field in form %}
+            {% for error in field.errors %}
+                <p class='p-0 m-0'><b>{{ field.label }}:</b> <span>{{ error|en_nums_to_fa_nums }}</span></p>
+            {% endfor %}
+        {% endfor %}`,
+        confirmButtonText: "باشه"
+    });
+</script>
+{% endif %}

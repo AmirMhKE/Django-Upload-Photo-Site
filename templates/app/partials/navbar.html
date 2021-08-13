@@ -7,22 +7,22 @@
             <!-- title -->
             <div class="title">
                 <a class="navbar-link" href="{% url 'post_list' %}">
-                    <h3><span><i class="fa fa-image"></i></span> عکس کده</h3>
+                    <h3>{% fws "image" %} عکس کده</h3>
                 </a>
             </div>
 
             <!-- menu bar -->
             <div class="menu-bar d-flex d-xl-none">
-                <span><i class="fa fa-bars"></i></span>
+                {% fws "bars" %}
             </div>
 
             <!-- upload -->
             <div class="row upload">
                 {% if not request.user.is_authenticated %}
                     <a href="#" onclick="$('.login-link').click()">
-                        <span><i class="fa fa-upload"></i></span> آپلود عکس</a>
+                        {% fws "upload" %} آپلود عکس</a>
                 {% else %}
-                    <a href="#"><span><i class="fa fa-upload"></i></span> آپلود عکس</a>
+                    <a href="{% url 'account:dashboard' %}">{% fws "upload" %} آپلود عکس</a>
                 {% endif %}
             </div>
 
@@ -30,23 +30,24 @@
             <div class="overlay-nav"></div>
             <ul class="row list-unstyled flex-column flex-lg-row">
                 <li class="d-block d-xl-none">
-                    <span><i class="fa fa-close"></i></span>
+                    {% fws "close" %}
                 </li>
                 {% for c in category %}
                     <li class="link text-right">
                         <a class="navbar-link" href="{% url 'category_list' c.slug %}">
-                            {{ c.title }}<span class="mr-2"><i class="fa fa-image"></i></span>
+                            {{ c.title }}{% fws "image" "r" "2" %}
                         </a>
                     </li>
                 {% endfor %}
                 {% if other_category %}
                     <li class="other-link">
-                        <span>سایر دسته بندی ها<span class="mr-2 d-none d-xl-inline"><i class="fa fa-ellipsis-v"></i></span><span class="mr-3 d-xl-none angle-down"><i class="fa fa-angle-down"></i></span></span>
+                        <span>سایر دسته بندی ها{% fws "ellipsis-v" "r" "2" "d-none, d-xl-inline" %}
+                        {% fws "angle-down" "r" "2" "d-xl-none" %}</span>
                         <ul class="list-unstyled animate__animated" data-is-open="false">
                             {% for c in other_category %}
                                 <li class="link text-right">
                                     <a class="navbar-link" href="{% url 'category_list' c.slug %}">
-                                        {{ c.title }}<span class="mr-2"><i class="fa fa-image"></i></span>
+                                        {{ c.title }}{% fws "image" "r" "2" %}
                                     </a>
                                 </li>
                             {% endfor %}
@@ -54,7 +55,7 @@
                     </li>
                 {% endif %}
                 <li class="contact-link">
-                    ارتباط با ما<span class="mr-2"><i class="fa fa-phone"></i></span>
+                    ارتباط با ما{% fws "phone" "r" "2" %}
                 </li>
             </ul>
 
@@ -64,22 +65,18 @@
                     <a href="#" class="login-link">ورود / ثبت نام</a>
                 {% else %}
                     <div class="dropdown profile" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {% if not request.user.profile_image %}
-                            <h5>
-                                {{ request.user.get_name_or_username|first_letter_to_upper }}
-                            </h5>
-                        {% else %}
-                            <div class="img" style="background-image: url('{{ request.user.profile_image.url }}');"></div>
-                        {% endif %}
-
+                        {% user_profile_image request.user %}
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a href="{% url 'account:about' %}" class="dropdown-item text-right"><span style="margin-left: 5px;"><i class="fa fa-user"></i></span> پروفایل عمومی شما</a>
-                            <a class="dropdown-item text-right" href="#"><span style="margin-left: 5px;"><i class="fa fa-tasks"></i></span> مدیریت عکس های شما</a>
-                            <a class="dropdown-item text-right" href="{% url 'account:settings' %}"><span style="margin-left: 5px;"><i class="fa fa-cog"></i></span> تنظیمات حساب کاربری</a>
-                            <a class="dropdown-item text-right" href="{% url 'account:statistics' %}"><span style="margin-left: 5px;"><i class="fa fa-bar-chart"></i></span> آمار حساب کاربری شما</a>
-                            <a class="dropdown-item text-right" 
-                            href="{% url 'account:logout' %}?next={{ request.path }}">
-                            <span style="margin-left: 5px;"><i class="fa fa-sign-out"></i></span> خروج</a>
+                            <a href="{% url 'account:about' %}" class="dropdown-item text-right">
+                            {% fws "user" "l" "1" %} پروفایل عمومی شما</a>
+                            <a class="dropdown-item text-right" href="{% url 'account:dashboard' %}">
+                            {% fws "tasks" "l" "1" %} مدیریت عکس های شما</a>
+                            <a class="dropdown-item text-right" href="{% url 'account:settings' %}">
+                            {% fws "cog" "l" "1" %} تنظیمات حساب کاربری</a>
+                            <a class="dropdown-item text-right" href="{% url 'account:statistics' %}">
+                            {% fws "bar-chart" "l" "1" %} آمار حساب کاربری شما</a>
+                            <a class="dropdown-item text-right" href="{% url 'account:logout' %}?next={{ request.path }}">
+                            {% fws "sign-out" "l" "1" %} خروج</a>
                           </div>
                     </div>
                 {% endif %}
@@ -87,7 +84,7 @@
 
             <!-- search button -->
             <div class="search-btn animate__animated">
-                <span><i class="fa fa-search"></i></span>
+                {% fws "search" %}
             </div>
         </div>
     </div>

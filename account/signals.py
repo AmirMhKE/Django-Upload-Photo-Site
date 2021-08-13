@@ -1,14 +1,16 @@
 import os
 import shutil
 
-from django.dispatch import receiver
 from django.db.models.signals import post_init, post_save, pre_delete
+from django.dispatch import receiver
+
 from .models import CustomUser
+
 
 @receiver(post_init, sender=CustomUser)
 def auto_backup_old_profile_image(sender, instance, **kwargs):
     try:
-        instance._old_profile_image = instance.profile_image
+        instance.old_profile_image = instance.profile_image
     except ValueError:
         if hasattr(instance, "_old_profile_image"):
             delattr(instance, "_old_profile_image")
@@ -17,8 +19,8 @@ def auto_backup_old_profile_image(sender, instance, **kwargs):
 def delete_old_profile_image(sender, instance, **kwargs):
     try:
         if hasattr(instance, "_old_profile_image"):
-            if instance._old_profile_image != instance.profile_image:
-                os.remove(instance._old_profile_image.path)
+            if instance.old_profile_image != instance.profile_image:
+                os.remove(instance.old_profile_image.path)
     except ValueError:
         pass
 
@@ -30,3 +32,4 @@ def delete_user_profile_image(sender, instance, **kwargs):
         shutil.rmtree(user_profile_dir_name)
     except ValueError:
         pass
+    

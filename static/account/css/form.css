@@ -1,67 +1,61 @@
 @import url(../../app/css/root.css);
-
+.user-settings {
+    color: var(--Main-Gray);
+}
 .user-settings form {
     padding: 5em;
     border: 1px dashed var(--Main-Gray);
     border-radius: 5px;
+    background-color: #fff;
 }
-
-.user-settings {
-    color: var(--Main-Gray);
-}
-
-.user-settings input:not([type="checkbox"]), .user-settings textarea {
+.user-settings input:not([type="checkbox"]), 
+.user-settings textarea,
+.user-settings select {
     width: 100%;
     padding: 5px;
     border: 3px solid #808080;
     border-radius: 5px;
     outline: none;
     transition: all .25s ease-in-out;
+    background-color: #fff;
 }
-
 .user-settings textarea {
     min-height: 10em;
 }
-
 .user-settings input[type="checkbox"] {
     transform: scale(1.5);
     margin: 0 .5em;
 }
-
-.user-settings input:hover, .user-settings textarea:hover {
+.user-settings input:hover, .user-settings textarea:hover,
+.user-settings select:hover {
     border-color: var(--Main-Blue);
 }
-
-.user-settings input:focus, .user-settings textarea:focus {
+.user-settings input:focus, .user-settings textarea:focus,
+.user-settings select:focus {
     border-color: var(--Main-Red);
 }
-
 
 .user-settings .delete_account-btn {
     background-color: var(--Main-Red);
 }
-
 .user-settings button {
     background-color: var(--Main-Blue);
 }
-
 .user-settings button,
 .user-settings .delete_account-btn {
     color: #fff;
     font-weight: 600;
     transition: all .5s;
     width: 100%;
+    cursor: pointer;
 }
-
 .user-settings .delete_account-btn:hover {
     background-image: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .1));
 }
-
 .user-settings button:hover {
     background-color: var(--Main-Red);
     color: #fff;
 }
-
 .user-profile {
     width: 10rem;
     height: 10rem;
@@ -76,12 +70,10 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
-
 .user-profile > h5 {
-    font-size: 5rem;
+    font-size: 4rem;
     color: #fff;
 }
-
 #delete_profile-btn, #add_profile-btn {
     width: 1em;
     height: 1em;
@@ -94,37 +86,33 @@
     top: 3.5em;
     left: 3.5em;
 }
-
 #delete_profile-btn {
     background-color: var(--Main-Red);
 }
-
 #add_profile-btn {
     background-color: var(--Main-Blue);
 }
-
 .delete_account-btn {
     background-color: var(--Main-Red) !important;
 }
-
 .show-image {
     max-height: 30em;
 }
-
 small {
     color: var(--Main-Gray);
 }
-
 label.ch {
     direction: ltr;
 }
-
 label.is_change::before {
     content: "*";
     font-size: 1.5em;
     color: red;
 }
-
+select option:hover {
+    background-color: var(--Main-Blue);
+    color: #fff;
+}
 @media screen and (max-width: 767px) {
     .user-settings form {
         padding: 2em;

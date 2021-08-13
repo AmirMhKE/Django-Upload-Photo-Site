@@ -1,6 +1,7 @@
 from django import template
 from django.contrib.auth import get_user_model
 from django.db.models import Count
+
 from ..models import Post
 
 User = get_user_model()
@@ -26,3 +27,4 @@ def public_statistics(request):
     return {
         "request": request
     }
+    

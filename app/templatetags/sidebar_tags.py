@@ -1,24 +1,26 @@
-from django import template
-from ..models import Post
 from random import randint
+
+from django import template
+
+from ..models import Post
 
 register = template.Library()
 
 @register.inclusion_tag("app/partials/sidebar.html")
 def sidebar(request, num):
-        suggestion_items = set_suggestion_posts(num)
+    suggestion_items = set_suggestion_posts(num)
 
-        return {
-            "request": request,
-            "suggestion_items": suggestion_items
-        }
+    return {
+        "request": request,
+        "suggestion_items": suggestion_items
+    }
 
 def set_suggestion_posts(num):
     num = int(num)
     query = Post.objects.all()
     random_items = []
         
-    # Set random items
+    # ? Set random items
     used_indexes = []
     set_num = (num if num <= len(query) else len(query))
 

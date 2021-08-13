@@ -1,5 +1,4 @@
 @import url(root.css);
-
 .outer-contact-us, .outer-login, .outer-sign-up, .outer-password-reset {
     width: 100%;
     height: 100%;
@@ -7,7 +6,6 @@
     z-index: 15;
     display: none;
 }
-
 .contact-us, .login, .sign-up, .password-reset {
     display: none;
     position: fixed;
@@ -20,14 +18,12 @@
     max-height: 90%;
     overflow-y: scroll;
 }
-
 .contact-us .close,
 .login .close,
 .sign-up .close,
 .password-reset .close {
     font-size: 2rem;
 }
-
 .contact-us input:focus,
 .contact-us textarea:focus,
 .login input:focus,
@@ -37,11 +33,9 @@
     border-color: var(--Main-Blue) !important;
     outline-color: var(--Main-Blue) !important;
 }
-
 .contact-us textarea {
     height: 150px;
 }
-
 .contact-us button,
 .login button,
 .sign-up button,
@@ -52,7 +46,6 @@
     font-weight: 600;
     transition: all .5s;
 }
-
 .contact-us button:hover,
 .login button:hover,
 .sign-up button:hover,
@@ -61,13 +54,11 @@
     background-color: var(--Main-Red);
     color: #fff;
 }
-
 .contact-us .usernameValidate,
 .contact-us .messageValidate {
     font-size: .8rem;
     display: none;
 }
-
 .outer-contact-us + .overlay,
 .outer-login + .overlay,
 .outer-sign-up + .overlay,
@@ -79,60 +70,33 @@
     z-index: 10;
     display: none;
 }
-
-/* float items */
-#goTop {
-    cursor: pointer;
-    position: fixed;
-    width: 50px;
-    height: 50px;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    color: var(--Main-White);
-    background-color: var(--Main-Red);
-    z-index: 5;
-    bottom: 5%;
-    right: 5%;
-    border-radius: 50%;
-    padding: 20px 20px;
-}
-
 /* navbar */
-
 .title {
     margin: 0 2em;
     margin-bottom: 10px;
     margin-right: 30px;
 }
-
 .title h3 {
     color: #fff;
     font-weight: bolder;
     font-style: italic;
     word-spacing: 5px;
 }
-
 .title a {
     text-decoration: none !important;
 }
-
 .overlay-nav {
     display: none;
 }
-
 .my-navbar {
     background-color: var(--Main-Blue);
     padding: 10px 0;
     padding-bottom: 0px;
 }
-
 .my-navbar ul {
     margin-right: 0;
     display: flex;
 }
-
 .my-navbar ul li {
     cursor: pointer;
     padding: 10px 15px;
@@ -143,25 +107,20 @@
     border-radius: 30px;
     transition: all 0.5s ease !important;
 }
-
 .my-navbar .navbar-link {
     color: var(--Main-Gray);
     transition: all 0.5s ease !important;
 }
-
 .my-navbar .navbar-link:hover {
     color: #fff;
 }
-
 .my-navbar ul li:hover {
 background-color: var(--Main-Red);
 color: var(--Main-White);
 }
-
 .my-navbar ul li:not(li.other-link):hover a {
     color: #fff;
 }
-
 .other-link > ul {
     display: none;
     flex-direction: column;
@@ -176,26 +135,22 @@ color: var(--Main-White);
     margin-top: 12px;
     border: 2px solid var(--Main-Gray);
 }
-
 .other-link > ul li {
     margin: 5px 0;
     padding: 10px;
     padding-left: 30px;
     border-radius: 0;
 }
-
 @media (hover: hover) {
     .other-link:hover > ul {
         display: flex;
     }
 }
-
 .search-btn,
 .menu-bar {
     margin: 0 .5em;
     margin-bottom: 10px;
 }
-
 .search-btn span,
 .menu-bar span {
     cursor: pointer;
@@ -203,12 +158,10 @@ color: var(--Main-White);
     font-size: 2rem;
     transition: all 0.2s linear;
 }
-
 .search-btn span:hover,
 .menu-bar span:hover {
     color: var(--Main-White);
 }
-
 .upload a {
     font-size: 1.1rem;
     font-weight: bold;
@@ -216,7 +169,6 @@ color: var(--Main-White);
     margin: 0 .5em;
     margin-bottom: 10px;
 }
-
 .registration {
     color: #fff;
     font-size: 1.1rem;
@@ -224,19 +176,15 @@ color: var(--Main-White);
     margin: 0 .5em;
     margin-bottom: 10px;
 }
-
 .registration a {
     color: #fff;
 }
-
 .upload,
 .registration {
     margin-right: 5px;
     margin-left: 5px;
 }
-
 /* header */
-
 .main-title {
     background-image: url(../25920-questions.gif);
     background-position: center center;
@@ -245,13 +193,11 @@ color: var(--Main-White);
     width: 100%;
     min-height: calc(100vh - 70px);
 }
-
 .main-title .overlay {
     background-color: rgba(0, 209, 205, 0.1);
     width: 100%;
     min-height: calc(100vh - 70px);
 }
-
 .main-title .overlay h1 {
     font-size: 1.8rem;
     font-weight: 700;
@@ -262,36 +208,29 @@ color: var(--Main-White);
     border-right: 20px solid var(--Main-Blue);
     line-height: 30px;
 }
-
 .main-title .overlay > div > div {
     margin: 4em 0;
     transition: all 0.5s ease;
     min-height: 10vh;
 }
-
 .main-title .overlay > div > div:nth-child(1) {
     margin-right: 5%;
 }
-
 .main-title .overlay > div > div:nth-child(1):hover {
     margin-right: 7%;
 }
-
 .main-title .overlay > div > div:nth-child(2) {
     margin-right: 15%;
 }
 .main-title .overlay > div > div:nth-child(2):hover {
     margin-right: 17%;
 }
-
 .main-title .overlay > div > div:nth-child(3) {
     margin-right: 25%;
 }
-
 .main-title .overlay > div > div:nth-child(3):hover {
     margin-right: 27%;
 }
-
 .search-box {
     z-index: 10;
     width: 100%;
@@ -301,25 +240,21 @@ color: var(--Main-White);
     display: none;
     align-items: center;
 }
-
 .search-box > div:nth-child(1) {
     display: flex;
     align-self: flex-start;
     margin-right: 20px;
     margin-top: 20px;
 }
-
 .search-box > div:nth-child(2) {
     position: absolute;
     left: 24%;
 }
-
 .search-box > div span {
     color: #fff;
     font-size: 1.7rem;
     cursor: pointer;
 }
-
 .search-box input {
     background-color: transparent;
     width: 50%;
@@ -331,39 +266,14 @@ color: var(--Main-White);
     color: #fff;
     margin: auto;
 }
-
 .search-box input:focus {
     border-width: 2px;
 }
-
 /* silder */
 .slider_ {
     padding: 30px 0;
     background-color: #fff;
 }
-
-.line div {
-    height: 20px;
-}
-
-.line div:nth-child(1) {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-.line div:last-child {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-}
-
-.line .blue {
-    background-color: var(--Main-Blue);
-}
-
-.line .red {
-    background-color: var(--Main-Red);
-}
-
 .lbl {
     padding: 10px 5px;
     border-radius: 5px;
@@ -372,23 +282,19 @@ color: var(--Main-White);
     font-weight: 600;
     transition: all 0.5s;
 }
-
 .lbl:hover {
     transform: translateY(-20%);
     color: var(--Main-White);
     background-color: var(--Main-Red);
 }
-
 .slider-item {
     position: relative;
 }
-
 .slider-item img {
     height: 20em;
     border: 4px solid var(--Main-Gray);
     border-radius: 2px;
 }
-
 .slider-item-overlay {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.6);
@@ -400,11 +306,9 @@ color: var(--Main-White);
     transition: all 0.3s ease-in-out;
     overflow-y: auto;
 }
-
 .slider-item-overlay a {
     color: #fff;
 }
-
 .slider-item-overlay > a {
     cursor: pointer;
     padding: 10px 25px;
@@ -417,7 +321,6 @@ color: var(--Main-White);
     transition: all 0.3s ease-in-out;
     text-align: center;
 }
-
 .slider-item-overlay h5 {
     line-height: 40px;
     padding: 10px 0;
@@ -425,21 +328,17 @@ color: var(--Main-White);
     color: #fff;
     font-weight: 600;
 }
-
 .slider-item-overlay p {
     font-size: 1rem;
     color: #fff;
 }
-
 .slider-item:hover .slider-item-overlay {
     visibility: visible;
     background-color: rgba(0, 0, 0, 0.5);
 }
-
 .slider-item:hover a {
     opacity: 1;
 }
-
 .owl-carousel {
     padding: 45px 20px;
     background-color: var(--Main-White);
@@ -447,34 +346,27 @@ color: var(--Main-White);
     -webkit-box-shadow: 0px 0px 15px -5px #444444;
     box-shadow: 0px 0px 15px -5px #444444;
 }
-
 .owl-dots {
     margin-top: 10px;
 }
-
 .owl-dots .owl-dot.active span {
     background: var(--Main-Blue) !important;
 }
-
 .owl-dots .owl-dot:hover span {
     background: var(--Main-Blue) !important;
     opacity: 0.7;
 }
-
 .owl-next,
 .owl-prev {
     position: absolute;
     top: 40%;
 }
-
 .owl-next {
     left: 3.5%;
 }
-
 .owl-prev {
     right: 3.5%;
 }
-
 .owl-next span,
 .owl-prev span {
     border-radius: 5px;
@@ -484,15 +376,12 @@ color: var(--Main-White);
     color: var(--Main-White) !important;
     transition: all 0.3s;
 }
-
 .owl-next span:hover {
     background: var(--Main-Red) !important;
 }
-
 .owl-prev span:hover {
     background: var(--Main-Red) !important;
 }
-
 button[id*="showAllImages-btn"], .showAllImages {
     color: var(--Main-White);
     background-color: var(--Main-Gray);
@@ -503,14 +392,12 @@ button[id*="showAllImages-btn"], .showAllImages {
     transition: all 0.3s;
     text-decoration: none !important;
 }
-
 button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     background-color: var(--Main-Red);
     color: var(--Main-White);
     -webkit-box-shadow: 0px 0px 15px -5px var(--Main-Blue);
     box-shadow: 0px 0px 15px -5px var(--Main-Blue);
 }
-
 /* suggestion */
 .suggestion {
     padding: 10px 10px;
@@ -520,32 +407,27 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     position: sticky;
     top: 20px;
 }
-
 .suggestion-header {
     padding: 10px 0;
     border-bottom: 3px solid var(--Main-Gray);
 }
-
 .suggestion-header h5 {
     color: var(--Main-Gray);
     font-size: 1.5rem;
     font-weight: 600;
     line-height: 30px;
 }
-
 .suggestion-item {
     padding: 0 10px;
     margin: 20px 0;
     position: relative;
 }
-
 .suggestion-item img {
     border: 4px solid var(--Main-Gray);
     border-radius: 2px;
     height: 18em;
     width: 100%;
 }
-
 .suggestion-item-overlay {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.6);
@@ -557,11 +439,9 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     transition: all 0.3s ease-in-out;
     overflow-y: auto;
 }
-
 .suggestion-item-overlay a {
     color: #fff;
 }
-
 .suggestion-item-overlay > a {
     cursor: pointer;
     padding: 5px 10px;
@@ -574,7 +454,6 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     transition: all 0.3s ease-in-out;
     text-align: center;
 }
-
 .suggestion-item-overlay h5 {
     font-size: 1.2rem;
     font-weight: bold;
@@ -588,16 +467,13 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
 .suggestion-item-overlay small {
     color: #fff;
 }
-
 .suggestion-item:hover .suggestion-item-overlay {
     visibility: visible;
     background-color: rgba(0, 0, 0, 0.5);
 }
-
 .suggestion-item:hover a {
     opacity: 1;
 }
-
 .all-items {
     z-index: 20;
     background-color: var(--Main-White);
@@ -613,12 +489,10 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     overflow-x: hidden;
     display: none;
 }
-
 .all-items h5 {
     color: #fff;
     font-weight: bold;
 }
-
 .all-items + .overlay {
     position: fixed;
     width: 100%;
@@ -627,24 +501,20 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     background-color: rgba(0, 0, 0, 0.5);
     display: none;
 }
-
 .all-items h2 {
     font-size: 2rem;
     font-weight: 700;
     border-bottom: 5px solid var(--Main-Gray);
 }
-
 .all-items img {
     width: 90%;
     height: 20em;
     border: 4px solid var(--Main-Gray);
     border-radius: 2px;
 }
-
 .all-items-img {
     position: relative;
 }
-
 .all-items-img .overlay {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.6);
@@ -656,11 +526,9 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     transition: all 0.3s ease-in-out;
     overflow-y: auto;
 }
-
 .all-items-img .overlay a {
     color: #fff;
 }
-
 .all-items-img .overlay > a {
     cursor: pointer;
     padding: 10px 25px;
@@ -673,26 +541,21 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     transition: all 0.3s ease-in-out;
     text-align: center;
 }
-
 .all-items-img .overlay h5 {
     font-size: 1.5rem;
     line-height: 40px;
 }
-
 .all-items-img .overlay p {
     font-size: 1rem;
     color: #fff;
 }
-
 .all-items-img:hover .overlay {
     visibility: visible;
     background-color: rgba(0, 0, 0, 0.5);
 }
-
 .all-items-img:hover a {
     opacity: 1;
 }
-
 .all-items div:last-child button {
     padding: 10px 5px;
     border-radius: 5px;
@@ -703,13 +566,11 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     width: 100%;
     border: 3px solid var(--Main-Gray);
 }
-
 .all-items div:last-child button:hover {
     transform: translateY(-20%);
     color: var(--Main-White);
     background-color: var(--Main-Red);
 }
-
 .footer {
     background-color: var(--Main-Blue);
     width: 100%;
@@ -717,17 +578,14 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     clip-path: ellipse(62% 40% at 50% 99%);
     line-height: 30px;
 }
-
 .footer p {
     color: var(--Main-Gray);
     font-size: 1.5rem;
     font-weight: 700;
 }
-
 .login-google-title {
     font-weight: 600;
 }
-
 .login-google > div:nth-child(1), 
 .login-google > div:nth-child(3) {
     height: 5px;
@@ -735,92 +593,16 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     opacity: .35;
     border-radius: 2px;
 }
-
 .login-google > div:nth-child(2) > a {
     font-size: 2.5em;
     color: #ff0000;
     display: flex;
     justify-content: center;
 }
-
 .empty {
     color: var(--Main-Gray) !important;
     padding: 15px;
 }
-
-.paginator a {
-    color: var(--Main-Gray);
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 5px 15px;
-    margin: 5px;
-    background-color: var(--Main-Blue);
-    color: #fff;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: .5s ease-in-out;
-}
-
-.paginator a.active {
-    background-color: var(--Main-Red);
-}
-
-.paginator a:hover {
-    background-color: var(--Main-Red);
-}
-
-.swal2-styled.swal2-confirm {
-    background-color: var(--Main-Blue);
-}
-
-.swal2-styled.swal2-deny {
-    background-color: var(--Main-Red);
-}
-
-.swal2-styled.swal2-cancel {
-    background-color: var(--Main-Gray);
-}
-
-.swal2-styled.swal2-confirm:focus,
-.swal2-styled.swal2-deny:focus {
-    box-shadow: none !important;
-}
-
-.swal2-title,
-.swal2-html-container {
-    color: var(--Main-Gray) !important;
-}
-
-.swal2-input {
-    border: 3px solid #808080 !important;
-    border-radius: 5px !important;
-    outline: none !important;
-    transition: all .25s ease-in-out !important;
-    box-shadow: none !important;
-}
-
-.swal2-input:hover {
-    border-color: var(--Main-Blue) !important;
-}
-
-.swal2-input:focus {
-    border-color: var(--Main-Red) !important;
-}
-
-.swal2-validation-message {
-    background-color: var(--Main-White);
-    color: var(--Main-Gray);
-}
-
-.swal2-close {
-    color: var(--Main-White) !important;
-    transition: all .2s ease-in-out;
-}
-
-.swal2-close:hover {
-    color: var(--Main-Red) !important;
-}
-
 .password-reset-confirm {
     margin-top: 10%;
     padding: 50px 50px;
@@ -828,11 +610,9 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     border-radius: 5px;
     color: var(--Main-Gray);
 }
-
 .form-check-input {
     transform: scale(1.5);
 }
-
 .profile {
     width: 50px;
     height: 50px;
@@ -844,37 +624,23 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     cursor: pointer;
     margin: 0 .5em;
 }
-
 .profile > h5 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     font-weight: bold;
     margin: 0;
     text-decoration: none !important;
 }
-
-.profile > .img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
 .dropdown-item {
     color: var(--Main-Gray) !important;
 }
-
 .dropdown-item:hover {
     background-color: var(--Main-Red);
     color: #fff !important;
 }
-
 .btn:disabled {
     opacity: .5;
     pointer-events: none;
 }
-
 .user-profile {
     background-position: center;
     background-repeat: no-repeat;
@@ -889,43 +655,34 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     color: #fff;
     text-decoration: none !important;
 }
-
 .user-profile:hover {
     color: #fff;
 }
-
 .user-profile h5 {
     font-weight: bold;
 }
-
 .user-profile b {
     position: absolute;
     top: 22%;
     margin: .5em 0;
 }
-
 /* responsive */
-
 @media screen and (max-width: 1399px) {
     .my-navbar ul li {
         margin: 0 5px;
         padding: 5px 10px;
     }
-
     .title {
         font-size: 1.5rem;
     }
-
     .other-link > ul {
         margin-top: 5px;
     }
 }
-
 @media screen and (max-width: 1199px) {
     .main-title .overlay h1 {
         font-size: 1.5rem;
     }
-
     .my-navbar ul {
         position: fixed;
         top: 0;
@@ -938,7 +695,6 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
         display: block;
         overflow-y: auto;
     }
-
     .my-navbar ul li {
         margin: 0;
         color: #fff;
@@ -947,16 +703,13 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
         line-height: 75px;
         text-align: right;
     }
-
     .my-navbar div > div > ul > li:nth-child(1) {
         font-size: 2rem;
     }
-
     .my-navbar div > div > ul > li:nth-child(1):hover {
         background-color: var(--Main-Gray);
         color: var(--Main-White);
     }
-
     .overlay-nav {
         position: fixed;
         width: 110%;
@@ -964,25 +717,20 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
         background-color: rgba(0, 0, 0, 0.5);
         z-index: 15;
     }
-
     .my-navbar .navbar-link {
         color: #fff;
     }
-
     .other-link {
         margin: 0;
         padding: 0 !important;
     }
-
     .other-link .angle-down {
         font-weight: bolder;
         font-size: 1.5rem;
     }
-
     .other-link > span {
         padding: 5px 10px;
     }
-
     .other-link > ul {
         display: none;
         position: static;
@@ -993,193 +741,143 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
         overflow-y: hidden;
         width: 100%;
     }
-
     .other-link > ul li {
         margin: 0;
         padding: 0;
         padding-right: 20px;
     }
-
     .suggestion-header h5 {
         font-size: 1.4rem;
     }
-
     .suggestion-item-overlay p {
         font-size: .95rem;
     }
 }
-
 @media screen and (max-width: 991px) {
     .menu-bar span,
     .search-btn span {
         font-size: 2rem;
     }
-
     .main-title {
         min-height: calc(100vh - 80px);
     }
-
     .main-title .overlay {
         min-height: calc(100vh - 80px);
     }
-
     .main-title .overlay h1 {
         font-size: 1.2rem;
     }
-
     .suggestion-header h5 {
         font-size: 1.3rem;
     }
-
     .owl-next {
         left: 4.5%;
     }
-
     .owl-prev {
         right: 4.5%;
     }
-
     .contact-us {
         width: 80%;
     }
-
-    .paginator li {
-        font-size: 1.1rem;
-    }
 }
-
 @media screen and (max-width: 767px) {
     .main-title .overlay > div > div:nth-child(1) {
         margin-right: 0;
     }
-
     .main-title .overlay > div > div:nth-child(1):hover {
         margin-right: 5%;
     }
-
     .main-title .overlay > div > div:nth-child(2) {
         margin-right: 0;
     }
-
     .main-title .overlay > div > div:nth-child(2):hover {
         margin-right: 5%;
     }
-
     .main-title .overlay > div > div:nth-child(3) {
         margin-right: 0;
     }
-
     .main-title .overlay > div > div:nth-child(3):hover {
         margin-right: 5%;
     }
-
     .main-title .overlay > div {
         justify-content: center;
     }
-
     .search-box input {
         width: 80%;
     }
-
     .search-box div:nth-child(2) {
         left: 11%;
     }
-
     .suggestion-header h5 {
         font-size: 1.2rem;
     }
-
     .footer p {
         font-size: 1.2rem;
     }
-
     .all-items h2 {
         font-size: 1.8rem;
     }
-
     .all-items div:last-child button {
         width: 90%;
     }
-
     #goTop {
         width: 40px;
         height: 40px;
         font-size: 1.8rem;
     }
-
     .login-google > div:nth-child(2) > a {
         font-size: 1.75em;
     }
-
     .suggestion-item-overlay p {
         font-size: .9rem;
     }
-
     .contact-us, .login, .sign-up, .password-reset {
         width: 75%;
     }
-
     .profile {
         width: 40px;
         height: 40px;
     }
-
     .profile > h5 {
-        font-size: 1.5em;
+        font-size: 1.2em;
     }
 }
-
 @media screen and (max-width: 575px) {
     .title {
         margin-right: 0;
     }
-
     .title h3 {
         font-size: 1.3rem;
     }
-
     .search-btn span,
     .menu-bar span {
         font-size: 1.5rem;
     }
-
     .registration,
     .upload a {
         font-size: .9rem;
     }
-
     .owl-next {
         left: 6.5%;
     }
-
     .owl-prev {
         right: 6.5%;
     }
-
     .slider-item-overlay > a {
         font-size: .8rem;
     }
-
     .suggestion-item-overlay > a {
         font-size: .7rem;
     }
-
     .footer p {
         font-size: .9rem;
     }
-
     .login-google > div:nth-child(2) > a {
         font-size: 1.25em;
     }
-
     .suggestion-item-overlay p {
         font-size: .8rem;
     }
-
-    .paginator li {
-        font-size: 1rem;
-    }
-
     .contact-us, .login, .sign-up, .password-reset {
         width: 95%;
     }

@@ -22,110 +22,19 @@ if(add_profile_fi !== null) {
     }
 
     add_profile_fi.onchange = function () {
-        if(this.value !== "") {
-            extension_file = this.value.split(".").slice(-1)[0];
-
-            if(extension_file !== "jpg") {
-                Swal.fire({
-                    icon: "error",
-                    title: "فایل غیر مجاز",
-                    text: "شما فقط می توانید فایلی با پسوند jpg آپلود کنید!",
-                    confirmButtonText: "باشه"
-                }).then(() => {
-                    add_profile_fi.value = "";
-                    add_profile_fi.click();
-                });
-            } else {
-                var preview_image = this.files[0];
-                var reader = new FileReader();
-                reader.readAsDataURL(preview_image);
-
-                reader.onloadend = async () => {
-                    let image = new Image();
-                    image.src = reader.result;
-
-                    image.onload = function () {
-                        let width = this.width;
-                        let height = this.height;
-
-                        if(width < 300 || height < 300) {
-                            Swal.fire({
-                                icon: "error",
-                                title: "فایل با اندازه غیر مجاز",
-                                text: "شما باید فایلی آپلود کنید که حداقل طول و عرض آن ۳۰۰ باشد.",
-                                confirmButtonText: "باشه"
-                            }).then(() => {
-                                add_profile_fi.value = "";
-                                add_profile_fi.click();
-                            });
-                        } else {
-                            Swal.fire({
-                                html: `
-                                <h2 class='swal2-title mb-5' id='swal2-title'>ویرایش عکس پروفایل</h2>
-                                <div style='width: 300px;height: auto;' class='mx-auto'>
-                                    <img src='${reader.result}' style='display: block;max-width: 100%;max-height: 30em;' id='image'>
-                                </div>
-                                `,
-                                showDenyButton: true,
-                                confirmButtonText: `ویرایش عکس`,
-                                denyButtonText: `لغو کردن`,
-                                allowOutsideClick: false,
-                                showCloseButton: true,
-                                preConfirm: () => {
-                                    let data = cropper.getCroppedCanvas().toDataURL("image/jpeg");
-                                    let imageCropped = new Image();
-                                    imageCropped.src = data;
-
-                                    imageCropped.onload = function () {
-                                        if(this.width < 300 || this.height < 300) {
-                                            Swal.fire({
-                                                icon: "error",
-                                                title: "ویرایش عکس",
-                                                text: "طول و عرض عکس ویرایش شده کمتر از ۳۰۰ است.",
-                                                confirmButtonText: "باشه"
-                                            }).then(() => {
-                                                add_profile_fi.value = "";
-                                            });
-                                        } else {
-                                            Swal.fire({
-                                                imageUrl: `${data}`,
-                                                imageWidth: 300,
-                                                title: "اضافه کردن عکس پروفایل",
-                                                text: "آیا می خواهید این عکس را به پروفایل خود اضافه کنید؟",
-                                                showDenyButton: true,
-                                                confirmButtonText: `اضافه کردن عکس`,
-                                                denyButtonText: `لغو کردن`,
-                                                customClass: {
-                                                    image: "show-image"
-                                                }
-                                            }).then((result) => {
-                                                if(result.isConfirmed) {
-                                                    add_profile_fi.setAttribute("type", "hidden"); 
-                                                    add_profile_fi.value = data;
-                                                    updateProfile();
-                                                } else {
-                                                    add_profile_fi.value = "";
-                                                }
-                                            })
-                                        }
-                                    }
-                                }
-                            });
-                            
-                            const image = document.getElementById('image');
-                            const cropper = new Cropper(image, {
-                                viewMode: 1,
-                                autoCropArea: 1,
-                                zoomable: false,
-                                movable: false,
-                                rotatable: false,
-                            });
-
-                        }
-                    }
-                }                
+        let options = {
+            title: "اضافه کردن عکس پروفایل",
+            text: "آیا می خواهید این عکس را به پروفایل خود اضافه کنید؟",
+            valid_callback: updateProfile,
+            invalid_callback: () => {
+                add_profile_fi.value = "";
+                add_profile_fi.click();
+            },
+            deny_callback: () => {
+                add_profile_fi.value = "";
             }
-        }
+        };
+        image_validation(this, options);
     }
 }
 

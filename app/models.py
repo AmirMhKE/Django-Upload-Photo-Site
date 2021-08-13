@@ -2,10 +2,9 @@ import os
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.html import format_html
-from django_jalali.db import models as jmodels
+from extensions.timestamp import TimeStamp
 from extensions.utils import get_random_str
 from PIL import Image
 
@@ -34,7 +33,9 @@ class Category(models.Model):
 class Ip(models.Model):
     ip_address = models.GenericIPAddressField(verbose_name="آدرس آیپی")
     last_excessive_request_time = models.DateTimeField(verbose_name="آخرین وقت درخواست غیر مجاز")
-    excessive_requests_count = models.PositiveIntegerField(verbose_name="تعداد درخواست های بیش از حد اندازه", null=True, blank=True, default=0)
+    excessive_requests_count = models.PositiveIntegerField(
+    verbose_name="تعداد درخواست های بیش از حد اندازه", null=True, 
+    blank=True, default=0)
 
     class Meta:
         verbose_name = "آیپی"
@@ -44,26 +45,23 @@ class Ip(models.Model):
         return self.ip_address
 
 def upload_location(instance, filename):
-        formt_type = Image.open(instance.img).format
+    return f"images/{instance.slug}/{get_random_str(10, 50)}.jpg"
 
-        if formt_type != "JPEG":
-            raise ValidationError(f"شما می توانید فقط فایلی با نوع JPEG آپلود کنید.")
-
-        return f"images/{instance.slug}/{filename}"
-
-class Post(models.Model):
+class Post(TimeStamp):
     title = models.CharField(max_length=100, verbose_name="عنوان عکس")
     slug = models.CharField(max_length=250, unique=True, verbose_name="آدرس عکس", blank=True)
     img = models.ImageField(upload_to=upload_location, verbose_name="عکس شما")
-    original_size_image = models.CharField(max_length=50, verbose_name="سایز پیش فرض عکس", null=True, blank=True)
-    publisher = models.ForeignKey(user, on_delete=models.CASCADE, null=True, verbose_name="منتشر کننده", related_name="posts")
-    category = models.ForeignKey(Category, verbose_name="دسته بندی", related_name="posts", on_delete=models.CASCADE, null=True)
+    original_size_image = models.CharField(max_length=50, verbose_name="سایز پیش فرض عکس", 
+    null=True, blank=True)
+    publisher = models.ForeignKey(user, on_delete=models.CASCADE, null=True, 
+    verbose_name="منتشر کننده", related_name="posts")
+    category = models.ForeignKey(Category, verbose_name="دسته بندی", related_name="posts", 
+    on_delete=models.CASCADE, null=True)
     hits = models.ManyToManyField(Ip, blank=True, related_name="hits", verbose_name="بازدید ها")
     likes_count = models.ManyToManyField(user, blank=True, related_name="likes", 
     verbose_name="تعداد پسند ها")
-    download_count = models.ManyToManyField(user, blank=True, related_name="downloads", verbose_name="تعداد دانلود ها")
-    created = jmodels.jDateTimeField(auto_now_add=True)
-    updated = jmodels.jDateTimeField(auto_now=True)
+    download_count = models.ManyToManyField(user, blank=True, related_name="downloads", 
+    verbose_name="تعداد دانلود ها")
 
     class Meta:
         verbose_name = "پست"
@@ -86,8 +84,11 @@ class Post(models.Model):
             self.slug_save()
             super().save(*args, **kwargs)
 
+            # ? if model created
             self.img_save()
-            super().save(*args, **kwargs)
+
+        # ? if model updated
+        super().save(*args, **kwargs)
 
     def slug_save(self):
         if not self.slug:
@@ -106,12 +107,15 @@ class Post(models.Model):
         if not os.path.exists(settings.DOWNLOAD_ROOT):
             os.makedirs(settings.DOWNLOAD_ROOT)
 
-        os.makedirs(settings.DOWNLOAD_ROOT / self.slug)
-        dowload_image = Image.open(self.img)
-        dowload_image.save(settings.DOWNLOAD_ROOT / f"{self.slug}/{self.slug}-akscade.jpg")
+        if not os.path.exists(settings.DOWNLOAD_ROOT / self.slug):
+            os.makedirs(settings.DOWNLOAD_ROOT / self.slug)
+
+        download_image = Image.open(self.img)
+        download_image.save(settings.DOWNLOAD_ROOT / f"{self.slug}/ \
+        {get_random_str(10, 50)}-akscade.jpg".replace(" ", ""))
 
         # ? Save size image
-        height, width = dowload_image.size
+        height, width = download_image.size
         self.original_size_image = f"{str(width)} × {str(height)}"
 
         # ? This image for show in site

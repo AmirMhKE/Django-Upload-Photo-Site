@@ -6,21 +6,18 @@
 
 {% block main %}
     <div class="col-11 col-sm-10 col-md-8 col-lg-6 mx-auto text-right my-5 user-settings wow animate__animated animate__fadeInDown">
-        <h2 class="text-center my-5 pt-5"><span><i class="fa fa-cog"></i></span> تنظیمات حساب کاربری {{ username }}</h1>
+        <h2 class="text-center my-5 pt-5">{% fws "cog" %} تنظیمات حساب کاربری {{ username }}</h1>
         <form method="POST" enctype="multipart/form-data" name="user_update_form">{% csrf_token %}
-            <div class="user-profile mx-auto mb-5 d-flex justify-content-center align-items-center"
-            {% if user.profile_image %}
-                style="background-image: url('{{ user.profile_image.url }}');"
-            {% endif %}>
+            <div class="user-profile mx-auto mb-5 d-flex justify-content-center align-items-center">
+                {% user_profile_image user no_profile_tag="h1" no_profile_tag_size="4.5rem" %}
                 {% if not user.profile_image %}
-                    <h5>{{ user.get_name_or_username|first_letter_to_upper }}</h5>
                     <div id="add_profile-btn" class="d-flex justify-content-center align-items-center">
-                        <span><i class="fa fa-camera"></i></span>
+                        {% fws "camera" %}
                     </div>
-                    <input type="file" name="profile_image" accept=".jpg" style="display: none;">
-                    {% else %}
+                    <input type="file" name="profile_image" accept="image/*" style="display: none;">
+                {% else %}
                     <div id="delete_profile-btn" class="d-flex justify-content-center align-items-center">
-                        <span><i class="fa fa-trash"></i></span>
+                        {% fws "trash" %}
                     </div>
                     <input type="checkbox" name="profile_image-clear" style="display: none;">
                 {% endif %}
@@ -28,52 +25,44 @@
             <div class="d-flex flex-column flex-md-row p-0">
                 <div class="col-12 col-md-6 p-0 ml-md-2">
                     <p>
-                        <label for="first_name-inp" class="is_change">نام: </label>
-                        <input value="{{ user.first_name }}" type="text" name="first_name" id="first_name-inp" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="20"
-                        initial="{{ user.first_name }}">
-                        <small class="text-right p-0 m-0">نام شما باید با حروف فارسی باشد و حداقل از ۳ حرف و حداکثر از ۲۰ حرف تشکیل شده باشد.</small>
+                        <label for="{{ form.first_name.id }}" class="is_change">{{ form.first_name.label }}:</label>
+                        {{ form.first_name }}
+                        <small class="text-right p-0 m-0">{{ form.first_name.help_text }}</small>
                     </p>
                 </div>
                 <div class="col-12 col-md-6 p-0">
                     <p>
-                        <label for="last_name-inp" class="is_change">نام خانوادگی: </label>
-                        <input value="{{ user.last_name }}" type="text" name="last_name" id="last_name-inp" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="30"
-                        initial="{{ user.last_name }}">
-                        <small class="text-right p-0 m-0">نام خانوادگی شما باید با حروف فارسی باشد و حداقل از ۳ حرف و حداکثر از ۳۰ حرف تشکیل شده باشد.</small>
+                        <label for="{{ form.last_name.id }}" class="is_change">{{ form.last_name.label }}:</label>
+                        {{ form.last_name }}
+                        <small class="text-right p-0 m-0">{{ form.last_name.help_text }}</small>
                     </p>
                 </div>
             </div>
             <p>
-                <label for="username-inp" class="is_change">نام کاربری: </label>
-                <input class="mr-md-1" value="{{ user.username }}" type="text" name="username" id="username-inp" autocomplete="off" autocapitalize="off" spellcheck="false" initial="{{ user.username }}">
-                <small class="text-right p-0 m-0">شما فقط می توانید کوچکی و بزرگی حروف نام کاربری خود را تغییر دهید.</small>
+                <label for="{{ form.username.id }}" class="is_change">{{ form.username.label }}:</label>
+                {{ form.username }}
+                <small class="text-right p-0 m-0">{{ form.username.help_text }}</small>
             </p>
             <p>
-                <label for="about_me" class="is_change">درباره من: </label>
-                <textarea name="about_me" id="about_me" maxlength="150" 
-                value="{% if user.about_me %}{{ user.about_me }}{% endif %}" 
-                initial="{% if user.about_me %}{{ user.about_me }}{% endif %}">
-                {% if user.about_me %}{{ user.about_me }}{% endif %}</textarea>
-                <small class="text-right">درباره من باید با حروف فارسی باشد و می توانید از علامت های (، .) استفاده کنید.</small><br>
+                <label for="{{ form.about_me.id }}" class="is_change">{{ form.about_me.label }}:</label>
+                {{ form.about_me }}
+                <small class="text-right p-0 m-0">{{ form.about_me.help_text }}</small><br>
                 <small class="text-right">۱۵۰ / <span id="about_me_len">{{ user.about_me|length|en_nums_to_fa_nums }}</span></small>
             </p>
             <p>
                 <label for="email-lbl">ایمیل: </label>
-                <input class="mr-md-1" type="email" value="{{ user.email }}" id="email-lbl" initial="{{ user.email }}" readonly>
+                <input class="mr-md-1" type="email" value="{{ user.email }}" id="email-lbl" readonly>
             </p>
             {% if request.user.is_superuser %}
             <div class="row">
-                    <div class="col-12 col-xl-6">
-                        <label for="superuser_ch" class="ch"> :دسترسی ابر کاربر</label>
-                        <input id="superuser_ch" initial="{% if user.is_superuser %}true{% else %}false{% endif %}" type="checkbox" name="is_superuser" 
-                        {% if user.is_superuser %}checked{% endif %}>
-                    </div>
-                    <div class="col-12 col-xl-6">
-                        <label for="staff_ch" class="ch"> :دسترسی پنل ادمین</label>
-                        <input id="staff_ch" initial="{% if user.is_staff %}true{% else %}false{% endif %}" 
-                        type="checkbox" name="is_staff" 
-                        {% if user.is_staff %}checked{% endif %}>
-                    </div>
+                <div class="col-12 col-xl-6">
+                    <label for="{{ form.is_superuser.id }}" class="ch">:{{ form.is_superuser.label }}</label>
+                    {{ form.is_superuser }}
+                </div>
+                <div class="col-12 col-xl-6">
+                    <label for="{{ form.is_super.id }}" class="ch">:{{ form.is_staff.label }}</label>
+                    {{ form.is_staff }}
+                </div>
             </div>
             {% endif %}
             <button type="submit" class="btn mr-md-1 mt-3" id="change_profile-btn" disabled>اعمال تغییرات</button>
@@ -81,7 +70,7 @@
     </div>
 
     <div class="col-11 col-sm-10 col-md-8 col-lg-6 mx-auto text-right my-5 user-settings wow animate__animated animate__fadeInUp">
-        <h2 class="text-center my-5 pt-5"><span><i class="fa fa-trash"></i></span> پاک کردن حساب کاربری</h1>
+        <h2 class="text-center my-5 pt-5">{% fws "trash" %} پاک کردن حساب کاربری</h1>
         <form method="POST" action="{% url 'account:user_delete' %}" id="delete_account-form">{% csrf_token %}
             <button class="btn mr-md-1 delete_account-btn">پاک کردن اکانت کاربری</button>
         </form>
@@ -89,26 +78,10 @@
 {% endblock %}
 
 {% block custom_style %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" integrity="sha512-0SPWAwpC/17yYyZ/4HSllgaK7/gg9OlVozq8K7rf3J8LvCjYEEIfzzpnA2/SSjpGIunCSD18r3UhvDcu/xncWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{% static 'account/css/form.css' %}">
 {% endblock %}
 
 {% block custom_script %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js" integrity="sha512-ooSWpxJsiXe6t4+PPjCgYmVfr1NS5QXJACcR/FPpsdm6kqG1FmQ2SVyg2RXeVuCRBLr0lWHnWJP6Zs1Efvxzww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{% static 'account/js/validation.js' %}"></script>
-    {% if form.errors %}
-    <script>
-            Swal.fire({
-                icon: "error",
-                title: "اطلاعات اشتباه",
-                html: `
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <p class='p-0 m-0'><b>{{ field.label }}:</b> <span>{{ error|en_nums_to_fa_nums }}</span></p>
-                        {% endfor %}
-                    {% endfor %}`,
-                confirmButtonText: "باشه"
-            });
-    </script>
-    {% endif %}
+    {% include 'account/partials/form_has_error.html' %}
 {% endblock %}

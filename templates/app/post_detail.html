@@ -14,25 +14,21 @@
     <div class="out">
         <div class="col-11 col-sm-10 mx-auto my-5 d-flex flex-column align-items-center top animate__animated animate__fadeInDown">
             <div class="pt-4 pb-0 mb-0">
-                <a href="{% url 'account:about' post.publisher.username %}" class="user-profile text-center" 
-                    style="{% if post.publisher.profile_image %}background-image: url('{{ post.publisher.profile_image.url }}');{% endif %}
-                    width: 5rem;height: 5rem;">
-                    {% if not post.publisher.profile_image %}
-                        <h1>{{ post.publisher.get_name_or_username|first_letter_to_upper }}</h1>
-                    {% endif %}
-                    <b class="text-center" style="top: 40%;color: var(--Main-Gray);">{{ post.publisher.username }}</b>
-                </a>
+                {% user_profile_image request.user "5rem" "5rem" profile_tag="a" has_title=True profile_classes="user-profile, publisher-profile, text-center" no_profile_tag_size="2rem" %}
             </div>
             <h1 class="title m-2 text-center mt-5">{{ post.title }}</h1>
             <div class="m-0 p-0 d-flex flex-column flex-lg-row justify-content-center">
-                <b class="m-2 text-center"><span class="ml-1"><i class="fa fa-user"></i></span> منتشر کننده: {{ post.publisher.get_name_or_username }}</b>
-                <b class="m-2 text-center"><span class="ml-1"><i class="fa fa-clock-o"></i></span> تاریخ انتشار: {{ post.created.date|jformat:"%Y/%m/%d"|en_nums_to_fa_nums }}</b> 
-                <b class="m-2 text-center"><span class="ml-1"><i class="fa fa-clock-o"></i></span> ساعت انتشار: {{ post.created.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</b>
+                <b class="m-2 text-center">{% fws "user" "l" "1" %} 
+                منتشر کننده: {{ post.publisher.get_name_or_username }}</b>
+                <b class="m-2 text-center">{% fws "clock-o" "l" "1" %} 
+                منتشر شده در تاریخ {{ post.created|jformat:"%Y/%m/%d در ساعت %H:%M"|en_nums_to_fa_nums }}</b> 
+                <b class="m-2 text-center">{% fws "clock-o" "l" "1" %} 
+                ویرایش شده در تاریخ {{ post.created|jformat:"%Y/%m/%d در ساعت %H:%M"|en_nums_to_fa_nums }}</b> 
             </div>
         </div>
     
         <div class="wow animate__animated animate__fadeInLeft">
-            <div class="col-11 col-sm-10 row line mx-auto mb-5"></div>
+            <div class="col-10 row line mx-auto mb-5"></div>
     
             <div class="col-11 col-sm-10 col-md-8 col-lg-7 mx-auto img-detail">
                 <img class="col" id="image" src="{{ post.img.url }}" alt="{{ post.title }}">
@@ -41,11 +37,14 @@
         
         <div class="wow animate__animated animate__fadeInUp">
             <div class="col-11 col-sm-10 mx-auto my-5 d-flex flex-column flex-lg-row align-items-center justify-content-between bottom">
-                <b class="m-2"><span class="ml-1"><i class="fa fa-desktop"></i></span> سایز پیش فرض عکس: {{ post.original_size_image|en_nums_to_fa_nums }}</b>
-                <b class="m-2"><span class="ml-1"><i class="fa fa-list-alt"></i></span> دسته بندی: {{ post.category }}</b>
-                <b class="m-2"><span class="ml-1"><i class="fa fa-eye"></i></span> تعداد بازدید ها: {{ post.hits.count|en_nums_to_fa_nums }}</b>
-                <b class="m-2"><span class="ml-1"><i class="fa fa-heart"></i></span> تعداد پسند ها: <span id="like_count">{{ post.likes_count.count|en_nums_to_fa_nums }}</span></b>
-                <b class="m-2"><span class="ml-1"><i class="fa fa-download"></i></span> تعداد دانلود ها: <span id="download_count">{{ post.download_count.count|en_nums_to_fa_nums }}</span></b>
+                <b class="m-2">{% fws "desktop" "l" "1" %} 
+                سایز پیش فرض عکس: {{ post.original_size_image|en_nums_to_fa_nums }}</b>
+                <b class="m-2">{% fws "list-alt" "l" "1" %} دسته بندی: {{ post.category }}</b>
+                <b class="m-2">{% fws "eye" "l" "1" %} تعداد بازدید ها: {{ post.hits.count|en_nums_to_fa_nums }}</b>
+                <b class="m-2">{% fws "heart" "l" "1" %}تعداد پسند ها: 
+                <span id="like_count">{{ post.likes_count.count|en_nums_to_fa_nums }}</span></b>
+                <b class="m-2">{% fws "download" "l" "1" %} تعداد دانلود ها: 
+                <span id="download_count">{{ post.download_count.count|en_nums_to_fa_nums }}</span></b>
             </div>
             
             <div class="col-11 col-sm-10 col-md-8 col-lg-7 my-4 d-flex flex-column flex-xl-row mx-auto justify-content-center operation">
@@ -53,24 +52,25 @@
                 {% url 'like' post.slug %}{% if not request.user.is_authenticated %}?next={{ request.path }}{% endif %}" 
                 class="m-4 text-center" id="like">
                 {% if not is_liked %}
-                    <span class="ml-1"><i class="fa fa-thumbs-up"></i></span> لایک کردن عکس
+                    {% fws "thumbs-up" "l" "1" %} لایک کردن عکس
                 {% else %}
-                    <span class="ml-1"><i class="fa fa-thumbs-down"></i></span> لغو لایک کردن عکس
+                    {% fws "thumbs-down" "l" "1" %}لغو لایک کردن عکس
                 {% endif %}
                 </a>
                 <a href="
                 {% url 'download' post.slug %}{% if not request.user.is_authenticated %}?next={{ request.path }}{% endif %}" 
-                class="m-4 text-center" id="download"><span class="ml-1"><i class="fa fa-download"></i></span> بارگیری عکس</a>
-                <div class="dropdown share p-0 m-0">
-                    <button class="m-4 text-center" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="ml-1"><i class="fa fa-share-alt"></i></span> اشتراک گذاری عکس</button>
+                class="m-4 text-center" id="download">{% fws "download" "l" "1" %} بارگیری عکس</a>
+                <div class="dropdown share m-0 p-0 text-center row">
+                    <button class="m-4" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% fws "share-alt" "l" "1" %} اشتراک گذاری عکس</button>
 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a target="_blank" class="dropdown-item text-right"
                         href="https://t.me/share/url?url={{ request.META.HTTP_HOST }}{{ request.path }}&text={{ post.title }}
-                        "><span class="ml-1"><i class="fa fa-paper-plane"></i></span> اشتراک گذاری در تلگرام</a>
-                        <a target="_blank" class="dropdown-item text-right" href="https://api.whatsapp.com/send/?phone&text={{ request.META.HTTP_HOST }}{{ request.path }}&app_absent=0"><span class="ml-1"><i class="fa fa-whatsapp"></i></span> اشتراک گذاری در واتساپ</a>
+                        ">{% fws "paper-plane" "l" "1" %} اشتراک گذاری در تلگرام</a>
+                        <a target="_blank" class="dropdown-item text-right" href="https://api.whatsapp.com/send/?phone&text={{ request.META.HTTP_HOST }}{{ request.path }}&app_absent=0">
+                        {% fws "whatsapp" "l" "1" %} اشتراک گذاری در واتساپ</a>
                         <a target="_blank" class="dropdown-item text-right" 
-                        href="https://twitter.com/intent/tweet?url={{ request.META.HTTP_HOST }}{{ request.path }}&text={{ post.title }}"><span class="ml-1"><i class="fa fa-twitter"></i></span> اشتراک گذاری در توییتر</a>
+                        href="https://twitter.com/intent/tweet?url={{ request.META.HTTP_HOST }}{{ request.path }}&text={{ post.title }}">{% fws "twitter" "l" "1" %}اشتراک گذاری در توییتر</a>
                       </div>
                 </div>
             </div>    

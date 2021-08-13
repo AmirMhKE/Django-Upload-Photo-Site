@@ -1,0 +1,68 @@
+{% extends 'account/base_dashboard.html' %}
+{% load tool_tags %}
+{% load jformat %}
+{% load pagination %}
+
+{% block main %}
+    <h1 class="my-5 mx-auto text-center title">مدیریت عکس های شما</h1>
+    <div class="line col-11 row mx-auto my-5"></div>
+    <div class="mt-5 mx-auto col-11 post_list">
+    {% if post_list %}
+        <table class="table table-bordered text-right">
+            <thead>
+                <tr>
+                    <th>{% fws "key" "l" "1" %} آیدی عددی</th>
+                    <th>{% fws "header" "l" "1" %} عنوان عکس</th>
+                    <th>{% fws "link" "l" "1" %} آدرس عکس</th>
+                    <th>{% fws "picture-o" "l" "1" %} عکس شما</th>
+                    <th>{% fws "user" "l" "1" %} منتشر کننده</th>
+                    <th>{% fws "list" "l" "1" %} دسته بندی</th>
+                    <th>{% fws "eye" "l" "1" %} تعداد بازدید</th>
+                    <th>{% fws "heart" "l" "1" %} تعداد لایک</th>
+                    <th>{% fws "download" "l" "1" %} تعداد دانلود</th>
+                    <th>{% fws "clock-o" "l" "1" %} تاریخ آخرین انتشار</th>
+                    <th>{% fws "clock-o" "l" "1" %} تاریخ آخرین بروزرسانی</th>
+                    <th>{% fws "pencil" "l" "1" %} ویرایش عکس</th>
+                    <th>{% fws "trash" "l" "1" %} حذف عکس</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in post_list %}
+                   <tr>
+                       <th title="آیدی عددی">{{ post.id|en_nums_to_fa_nums }}</th>
+                       <td title="عنوان">{{ post.title }}</td>
+                       <td title="آدرس"><a href="{% url 'post_detail' post.slug %}">{{ post.slug }}</a></td>
+                       <td title="عکس">
+                           <img src="{{ post.img.url }}" alt="{{ post.title }}" loading="lazy">
+                       </td>
+                       <td title="منتشر کننده">{{ post.publisher.get_name_or_username }}</td>
+                       <td title="دسته بندی">{{ post.category }}</td>
+                       <td title="بازدید ها">{{ post.hits.count|en_nums_to_fa_nums }}</td>
+                       <td title="لایک ها">{{ post.likes_count.count|en_nums_to_fa_nums }}</td>
+                       <td title="دانلود ها">{{ post.download_count.count|en_nums_to_fa_nums }}</td>
+                       <td title="تاریخ انتشار">{{ post.created.date|jformat:"%Y/%m/%d"|en_nums_to_fa_nums }} ,<br> {{ post.created.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</td>
+                       <td title="تاریخ بروزرسانی">{{ post.updated.date|jformat:"%Y/%m/%d"|en_nums_to_fa_nums }} ,<br> {{ post.updated.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</td>
+                       <td class="edit" title="ویرایش عکس"><a 
+                        href="{% url 'account:post_edit' post.slug %}">{% fws "pencil" %}</a></td>
+                       <td class="delete" id="{{ post.id }}" title="حذف عکس">{% fws "trash" %}</td>
+                   </tr> 
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h5 class="text-center title">محتوایی موجود نیست ...</h5>
+    {% endif %}
+        <!-- pagination -->
+        {% pagination "account:dashboard" context=view.get_context_data %}
+        <!-- end pagination -->
+    </div>
+
+    <!-- form for delete -->
+    <div style="display: none;">
+        {% for post in post_list %}
+            <form method="POST" action="{% url 'account:post_delete' post.slug %}" class="delete-{{ post.id }}">
+                {% csrf_token %}
+            </form>
+        {% endfor %}
+    </div>
+{% endblock main %}

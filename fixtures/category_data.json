@@ -218,5 +218,15 @@
             "position": 21,
             "status": true
         }
+    },
+    {
+        "model": "app.category",
+        "pk": 23,
+        "fields": {
+            "title": "عکس ماشین",
+            "slug": "car",
+            "position": 22,
+            "status": true
+        }
     }
 ]

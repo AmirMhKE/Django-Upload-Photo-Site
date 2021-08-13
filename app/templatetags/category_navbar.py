@@ -12,8 +12,7 @@ def category(request):
 
     return {
         "request": request,
-        "category": categories["category"],
-        "other_category": categories["other_category"]
+        **categories
     }
 
 def random_categories(num):
@@ -22,7 +21,7 @@ def random_categories(num):
     all_categories = Category.objects.all()
     main_categories, other_categories = [], []
 
-    # Set main categories
+    # ? Set main categories
     used_position = []
     mains_number = (main_categories_number if len(true_categories) >= main_categories_number 
     else len(true_categories))
@@ -35,13 +34,13 @@ def random_categories(num):
             if obj.status:
                 main_categories.append(obj)
 
-    # Set other categories
+    # ? Set other categories
     if len(true_categories) > main_categories_number:
         for obj in true_categories:
             if obj.position not in used_position:
                 other_categories.append(obj)
                 
-        # Set other random objects
+        # ? Set other random objects
         other_random_categories, used_indexes = [], []
         while len(other_random_categories) < len(other_categories):
             random_index = randint(0, len(other_categories) - 1)
@@ -55,3 +54,4 @@ def random_categories(num):
         "category": main_categories,
         "other_category": other_random_categories
     }
+    

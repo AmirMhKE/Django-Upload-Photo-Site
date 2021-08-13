@@ -28,6 +28,22 @@ $(function () {
                 confirmButtonText: "باشه"
             });
             break;
+        case "post_deleted":
+            Swal.fire({
+                title: "عملیات موفق",
+                icon: "success",
+                html: en_nums_to_fa_nums(event["content"]),
+                confirmButtonText: "باشه"
+            });
+            break;
+        case "user_post_updated":
+            Swal.fire({
+                title: "عملیات موفق",
+                icon: "success",
+                html: en_nums_to_fa_nums(event["content"]),
+                confirmButtonText: "باشه"
+            });
+            break;
     }
     
     $("#event").remove();

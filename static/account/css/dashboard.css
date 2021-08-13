@@ -1,0 +1,97 @@
+@import url(../../app/css/root.css);
+body {
+    background-color: var(--Main-White);
+}
+.title {
+    color: var(--Main-Gray);
+    font-weight: bold;
+}
+.top-bar{
+    position: relative;
+    height: auto;
+    border-radius: 20px;
+    padding: 0 15px;
+    background: var(--Main-Gray);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+.top-bar ul{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+.top-bar ul li{
+    list-style: none;
+    margin: 20px;
+}
+.top-bar ul li i{
+    cursor: pointer;
+    color: var(--Main-White);
+    font-size: 2rem;
+}
+.active i{
+    color: var(--Main-Blue) !important;
+    font-weight: bold !important;
+}
+.tubelight{
+    position: absolute;
+    left: 10%;
+    top: 0px;
+    transform: translateX(-50%);
+    width: 3.5rem;
+    height: 5px;
+    border-radius: 5px;
+    background: var(--Main-Red);
+    transition: left 0.5s;
+}
+.light-ray{
+    position: absolute;
+    left: -30%;
+    top: 5px;
+    width: 160%;
+    height: 80px;
+    clip-path: polygon(5% 100%, 25% 0px, 75% 0px, 95% 100%);
+    background: linear-gradient(to bottom, rgba(234, 234, 234, 0.5) -50%, rgba(234, 234, 234, 0) 90%);
+}
+.post_list {
+    overflow-x: auto;
+}
+.post_list table {
+    color: var(--Main-Gray);
+    background-color: #fff;
+}
+.post_list table img {
+    width: 10em;
+    height: 10em;
+    border: 2px solid var(--Main-Red);
+    border-radius: 5px;
+}
+.post_list .edit,
+.post_list .delete {
+    font-size: 2rem;
+    text-align: center;
+    cursor: pointer;
+}
+.post_list .delete span {
+    color: var(--Main-Red);
+}
+.post_list .edit span i:hover, 
+.post_list .delete span i:hover {
+    text-decoration: underline;
+}
+.table-bordered th, .table-bordered td {
+    border: 2px solid var(--Main-Blue);
+}
+.table thead th {
+    vertical-align: middle;
+    border-bottom: 2px solid var(--Main-Blue);
+}
+img.show {
+    border: 5px solid var(--Main-Blue);
+    border-radius: 20px;
+    margin-top: 1em;
+    padding: 0;
+    cursor: pointer;
+}

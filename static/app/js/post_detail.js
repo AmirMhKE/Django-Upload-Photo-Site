@@ -70,3 +70,19 @@ function likeImage(e) {
         });
     }
 }
+
+// share btn set width
+$(function() {
+    set_share_btn_width();
+});
+
+$(window).resize(function () { 
+    set_share_btn_width();
+});
+
+function set_share_btn_width() {
+    if($(window).outerWidth() < 1200)
+        $(".share button").css("width", $("#download").outerWidth());
+    else
+        $(".share button").css("width", "auto");
+}

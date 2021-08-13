@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import DetailView, TemplateView, UpdateView, View
-from extensions.utils import convert_base64_image_to_django_form_file
 
 from .forms import UserUpdateForm
 from .mixins import LoginRequiredMixin, SuperUserOrUserMixin
@@ -38,7 +37,6 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         user = User.objects.get(username__iexact=kwargs.get("username", request.user.username))
         username = kwargs.get("username") 
-        self.set_profile_image(request)
 
         # ? Check permission when submit form
         if not any([request.user == user, request.user.is_superuser and not user.is_superuser, 
@@ -53,13 +51,6 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
 
         return super().post(request, *args, **kwargs)
 
-    def set_profile_image(self, request):
-        profile_image = request.POST.get("profile_image")
-
-        if profile_image:
-            data = profile_image.split("base64")[1][1:-1] + profile_image.split("base64")[1][-1]
-            request.FILES["profile_image"] = convert_base64_image_to_django_form_file(data)
-
     def get_success_url(self):
         username = self.kwargs.get("username")
 
@@ -67,7 +58,7 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
             return reverse("account:settings")
         return reverse("account:settings", kwargs={"username": username})
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         username = self.kwargs.get("username") 
 
         if username is None:
@@ -77,12 +68,14 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs["request"] = self.request
-        kwargs["user"] = User.objects.get(username__iexact=self.kwargs.get("username", self.request.user.username))
+        kwargs["user"] = User.objects.get(username__iexact=self.kwargs.get(
+        "username", self.request.user.username))
         return kwargs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user = User.objects.get(username__iexact=self.kwargs.get("username", self.request.user.username))
+        user = User.objects.get(username__iexact=self.kwargs.get(
+        "username", self.request.user.username))
         context["user"] = user
         context["username"] = "شما" if user == self.request.user else user.get_name_or_username
         return context
@@ -98,7 +91,7 @@ class UserAboutView(LoginRequiredMixin, DetailView):
     template_name = "account/user_about.html"
     context_object_name = "user"
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         username = self.kwargs.get("username", self.request.user.username)
         user = get_object_or_404(User.objects.all(), username=username)
         return user

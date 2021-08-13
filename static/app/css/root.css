@@ -1,59 +1,48 @@
 /* root */
-
 :root {
     --Main-Gray: #444444;
     --Main-Red: #f30067;
     --Main-Blue: #00d1cd;
     --Main-White: #eaeaea;
 }
-
 @font-face {
     font-family: Yekan;
     src: url(../fonts/Yekan/Yekan.ttf) format("ttf");
     src: url(../fonts/Yekan/Yekan.eot) format("eot");
     src: url(../fonts/Yekan/Yekan.woff) format("woff");
 }
-
 * {
     direction: rtl;
     font-family: Yekan, Arial, sans-serif;
     user-select: none;
 }
-
 ::selection {
     color: #fff;
     background-color: var(--Main-Blue);
 }
-
 /* width */
 ::-webkit-scrollbar {
     width: 10px;
 }
-
 /* Track */
 ::-webkit-scrollbar-track {
     background: var(--Main-White);
 }
-
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: var(--Main-Red);
 }
-
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: var(--Main-Red);
 }
-
 html {
     scroll-behavior: smooth;
 }
-
 body {
     overflow-y: hidden;
     overflow-x: hidden;
 }
-
 .loading {
     display: flex;
     justify-content: center;
@@ -64,7 +53,6 @@ body {
     background-color: var(--Main-White);
     z-index: 1000;
 }
-
 .loading-circle {
     width: 100px;
     height: 100px;
@@ -78,7 +66,6 @@ body {
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
-
 .angle-up-animation {
     animation-name: angle-up;
     animation-duration: 500ms;
@@ -86,7 +73,6 @@ body {
     animation-timing-function: linear;
     transform: rotate(180deg);
 }
-
 .angle-down-animation {
     animation-name: angle-down;
     animation-duration: 500ms;
@@ -94,32 +80,158 @@ body {
     animation-timing-function: linear;
     transform: rotate(0deg);
 }
-
+/* float items */
+#goTop {
+    cursor: pointer;
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: var(--Main-White);
+    background-color: var(--Main-Red);
+    z-index: 5;
+    bottom: 5%;
+    right: 5%;
+    border-radius: 50%;
+    padding: 20px 20px;
+}
+.paginator div {
+    color: var(--Main-Gray);
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 2em;
+    height: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    background-color: var(--Main-Blue);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: .5s ease-in-out;
+}
+.paginator div a {
+    color: #fff;
+}
+.paginator div a:hover {
+    color: #fff;
+}
+.paginator div.active {
+    background-color: var(--Main-Red);
+}
+.paginator div:hover {
+    background-color: var(--Main-Red);
+}
+.profile_image {
+    border-radius: 50%;
+    background-color: var(--Main-Red);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.profile_image * {
+    font-weight: bold;
+}
+.line div {
+    height: 20px;
+}
+.line div:nth-child(1) {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.line div:last-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.line .blue {
+    background-color: var(--Main-Blue);
+}
+.line .red {
+    background-color: var(--Main-Red);
+}
+.swal2-styled.swal2-confirm {
+    background-color: var(--Main-Blue);
+}
+.swal2-styled.swal2-deny {
+    background-color: var(--Main-Red);
+}
+.swal2-styled.swal2-cancel {
+    background-color: var(--Main-Gray);
+}
+.swal2-styled.swal2-confirm:focus,
+.swal2-styled.swal2-deny:focus {
+    box-shadow: none !important;
+}
+.swal2-title,
+.swal2-html-container {
+    color: var(--Main-Gray) !important;
+}
+.swal2-input {
+    border: 3px solid #808080 !important;
+    border-radius: 5px !important;
+    outline: none !important;
+    transition: all .25s ease-in-out !important;
+    box-shadow: none !important;
+}
+.swal2-input:hover {
+    border-color: var(--Main-Blue) !important;
+}
+.swal2-input:focus {
+    border-color: var(--Main-Red) !important;
+}
+.swal2-validation-message {
+    background-color: var(--Main-White);
+    color: var(--Main-Gray);
+}
+.swal2-close {
+    color: var(--Main-White) !important;
+    transition: all .2s ease-in-out;
+}
+.swal2-close:hover {
+    color: var(--Main-Red) !important;
+}
+html.swal2-shown,
+body.swal2-shown { 
+    overflow-y: hidden !important; 
+    height: auto!important;
+}
+@media screen and (max-width: 991px) {
+    .paginator li {
+        font-size: 1.1rem;
+    }
+}
+@media screen and (max-width: 575px) {
+    .paginator li {
+        font-size: 1rem;
+    }
+}
 @keyframes rotate {
     from {
         transform: rotate(0deg);
     }
-
     to {
         transform: rotate(360deg);
     }
 }
-
 @keyframes angle-up {
     from {
         transform: rotate(0deg);
     }
-
     to {
         transform: rotate(180deg);
     }
 }
-
 @keyframes angle-down {
     from {
         transform: rotate(180deg);
     }
-
     to {
         transform: rotate(0deg);
     }

@@ -1,5 +1,4 @@
 {% load static %}
-{% load category_navbar %}
 {% load tool_tags %}
 
 <!DOCTYPE html>
@@ -8,16 +7,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}عکس کده{% endblock %}</title>
+    <title>{% block title %}پنل مدیریت{% endblock %}</title>
     <!-- CSS Bootstrap -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-v4-rtl/4.6.0-2/css/bootstrap-rtl.min.css" integrity="sha512-HOXrL8G/VWN9ezwNKEghc4/29guOS3QuWca9+YK8P0J+R6iC9Eeof55AgCRncJLKL+EQKRwJBza2cx0Xp1rdIg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- CSS Fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.1/css/font-awesome.min.css" integrity="sha512-TECBPTD5Db97nlsJ/gGBBv9JLXg172YcGtrl/HHM4x9W++PPKEpHs61ogVd4x2omTgST1dIHoy2HeYWZzcZzHw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- CSS Animate -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- CSS Carousel -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.green.min.css" integrity="sha512-C8Movfk6DU/H5PzarG0+Dv9MA9IZzvmQpO/3cIlGIflmtY3vIud07myMu4M/NTPJl8jmZtt/4mC9bAioMZBBdA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     {% block float_items %}{% endblock %}
@@ -32,44 +28,30 @@
         {% fws "angle-up" %}
     </div>
 
-     <!-- searchbox -->
-     <div class="search-box animate__animated">
-        <div>
-           {% fws "close" %}
-        </div>
-
-        <div id="_search_">
-            {% fws "search" %}
-        </div>
-
-        <input id="_search_input_" type="text" autocomplete="off" placeholder="متن جستجوی خود را وارد کنید ..." />
-    </div>
-
-    {% if not request.user.is_authenticated %}
-         <!-- register -->
-        <div class="outer-login justify-content-center align-items-center">
-            <div class="login container-fluid animate__animated">
-                {% fws "close" custom_class="close" %}
-                <form class="col-12 mt-5">
-                    <h3 class="text-center mt-3 login-google-title">ورود یا ثبت نام با گوگل</h3>
-                    <div class="row login-google mt-1 d-flex justify-content-between align-items-center">
-                        <div class="col-5"></div>
-                        <div class="col-2">
-                            <a href="{% url 'google_login:begin' 'google-oauth2' %}?next={{ request.path }}">
-                                <p class="mx-auto">{% fws "google-plus" %}</p>
-                            </a>
-                        </div>
-                        <div class="col-5"></div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="overlay"></div>
-    {% endif %}
-
     <header>
         {% block header %}
-            {% category request %}
+            <div class="mx-auto col-10 col-md-8 col-lg-6 col-xl-4 top-bar mt-2">
+                <nav>
+                    <ul>
+                        <li target="{% url 'post_list' %}">
+                            {% fws "home" title="صفحه اصلی" %}</i>
+                        </li>
+                        <li class="{% if namespace == 'dashboard' %}active{% endif %}" 
+                        target="{% url 'account:dashboard' %}">
+                            {% fws "list" title="لیست عکس ها" %}
+                        </li>
+                        <li>
+                            {% fws "plus" title="اضافه کردن عکس" %}
+                        </li>
+                        <li>
+                            {% fws "comment" title="پیام ها" %}
+                        </li>
+                    </ul>
+                </nav>
+                <div class="tubelight" style="display: none;">
+                    <div class="light-ray"></div>
+                </div>
+            </div>
         {% endblock %}
     </header>
 
@@ -78,11 +60,7 @@
     </main>
 
     <footer>
-        {% block footer %}
-            <div class="mt-5 footer d-flex justify-content-center align-items-end">
-                <p class="text-center pb-3">{% fws "copyright" %} تمام حقوق این سایت متعلق به <a href="https://github.com/AmirMhKE" target="_blank">AmirMhKE</a> می باشد.</p>
-            </div>
-        {% endblock %}
+        {% block footer %}{% endblock %}
     </footer>
 </body>
 <input type="hidden" id="event" value="{{ event }}">
@@ -90,23 +68,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- JS Bootstrap -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js" integrity="sha512-wV7Yj1alIZDqZFCUQJy85VN+qvEIly93fIQAN7iqDFCPEucLCeNFz4r35FCo9s6WrpdDQPi80xbljXB8Bjtvcg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- JS Carousel -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- JS Animation -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js" integrity="sha512-Eak/29OTpb36LLo2r47IpVzPBLXnAMPAVypbSZiZ4Qkf8p/7S/XRG5xp7OKWPPYfJT6metI+IORkR5G8F900+g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- JS Alert -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.0.18/sweetalert2.all.min.js" integrity="sha512-kW/Di7T8diljfKY9/VU2ybQZSQrbClTiUuk13fK/TIvlEB1XqEdhlUp9D+BHGYuEoS9ZQTd3D8fr9iE74LvCkA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- JS Google Captcha -->
-<script src="https://www.google.com/recaptcha/api.js?hl=fa" async defer></script>
 <!-- JS Tool -->
 <script src="{% static 'app/js/tools.js' %}"></script>
 <!-- My JS Code -->
 <script src="{% static 'app/js/base.js' %}"></script>
-<script src="{% static 'app/js/script.js' %}"></script>
 <script src="{% static 'app/js/alerts.js' %}"></script>
 <script src="{% static 'app/js/random_color_line.js' %}"></script>
+<script src="{% static 'account/js/dashboard.js' %}"></script>
 <!-- My CSS Code -->
-<link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'account/css/dashboard.css' %}">
 {% block custom_style %}
 {% endblock %}
 {% block custom_script %}
