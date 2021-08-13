@@ -90,7 +90,8 @@ def user_profile_image(user, width=None, height=None, **kwargs):
     parameter user for get user
     parameter width and height for set user profile image width and height
     and parameter kwargs for other options
-    example in html: {% user_profile_image user "3rem" "3rem" profile_tag="a" has_title=True profile_classes="user-profile, text-center" %}
+    example in html: {% user_profile_image user "3rem" "3rem" 
+    profile_tag="a" has_title=True profile_classes="user-profile, text-center" %}
     """
 
     if width is None:
