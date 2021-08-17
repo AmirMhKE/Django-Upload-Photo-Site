@@ -5,7 +5,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
-from .validators import image_validation
+from .validators import (check_number_uploaded_images, check_similar_images,
+                         image_validation)
 
 User = get_user_model()
 
@@ -14,6 +15,7 @@ _INP_DEFAULT_OPTIONS = {
     "autocapitalize": "off",
     "spellcheck": "false"
 }
+
 class UserUpdateForm(forms.ModelForm):
     first_name = forms.CharField(min_length=3, max_length=20, label="نام", required=False)
     first_name.widget = forms.TextInput(attrs=_INP_DEFAULT_OPTIONS)
@@ -113,51 +115,29 @@ class UserUpdateForm(forms.ModelForm):
             "شما نمی توانید سطح دسترسی خود را تغییر دهید.",
             code="permission_error"
         )
-
-    def is_valid(self):
-        is_data_valid = super().is_valid()
-
-        if is_data_valid:
-            content = ""
-            if self.request.user == self.user:
-                content = "حساب کاربری شما با موفقیت ویرایش شد."
-            else:
-                content = f"حساب کاربری {self.user.get_name_or_username} با موفقیت آپدیت شد."
-
-            event = {"type": "user_profile_updated", "content": content}
-            self.request.session["event"] = json.dumps(event)
-
-        return is_data_valid
         
 class PostForm(forms.ModelForm):
-    img = forms.ImageField(widget=forms.FileInput, label="تغییر عکس")
+    img = forms.ImageField(widget=forms.FileInput, label="انتخاب عکس")
 
     class Meta:
         model = Post
         fields = ("title", "img", "category")
 
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        self.post_id = kwargs.pop("id")
-        self.title = kwargs.pop("title")
+        self.user = kwargs.pop("user")
+        self.post_id = kwargs.pop("id", None)
         super().__init__(*args, **kwargs)
 
-        self.fields["title"].widget.attrs["initial"] = self.initial["title"]
-        self.fields["category"].widget.attrs["initial"] = self.initial["category"]
+        try:
+            self.fields["title"].widget.attrs["initial"] = self.initial["title"]
+            self.fields["category"].widget.attrs["initial"] = self.initial["category"]
+        except KeyError: 
+            pass
 
     def clean_img(self):
         data = self.cleaned_data["img"]
         if data and hasattr(data, "image"):
-            image_validation(data.image)            
+            image_validation(data)
+            check_similar_images(Post, data, self.post_id)       
+            check_number_uploaded_images(Post, self.user)     
         return data
-
-    def is_valid(self):
-        is_data_valid = super().is_valid()
-
-        if is_data_valid:
-            content = " ".join(f"عکس شما با عنوان <b>{self.title}</b> \
-            و آیدی <b>{self.post_id}</b> ویرایش شد.".split())
-            event = {"type": "user_post_updated", "content": content}
-            self.request.session["event"] = json.dumps(event)
-
-        return is_data_valid

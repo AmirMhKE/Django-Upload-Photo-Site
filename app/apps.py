@@ -1,6 +1,6 @@
-from django.apps import AppConfig
+from django.apps import AppConfig as _AppConfig
 
-class AppConfig(AppConfig):
+class AppConfig(_AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'app'
     verbose_name = "عکس کده"

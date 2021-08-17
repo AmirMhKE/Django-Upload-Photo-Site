@@ -1,29 +1,70 @@
-var change_image_input_file = document.querySelector("input[name='img']");
+var image_input_file = document.querySelector("input[name='img']");
+var post_create_form = document.forms["post_create"];
 var post_update_form = document.forms["post_update"];
+var create_btn = document.querySelector("#create");
 var update_btn = document.querySelector("#update");
 
-post_update_form.oninput = postValidation;
-post_update_form.onclick = postValidation;
 
-change_image_input_file.onchange = function() {
+try {
+    post_create_form.oninput = postCreateValidation;
+    post_create_form.onclick = postCreateValidation;
+} catch (TypeError) {}
+
+try {
+    post_update_form.oninput = postUpdateValidation;
+    post_update_form.onclick = postUpdateValidation;
+} catch (TypeError) {}
+
+image_input_file.onchange = function() {
     if(this.value !== "") {
         let options = {
             title: "اضافه کردن عکس",
             text: "آیا می خواهید این عکس را اضافه کنید؟",
+            valid_callback: () => {
+                try {
+                    post_create_form.click();
+                    post_update_form.click();
+                } catch (TypeError) {}
+            },
             invalid_callback: () => {
-                change_image_input_file.value = "";
-                change_image_input_file.click();
+                image_input_file.value = "";
+                image_input_file.click();
             },
             deny_callback: () => {
-                change_image_input_file.value = "";
-                post_update_form.click();
+                image_input_file.value = "";
+                try {
+                    post_create_form.click();
+                    post_update_form.click();
+                } catch (TypeError) {}
             }
         };
         image_validation(this, options);
     }
 }
 
-function postValidation() {
+function postCreateValidation() {
+    console.log("salam!");
+
+    let title_condition = (
+        this["title"].value.trim() !== ""
+    )
+
+    let category_condition = (
+        this["category"].value !== ""
+    )
+
+    let image_file_condition = (
+        this["img"].value !== ""
+    )
+
+    if((title_condition && category_condition && image_file_condition)) {
+        create_btn.removeAttribute("disabled");
+    } else {
+        create_btn.setAttribute("disabled", "");
+    }
+}
+
+function postUpdateValidation() {
     let title_condition = (
         this["title"].value.trim() !== ""
     )

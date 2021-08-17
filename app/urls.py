@@ -1,7 +1,7 @@
 from django.urls import path
 
-from .views import (CategoryList, DownloadView, LikeView, PostDetail, PostList,
-                    PublisherList, SearchList)
+from .views import (CategoryList, DownloadView, LikeView, LoginView, PostDetail, PostList,
+                    PublisherList, SearchList, ListView)
 
 urlpatterns = [
     path('', PostList.as_view(), name='post_list'),
@@ -15,4 +15,5 @@ urlpatterns = [
     path('search/<str:search>/page/<int:page>/', SearchList.as_view(), name='search_list'),
     path('download/<slug:slug>/', DownloadView.as_view(), name='download'),
     path('like/<slug:slug>/', LikeView.as_view(), name='like'),
+    path('login/', LoginView.as_view(), name='login')
 ]

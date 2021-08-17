@@ -62,7 +62,7 @@ if(clear_profile_ch !== null) {
 // User update form validation
 user_update_form.oninput = userUpdateFormValidation;
 
-var about_me_ta = document.querySelector("#about_me");
+var about_me_ta = document.querySelector("#id_about_me");
 var about_me_len = document.querySelector("#about_me_len");
 about_me_ta.innerHTML = about_me_ta.value.trim()
 about_me_ta.oninput = function () {

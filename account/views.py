@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import DetailView, TemplateView, UpdateView, View
+from extensions.utils import set_default_data_forms
 
 from .forms import UserUpdateForm
 from .mixins import LoginRequiredMixin, SuperUserOrUserMixin
@@ -50,6 +51,25 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
             return redirect("account:settings", username)
 
         return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        # ? Set alert
+        content = ""
+        user = User.objects.get(username__iexact=self.kwargs.get(
+        "username", self.request.user.username))
+        if user == self.request.user:
+            content = "حساب کاربری شما با موفقیت ویرایش شد."
+        else:
+            content = f"حساب کاربری {self.request.user.get_name_or_username} با موفقیت آپدیت شد."
+
+        event = {"type": "user_profile_updated", "content": content}
+        self.request.session["event"] = json.dumps(event)
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        form.data = set_default_data_forms(form.data.copy(), form.initial.copy())
+        return super().form_invalid(form)
 
     def get_success_url(self):
         username = self.kwargs.get("username")

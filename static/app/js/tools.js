@@ -39,11 +39,11 @@ function image_validation(instance, options) {
                             options.invalid_callback();
                         }
                     });
-                } else if(preview_image.type !== "image/jpeg") {
+                } else if(!["image/jpeg", "image/png"].includes(preview_image.type)) {
                     Swal.fire({
                         icon: "error",
                         title: "فایل با فرمت غیر مجاز",
-                        text: "شما باید فایلی آپلود کنید که نوع آن JPEG باشد.",
+                        text: "شما باید فایلی آپلود کنید که نوع آن JPEG یا PNG باشد.",
                         confirmButtonText: "باشه"
                     }).then(() => {
                         if(options.invalid_callback) {
@@ -65,9 +65,10 @@ function image_validation(instance, options) {
                             if(options.valid_callback) {
                                 options.valid_callback();
                             }
-                        }
-                        if(options.deny_callback) {
-                            options.deny_callback();
+                        } else {
+                            if(options.deny_callback) {
+                                options.deny_callback();
+                            }
                         }
                     });
                 }

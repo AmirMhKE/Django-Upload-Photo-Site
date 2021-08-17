@@ -197,6 +197,10 @@ body {
 .swal2-close:hover {
     color: var(--Main-Red) !important;
 }
+button:disabled {
+    opacity: .5 !important;
+    pointer-events: none;
+}
 html.swal2-shown,
 body.swal2-shown { 
     overflow-y: hidden !important; 

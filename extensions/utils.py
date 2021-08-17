@@ -3,6 +3,7 @@ import string
 from pathlib import Path
 from random import randint
 
+import imagehash
 from django.utils.crypto import get_random_string
 
 
@@ -44,3 +45,20 @@ def set_default_data_forms(data: dict, initial_data: dict) -> dict:
             continue
 
     return data
+
+def compare_similarities_two_images(image1, image2):
+    """
+    Short description: The hash (or fingerprint, really) is 
+    derived from a 8x8 monochrome thumbnail of the image. 
+    But even with such a reduced sample, the similarity comparisons 
+    give quite accurate results. Adjust the cutoff to find a balance 
+    between false positives and false negatives that is acceptable.
+    """    
+    image_hash1 = imagehash.average_hash(image1)
+    image_hash2 = imagehash.average_hash(image2)
+    cutoff = 5
+
+    # ? If the two images are very similar, return True
+    if image_hash1 - image_hash2 < cutoff:
+        return True
+    return False

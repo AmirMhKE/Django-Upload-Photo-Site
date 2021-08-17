@@ -4,7 +4,7 @@
 {% load pagination %}
 
 {% block main %}
-    <h1 class="my-5 mx-auto text-center title">مدیریت عکس های شما</h1>
+    <h1 class="my-5 mx-auto text-center title">مدیریت عکس های {{ title }}</h1>
     <div class="line col-11 row mx-auto my-5"></div>
     <div class="mt-5 mx-auto col-11 post_list">
     {% if post_list %}
@@ -43,7 +43,8 @@
                        <td title="تاریخ انتشار">{{ post.created.date|jformat:"%Y/%m/%d"|en_nums_to_fa_nums }} ,<br> {{ post.created.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</td>
                        <td title="تاریخ بروزرسانی">{{ post.updated.date|jformat:"%Y/%m/%d"|en_nums_to_fa_nums }} ,<br> {{ post.updated.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</td>
                        <td class="edit" title="ویرایش عکس"><a 
-                        href="{% url 'account:post_edit' post.slug %}">{% fws "pencil" %}</a></td>
+                        href="{% set_dashboard_url 'post_edit' post.slug view_kwargs=view.kwargs %}">
+                        {% fws "pencil" %}</a></td>
                        <td class="delete" id="{{ post.id }}" title="حذف عکس">{% fws "trash" %}</td>
                    </tr> 
                 {% endfor %}
@@ -53,14 +54,16 @@
         <h5 class="text-center title">محتوایی موجود نیست ...</h5>
     {% endif %}
         <!-- pagination -->
-        {% pagination "account:dashboard" context=view.get_context_data %}
+        {% pagination "account:dashboard" context=view.get_context_data view_kwargs=view.kwargs %}
         <!-- end pagination -->
     </div>
 
     <!-- form for delete -->
     <div style="display: none;">
         {% for post in post_list %}
-            <form method="POST" action="{% url 'account:post_delete' post.slug %}" class="delete-{{ post.id }}">
+            <form method="POST" 
+            action="{% set_dashboard_url 'post_delete' post.slug view_kwargs=view.kwargs %}" 
+            class="delete-{{ post.id }}">
                 {% csrf_token %}
             </form>
         {% endfor %}

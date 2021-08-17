@@ -37,10 +37,11 @@
                             {% fws "home" title="صفحه اصلی" %}</i>
                         </li>
                         <li class="{% if namespace == 'dashboard' %}active{% endif %}" 
-                        target="{% url 'account:dashboard' %}">
+                        target="{% set_dashboard_url 'dashboard' view_kwargs=view.kwargs %}">
                             {% fws "list" title="لیست عکس ها" %}
                         </li>
-                        <li>
+                        <li class="{% if namespace == 'post_create' %}active{% endif %}"
+                        target="{% set_dashboard_url 'post_create' view_kwargs=view.kwargs %}">
                             {% fws "plus" title="اضافه کردن عکس" %}
                         </li>
                         <li>

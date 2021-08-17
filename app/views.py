@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.encoding import smart_str
 from django.views import View
 from django.views.generic import DetailView, ListView
+from django.contrib.auth.views import LoginView as LoginView_
 from extensions.utils import get_files_list, get_random_str
 from PIL import Image
 
@@ -168,3 +169,7 @@ class LikeView(LoginRequiredMixin, View):
         obj.likes_count.add(user)
         return JsonResponse({"action": "like", "count": obj.likes_count.count()})
             
+# ? For debug mode
+class LoginView(LoginView_):
+    template_name = "account/login.html"
+    success_url = "/"

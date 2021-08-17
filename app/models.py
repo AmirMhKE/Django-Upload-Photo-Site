@@ -8,7 +8,7 @@ from extensions.timestamp import TimeStamp
 from extensions.utils import get_random_str
 from PIL import Image
 
-user = get_user_model()
+User = get_user_model()
 
 class CategoryManager(models.Manager):
     def active(self):
@@ -53,20 +53,20 @@ class Post(TimeStamp):
     img = models.ImageField(upload_to=upload_location, verbose_name="عکس شما")
     original_size_image = models.CharField(max_length=50, verbose_name="سایز پیش فرض عکس", 
     null=True, blank=True)
-    publisher = models.ForeignKey(user, on_delete=models.CASCADE, null=True, 
+    publisher = models.ForeignKey(User, on_delete=models.CASCADE, null=True, 
     verbose_name="منتشر کننده", related_name="posts")
     category = models.ForeignKey(Category, verbose_name="دسته بندی", related_name="posts", 
     on_delete=models.CASCADE, null=True)
     hits = models.ManyToManyField(Ip, blank=True, related_name="hits", verbose_name="بازدید ها")
-    likes_count = models.ManyToManyField(user, blank=True, related_name="likes", 
+    likes_count = models.ManyToManyField(User, blank=True, related_name="likes", 
     verbose_name="تعداد پسند ها")
-    download_count = models.ManyToManyField(user, blank=True, related_name="downloads", 
+    download_count = models.ManyToManyField(User, blank=True, related_name="downloads", 
     verbose_name="تعداد دانلود ها")
 
     class Meta:
         verbose_name = "پست"
         verbose_name_plural = "پست ها"
-        ordering = ["-created"]
+        ordering = ("-updated",)
 
     def __str__(self):
         return self.title
@@ -112,7 +112,8 @@ class Post(TimeStamp):
 
         download_image = Image.open(self.img)
         download_image.save(settings.DOWNLOAD_ROOT / f"{self.slug}/ \
-        {get_random_str(10, 50)}-akscade.jpg".replace(" ", ""))
+        {get_random_str(10, 50)}-akscade.jpg".replace(" ", ""), 
+        format=download_image.format)
 
         # ? Save size image
         height, width = download_image.size
@@ -121,5 +122,5 @@ class Post(TimeStamp):
         # ? This image for show in site
         with Image.open(self.img) as img:
             img.thumbnail((750, 750))
-            img.save(self.img.path)
+            img.save(self.img.path, format=download_image.format)
             img.close()

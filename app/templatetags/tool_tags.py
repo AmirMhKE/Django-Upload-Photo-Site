@@ -129,3 +129,18 @@ def user_profile_image(user, width=None, height=None, **kwargs):
     </{profile_tag}>"""
 
     return format_html(result)
+
+@register.simple_tag
+def set_dashboard_url(url_name, slug=None, **kwargs):
+    """
+    This function returns the link to that user if the dashboard belongs to 
+    that user; otherwise, it returns the link to the owner of that dashboard.
+    """
+    view_kwargs = kwargs.get("view_kwargs", {}).copy()
+    view_kwargs.pop("page", {})
+    view_kwargs.pop("slug", {})
+
+    if slug is not None:
+        view_kwargs.update({"slug": slug})
+
+    return reverse(f"account:{url_name}", kwargs=view_kwargs)

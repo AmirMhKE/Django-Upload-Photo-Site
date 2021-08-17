@@ -2,19 +2,19 @@
 {% load static %}
 {% load tool_tags %}
 
-{% block title %}ویرایش پست {{ post.title }}{% endblock title %}
+{% block title %}ایجاد پست جدید {{ post.title }}{% endblock title %}
 
 {% block main %}
-    <h1 class="my-5 mx-auto text-center title">ویرایش پست {{ title }} با آیدی {{ post.id|en_nums_to_fa_nums }}</h1>
+    <h1 class="my-5 mx-auto text-center title">ایجاد پست جدید برای {{ title }}</h1>
     <div class="line col-11 col-sm-10 col-md-8 col-lg-6 mx-auto row mx-auto my-5"></div>
     <div class="col-11 col-sm-10 col-md-8 col-lg-6 mx-auto text-right my-5 user-settings wow animate__animated animate__fadeInDown">
-        <form method="POST" enctype="multipart/form-data" name="post_update">{% csrf_token %}
-            <h2 class="title mx-auto text-center my-2">عکس در حال حاضر</h2>
-            <img class="my-4 mx-auto img-fluid show" src="{{ post.img.url }}" alt="{{ post.title }}">
+        <form method="POST" enctype="multipart/form-data" name="post_create">{% csrf_token %}
+            
             {% for field in form %}
-                <p><label for="{{ field.id }}">{{ field.label }}:</label> {{ field }}</p>
+                <p><label for="{{ field.id }}">{{ field.label }}:</label>{{ field }}</p>
             {% endfor %}
-            <button type="submit" class="btn mt-3" id="update" disabled>اعمال تغییرات</button>
+                
+            <button type="submit" class="btn mt-3" id="create" disabled>ایجاد پست جدید</button>
         </form>
     </div>
 {% endblock main %}
