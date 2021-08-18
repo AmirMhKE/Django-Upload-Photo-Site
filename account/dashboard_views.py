@@ -49,6 +49,7 @@ class DashBoardView(LoginRequiredMixin, SuperUserOrUserMixin, ListView):
         user = get_publisher(self.request, self.kwargs.get("username"))
         username = self.kwargs.get("username", "شما")
         context = super().get_context_data(**kwargs)
+        context["post_count"] = Post.objects.filter(publisher=user).count()
         context["current_page"] = self.kwargs.get("page", 1)
         context["publisher"] = user
         context["namespace"] = "dashboard"
@@ -82,6 +83,7 @@ class PostCreateView(LoginRequiredMixin, SuperUserOrUserMixin, CreateView):
         user = self.get_publisher()
         kwargs = super().get_form_kwargs()
         kwargs["user"] = user
+        kwargs["operation"] = "create"
         return kwargs
 
     def form_valid(self, form):
@@ -133,6 +135,7 @@ class EditPostView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
         user = self.get_publisher()
         kwargs = super().get_form_kwargs()
         kwargs["user"] = user
+        kwargs["operation"] = "update"
         kwargs["id"] = obj.id
         return kwargs
 

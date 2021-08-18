@@ -360,6 +360,7 @@ color: var(--Main-White);
 .owl-prev {
     position: absolute;
     top: 40%;
+    display: none !important;
 }
 .owl-next {
     left: 3.5%;
@@ -411,9 +412,8 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     padding: 10px 0;
     border-bottom: 3px solid var(--Main-Gray);
 }
-.suggestion-header h5 {
+.suggestion-header * {
     color: var(--Main-Gray);
-    font-size: 1.5rem;
     font-weight: 600;
     line-height: 30px;
 }
@@ -754,9 +754,6 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
         padding: 0;
         padding-right: 20px;
     }
-    .suggestion-header h5 {
-        font-size: 1.4rem;
-    }
     .suggestion-item-overlay p {
         font-size: .95rem;
     }
@@ -774,9 +771,6 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     }
     .main-title .overlay h1 {
         font-size: 1.2rem;
-    }
-    .suggestion-header h5 {
-        font-size: 1.3rem;
     }
     .owl-next {
         left: 4.5%;
@@ -816,9 +810,6 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     .search-box div:nth-child(2) {
         left: 11%;
     }
-    .suggestion-header h5 {
-        font-size: 1.2rem;
-    }
     .footer p {
         font-size: 1.2rem;
     }
@@ -850,6 +841,12 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
         font-size: 1.2em;
     }
 }
+@media screen and (min-width: 576px) {
+    .owl-next,
+    .owl-prev {
+        display: block !important;
+    }
+}
 @media screen and (max-width: 575px) {
     .title {
         margin-right: 0;
@@ -864,12 +861,6 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     .registration,
     .upload a {
         font-size: .9rem;
-    }
-    .owl-next {
-        left: 6.5%;
-    }
-    .owl-prev {
-        right: 6.5%;
     }
     .slider-item-overlay > a {
         font-size: .8rem;

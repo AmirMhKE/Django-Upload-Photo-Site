@@ -63,12 +63,13 @@ def check_number_uploaded_images(model, user):
     This function limits the user to uploading too many images 
     and the user can not upload a large number of images per day.
     """
-    max_count = 1
-    now_time = timezone.now().date()
-    query = model.objects.filter(publisher=user, created__date=now_time)
+    if not user.is_superuser:
+        max_count = 5
+        now_time = timezone.now().date()
+        query = model.objects.filter(publisher=user, created__date=now_time)
 
-    if query.count() >= max_count:
-        raise ValidationError(
-            "شما نمی توانید در هر روز بیشتر از {} عکس آپلود کنید.".format(max_count),
-            code="max_image_uploaded"
-        )
+        if query.count() >= max_count:
+            raise ValidationError(
+                "شما نمی توانید در هر روز بیشتر از {} عکس آپلود کنید.".format(max_count),
+                code="max_image_uploaded"
+            )

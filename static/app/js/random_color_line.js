@@ -3,7 +3,7 @@ set_random_color_lines(lines, ["blue", "red"]);
 
 function set_random_color_lines(lines, colors_) {    
     for(line of lines) {
-        let colors = colors_;
+        let colors = colors_.slice(); // copy of list
         let line_number = colors.length;
         let col_number = 12;
         line.innerHTML = "";

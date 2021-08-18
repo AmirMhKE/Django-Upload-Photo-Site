@@ -125,6 +125,7 @@ class PostForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
+        self.operation = kwargs.pop("operation")
         self.post_id = kwargs.pop("id", None)
         super().__init__(*args, **kwargs)
 
@@ -136,8 +137,12 @@ class PostForm(forms.ModelForm):
 
     def clean_img(self):
         data = self.cleaned_data["img"]
+        
         if data and hasattr(data, "image"):
             image_validation(data)
-            check_similar_images(Post, data, self.post_id)       
-            check_number_uploaded_images(Post, self.user)     
+            check_similar_images(Post, data, self.post_id)
+
+            if self.operation == "create":
+                check_number_uploaded_images(Post, self.user)
+
         return data

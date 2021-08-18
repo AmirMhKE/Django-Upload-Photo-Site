@@ -29,7 +29,7 @@ const viewer = new Viewer(document.getElementById('image'), {
 
 // Download image
 const download_btn = document.getElementById("download");
-var download_count = document.getElementById("download_count");
+var download_count = document.getElementById("downloads");
 var is_downloaded = JSON.parse(document.getElementById("is_downloaded").value);
 var download_number = Number(document.getElementById("download_number").value);
 

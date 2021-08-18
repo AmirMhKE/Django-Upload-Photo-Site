@@ -11,7 +11,7 @@
             {% else %}
                 <div class="col-12 col-md-8 wow animate__animated animate__fadeInRight" data-wow-delay="200ms"><h1 class="text-right">{% fws "picture-o" "l" "1" %} تعداد عکس های سایت: {{ post_count|en_nums_to_fa_nums }}</h1></div>
                 <div class="col-12 col-md-8 wow animate__animated animate__fadeInRight" data-wow-delay="400ms"><h1 class="text-right">{% fws "user" "l" "1" %} تعداد کاربران سایت: {{ user_count|en_nums_to_fa_nums }}</h1></div>
-                <div class="col-12 col-md-8 wow animate__animated animate__fadeInRight" data-wow-delay="600ms"><h1 class="text-right">{% fws "download" "l" "1" %} تعداد دانلود های سایت: {{ download_count|en_nums_to_fa_nums }}</h1></div>
+                <div class="col-12 col-md-8 wow animate__animated animate__fadeInRight" data-wow-delay="600ms"><h1 class="text-right">{% fws "download" "l" "1" %} تعداد دانلود های سایت: {{ downloads|en_nums_to_fa_nums }}</h1></div>
             {% endif %}
         </div>
     </div>

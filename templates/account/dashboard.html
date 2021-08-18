@@ -8,6 +8,9 @@
     <div class="line col-11 row mx-auto my-5"></div>
     <div class="mt-5 mx-auto col-11 post_list">
     {% if post_list %}
+        <div class="text-right">
+            <b class="text-right mb-4"><u class="ml-1">{{ post_count|en_nums_to_fa_nums }} </u> عکس :</p>
+        </div>
         <table class="table table-bordered text-right">
             <thead>
                 <tr>
@@ -38,8 +41,8 @@
                        <td title="منتشر کننده">{{ post.publisher.get_name_or_username }}</td>
                        <td title="دسته بندی">{{ post.category }}</td>
                        <td title="بازدید ها">{{ post.hits.count|en_nums_to_fa_nums }}</td>
-                       <td title="لایک ها">{{ post.likes_count.count|en_nums_to_fa_nums }}</td>
-                       <td title="دانلود ها">{{ post.download_count.count|en_nums_to_fa_nums }}</td>
+                       <td title="لایک ها">{{ post.likes.count|en_nums_to_fa_nums }}</td>
+                       <td title="دانلود ها">{{ post.downloads.count|en_nums_to_fa_nums }}</td>
                        <td title="تاریخ انتشار">{{ post.created.date|jformat:"%Y/%m/%d"|en_nums_to_fa_nums }} ,<br> {{ post.created.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</td>
                        <td title="تاریخ بروزرسانی">{{ post.updated.date|jformat:"%Y/%m/%d"|en_nums_to_fa_nums }} ,<br> {{ post.updated.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</td>
                        <td class="edit" title="ویرایش عکس"><a 

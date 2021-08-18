@@ -58,15 +58,15 @@ class Post(TimeStamp):
     category = models.ForeignKey(Category, verbose_name="دسته بندی", related_name="posts", 
     on_delete=models.CASCADE, null=True)
     hits = models.ManyToManyField(Ip, blank=True, related_name="hits", verbose_name="بازدید ها")
-    likes_count = models.ManyToManyField(User, blank=True, related_name="likes", 
+    likes = models.ManyToManyField(User, blank=True, related_name="likes", 
     verbose_name="تعداد پسند ها")
-    download_count = models.ManyToManyField(User, blank=True, related_name="downloads", 
+    downloads = models.ManyToManyField(User, blank=True, related_name="downloads", 
     verbose_name="تعداد دانلود ها")
 
     class Meta:
         verbose_name = "پست"
         verbose_name_plural = "پست ها"
-        ordering = ("-updated",)
+        ordering = ("-created",)
 
     def __str__(self):
         return self.title

@@ -69,10 +69,10 @@ class PostDetail(DetailView):
             email = self.request.user.email
             user = User.objects.get(username=username, email=email)
 
-            if user in obj.download_count.all():
+            if user in obj.downloads.all():
                 is_downloaded = True
 
-            if user in obj.likes_count.all():
+            if user in obj.likes.all():
                 is_liked = True
 
         context["is_downloaded"] = is_downloaded
@@ -150,7 +150,7 @@ class DownloadView(LoginRequiredMixin, View):
         response["Content-Disposition"] = content
         response["X-Sendfile"] = smart_str(img)
 
-        obj.download_count.add(request.user)
+        obj.downloads.add(request.user)
         obj.save()
 
         return response
@@ -162,12 +162,12 @@ class LikeView(LoginRequiredMixin, View):
         email = request.user.email
         user = User.objects.get(username=username, email=email)
 
-        if user in obj.likes_count.all():
-            obj.likes_count.remove(user)
-            return JsonResponse({"action": "dislike", "count": obj.likes_count.count()})
+        if user in obj.likes.all():
+            obj.likes.remove(user)
+            return JsonResponse({"action": "dislike", "count": obj.likes.count()})
 
-        obj.likes_count.add(user)
-        return JsonResponse({"action": "like", "count": obj.likes_count.count()})
+        obj.likes.add(user)
+        return JsonResponse({"action": "like", "count": obj.likes.count()})
             
 # ? For debug mode
 class LoginView(LoginView_):

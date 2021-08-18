@@ -42,9 +42,9 @@
                 <b class="m-2">{% fws "list-alt" "l" "1" %} دسته بندی: {{ post.category }}</b>
                 <b class="m-2">{% fws "eye" "l" "1" %} تعداد بازدید ها: {{ post.hits.count|en_nums_to_fa_nums }}</b>
                 <b class="m-2">{% fws "heart" "l" "1" %}تعداد پسند ها: 
-                <span id="like_count">{{ post.likes_count.count|en_nums_to_fa_nums }}</span></b>
+                <span id="like_count">{{ post.likes.count|en_nums_to_fa_nums }}</span></b>
                 <b class="m-2">{% fws "download" "l" "1" %} تعداد دانلود ها: 
-                <span id="download_count">{{ post.download_count.count|en_nums_to_fa_nums }}</span></b>
+                <span id="downloads">{{ post.downloads.count|en_nums_to_fa_nums }}</span></b>
             </div>
             
             <div class="col-11 col-sm-10 col-md-8 col-lg-7 my-4 d-flex flex-column flex-xl-row mx-auto justify-content-center operation">
@@ -79,7 +79,7 @@
 
 <!-- *** -->
 <input type="hidden" id="is_downloaded" value="{{ is_downloaded|js }}">
-<input type="hidden" id="download_number" value="{{ post.download_count.count }}">
+<input type="hidden" id="download_number" value="{{ post.downloads.count }}">
 <input type="hidden" id="is_auth" value="{{ request.user.is_authenticated|js }}">
 <input type="hidden" id="img_size" value="{{ post.original_size_image|en_nums_to_fa_nums }}">
 {% endblock %}
