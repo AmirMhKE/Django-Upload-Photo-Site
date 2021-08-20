@@ -49,7 +49,7 @@ class PostDetail(DetailView):
         obj = get_object_or_404(Post.objects.all(), slug=slug)
         return obj
 
-    def get_queryset(self):
+    def set_ip_hit(self):
         ip_obj = Ip.objects.get(ip_address=self.get_client_ip())
         obj = self.get_obj()
         
@@ -57,6 +57,17 @@ class PostDetail(DetailView):
             obj.hits.add(ip_obj)
             obj.save()
 
+    def set_user_hit(self):
+        user = self.request.user
+        obj = self.get_obj()
+
+        if user.is_authenticated and user not in obj.user_hits.all():
+            obj.user_hits.add(user)
+            obj.save()
+
+    def get_queryset(self):
+        self.set_ip_hit()
+        self.set_user_hit()
         return super().get_queryset()
 
     def get_context_data(self, **kwargs):

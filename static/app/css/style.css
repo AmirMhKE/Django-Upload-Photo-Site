@@ -439,6 +439,9 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     transition: all 0.3s ease-in-out;
     overflow-y: auto;
 }
+.suggestion-item-overlay .user-profile b {
+    top: 24%;
+}
 .suggestion-item-overlay a {
     color: #fff;
 }

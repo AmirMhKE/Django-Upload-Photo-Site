@@ -22,7 +22,7 @@
                     <a href="#" onclick="$('.login-link').click()">
                         {% fws "upload" %} آپلود عکس</a>
                 {% else %}
-                    <a href="{% url 'account:dashboard' %}">{% fws "upload" %} آپلود عکس</a>
+                    <a href="{% url 'account:post_create' %}">{% fws "upload" %} آپلود عکس</a>
                 {% endif %}
             </div>
 

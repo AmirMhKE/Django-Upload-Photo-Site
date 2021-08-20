@@ -12,7 +12,6 @@ def pagination(urlname, **kwargs):
     """
     view_kwargs = kwargs.get("view_kwargs", {}).copy()
     view_kwargs.pop("page", {})
-    view_kwargs.pop("slug", {})
 
     get_url = reverse(urlname, kwargs=view_kwargs)
     context = kwargs.get("context", {})

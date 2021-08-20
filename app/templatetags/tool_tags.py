@@ -1,4 +1,5 @@
 import json
+from jdatetime import datetime as jdatetime
 
 from django import template
 from django.utils.html import format_html
@@ -86,7 +87,7 @@ def fws(name, margin_right_or_left=None, margin_number=None, custom_class=None, 
 def user_profile_image(user, width=None, height=None, **kwargs):
     """
     This function return user profile image if user has profile image else
-    return summary of username or name
+    return summary of username or naprint(datetime_obj)me
     parameter user for get user
     parameter width and height for set user profile image width and height
     and parameter kwargs for other options
@@ -144,3 +145,4 @@ def set_dashboard_url(url_name, slug=None, **kwargs):
         view_kwargs.update({"slug": slug})
 
     return reverse(f"account:{url_name}", kwargs=view_kwargs)
+    

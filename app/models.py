@@ -62,6 +62,8 @@ class Post(TimeStamp):
     verbose_name="تعداد پسند ها")
     downloads = models.ManyToManyField(User, blank=True, related_name="downloads", 
     verbose_name="تعداد دانلود ها")
+    user_hits = models.ManyToManyField(User, blank=True, related_name="viewed_posts", 
+    verbose_name="بازدید های کاربران")
 
     class Meta:
         verbose_name = "پست"
