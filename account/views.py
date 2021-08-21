@@ -83,7 +83,7 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
 
         if username is None:
             return User.objects.get(pk=self.request.user.pk)
-        return get_object_or_404(User.objects.all(), username__iexact=username)
+        return get_object_or_404(User, username__iexact=username)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -113,7 +113,7 @@ class UserAboutView(LoginRequiredMixin, DetailView):
 
     def get_object(self, queryset=None):
         username = self.kwargs.get("username", self.request.user.username)
-        user = get_object_or_404(User.objects.all(), username=username)
+        user = get_object_or_404(User, username=username)
         return user
 
     def get_context_data(self, **kwargs):

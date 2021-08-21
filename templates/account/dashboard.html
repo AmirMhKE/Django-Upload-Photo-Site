@@ -23,7 +23,7 @@
                     <th>{% fws "eye" "l" "1" %} تعداد بازدید</th>
                     <th>{% fws "heart" "l" "1" %} تعداد لایک</th>
                     <th>{% fws "download" "l" "1" %} تعداد دانلود</th>
-                    <th>{% fws "clock-o" "l" "1" %} تاریخ آخرین انتشار</th>
+                    <th>{% fws "clock-o" "l" "1" %} تاریخ انتشار</th>
                     <th>{% fws "clock-o" "l" "1" %} تاریخ آخرین بروزرسانی</th>
                     <th>{% fws "pencil" "l" "1" %} ویرایش عکس</th>
                     <th>{% fws "trash" "l" "1" %} حذف عکس</th>
@@ -57,7 +57,7 @@
         <h5 class="text-center title">محتوایی موجود نیست ...</h5>
     {% endif %}
         <!-- pagination -->
-        {% pagination "account:dashboard" context=view.get_context_data view_kwargs=view.kwargs %}
+        {% pagination request "account:dashboard" context=view.get_context_data view_kwargs=view.kwargs %}
         <!-- end pagination -->
     </div>
 

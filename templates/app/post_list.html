@@ -92,7 +92,7 @@
                                         <p class="mx-2 mt-3">{{ obj.likes.count|en_nums_to_fa_nums }} 
                                         {% fws "heart" "r" "1" %}</p>
                                         <p class="mx-2 mt-3">{{ obj.hits.count|en_nums_to_fa_nums }} 
-                                        {% fws "eye" "r" "1" %}></p>
+                                        {% fws "eye" "r" "1" %}</p>
                                     </div>
                                     <p class="px-4 text-right">{% fws "clock-o" "l" "1" %}منتشر شده توسط <a class="publisher" href="{% url 'publisher_list' obj.publisher %}"><b>{{ obj.publisher.get_name_or_username }}</b></a> در تاریخ {{ obj.created|jformat:"%Y/%m/%d"|en_nums_to_fa_nums}} در ساعت {{ obj.created.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</p>
                                 </div>
@@ -105,7 +105,7 @@
                     <div class="col-12 mt-4 mx-0 mx-md-3">
                         <button class="btn-block" id="showAllImages-btn-1">نمایش همه</button>
                     </div>
-                    {% pagination namespace context=view.get_context_data view_kwargs=view.kwargs %}
+                    {% pagination request namespace context=view.get_context_data view_kwargs=view.kwargs %}
                 </div>
                 <!-- end slider -->
             </div>

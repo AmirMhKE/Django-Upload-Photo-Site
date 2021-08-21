@@ -17,7 +17,7 @@ def get_publisher(request, username=None):
     if username is None:
         user = User.objects.get(pk=request.user.pk)
     else:
-        user = get_object_or_404(User.objects.all(), username__iexact=username)
+        user = get_object_or_404(User, username__iexact=username)
 
     return user
 
@@ -119,7 +119,7 @@ class EditPostView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
 
     def get_object(self, queryset=None):
         slug = self.kwargs.get("slug")
-        return get_object_or_404(Post.objects.all(), slug=slug)
+        return get_object_or_404(Post, slug=slug)
 
     def get_context_data(self, **kwargs):
         user = self.get_publisher()
@@ -171,7 +171,7 @@ class DeletePostView(LoginRequiredMixin, SuperUserOrUserMixin, DeleteView):
 
     def get_object(self, queryset=None):
         slug = self.kwargs.get("slug")
-        obj = get_object_or_404(Post.objects.all(), slug=slug)
+        obj = get_object_or_404(Post, slug=slug)
         return obj
 
     def delete(self, request, *args, **kwargs):

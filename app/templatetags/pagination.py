@@ -1,10 +1,11 @@
 from django import template
 from django.urls import reverse
+from extensions.utils import param_request_get_to_url_param
 
 register = template.Library()
 
 @register.inclusion_tag("app/partials/pagination.html")
-def pagination(urlname, **kwargs):
+def pagination(request, urlname, **kwargs):
     """
     This template tag for pagination in the all pages.
     page key in view_kwargs should removed because some time
@@ -17,7 +18,13 @@ def pagination(urlname, **kwargs):
     context = kwargs.get("context", {})
 
     return {
+        "request": request,
         "get_url": get_url,
         **context
     }
-    
+
+@register.simple_tag
+def additional_param(request):
+    if request.GET:
+        return param_request_get_to_url_param(request.GET)
+    return ""

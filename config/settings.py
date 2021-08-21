@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'django_jalali',
+    'django_filters',
     'account.apps.AccountConfig',
     'app.apps.AppConfig',
     'extensions',

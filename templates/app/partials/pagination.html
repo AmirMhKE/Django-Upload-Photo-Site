@@ -6,11 +6,11 @@
     <div class="col-12 col-md-10 col-lg-8 mx-auto my-4">
         <ul class="col row flex-wrap justify-content-center paginator list-unstyled mx-auto">
             {% if page_obj.has_previous %}
-                <div class="page-link_" title="اولین صفحه"><a href="{{ get_url }}page/1/">
+                <div class="page-link_" title="اولین صفحه"><a href="{{ get_url }}page/1/{% additional_param request %}">
                 {% fws "angle-double-right" %}
                 </a></div>
                 <div class="page-link_" title="صفحه قبل"><a 
-                href="{{ get_url }}page/{{ page_obj.previous_page_number }}/">
+                href="{{ get_url }}page/{{ page_obj.previous_page_number }}/{% additional_param request %}">
                 {% fws "angle-right" %}
                 </a></div>
             {% endif %}
@@ -19,26 +19,26 @@
                 {% if current_page <= 5 %}
                     {% if page <= 9 %}
                         <div class="page-link_ {% if current_page == page %}active{% endif %}"><a 
-                        href="{{ get_url }}page/{{ page }}/">{{ page|en_nums_to_fa_nums }}</a></div>
+                        href="{{ get_url }}page/{{ page }}/{% additional_param request %}">{{ page|en_nums_to_fa_nums }}</a></div>
                     {% endif %}
                 {% elif current_page >= paginator.num_pages|add:"-4" %}
                     {% if page > paginator.num_pages|add:"-9" %}
                         <div class="page-link_ {% if current_page == page %}active{% endif %}"><a 
-                        href="{{ get_url }}page/{{ page }}/">{{ page|en_nums_to_fa_nums }}</a></div> 
+                        href="{{ get_url }}page/{{ page }}/{% additional_param request %}">{{ page|en_nums_to_fa_nums }}</a></div> 
                     {% endif %}
                 {% else %}
                     {% if page >= current_page|add:"-4" and page <= current_page|add:"4" %}
                         <div class="page-link_ {% if current_page == page %}active{% endif %}"><a 
-                        href="{{ get_url }}/page/{{ page }}/">{{ page|en_nums_to_fa_nums }}</a></div> 
+                        href="{{ get_url }}/page/{{ page }}/{% additional_param request %}">{{ page|en_nums_to_fa_nums }}</a></div> 
                     {% endif %}
                 {% endif %}
             {% endfor %}
 
             {% if page_obj.has_next %}
                 <div class="page-link_" title="صفحه بعد"><a 
-                href="{{ get_url }}page/{{ page_obj.next_page_number }}/">{% fws "angle-left" %}</a></div>
+                href="{{ get_url }}page/{{ page_obj.next_page_number }}/{% additional_param request %}">{% fws "angle-left" %}</a></div>
                 <div class="page-link_" title="آخرین صفحه"><a 
-                href="{{ get_url }}page/{{ paginator.num_pages }}/">{% fws "angle-double-left" %}</a></div>
+                href="{{ get_url }}page/{{ paginator.num_pages }}/{% additional_param request %}">{% fws "angle-double-left" %}</a></div>
             {% endif %}
         </ul>
     </div>

@@ -1,5 +1,4 @@
 import json
-from jdatetime import datetime as jdatetime
 
 from django import template
 from django.utils.html import format_html

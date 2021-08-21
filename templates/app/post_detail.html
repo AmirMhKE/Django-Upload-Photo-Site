@@ -22,10 +22,8 @@
                 منتشر کننده: {{ post.publisher.get_name_or_username }}</b>
                 <b class="m-2 text-center">{% fws "clock-o" "l" "1" %} 
                 منتشر شده در تاریخ {{ post.created|jformat:"%Y/%m/%d در ساعت %H:%M"|en_nums_to_fa_nums }}</b> 
-                {% if not post.created == post.updated %}
-                    <b class="m-2 text-center">{% fws "clock-o" "l" "1" %} 
-                    ویرایش شده در تاریخ {{ post.created|jformat:"%Y/%m/%d در ساعت %H:%M"|en_nums_to_fa_nums }}</b> 
-                {% endif %}
+                <b class="m-2 text-center">{% fws "clock-o" "l" "1" %} 
+                ویرایش شده در تاریخ {{ post.created|jformat:"%Y/%m/%d در ساعت %H:%M"|en_nums_to_fa_nums }}</b> 
             </div>
         </div>
     

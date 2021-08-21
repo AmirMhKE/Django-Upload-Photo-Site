@@ -2,7 +2,6 @@ import os
 
 from account.mixins import LoginRequiredMixin
 from django.conf import settings
-from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.utils.encoding import smart_str
@@ -15,6 +14,7 @@ from PIL import Image
 from app.middleware import User
 
 from .models import Category, Ip, Post
+from .filters import PostSearchFilter
 
 
 class PostList(ListView):
@@ -23,9 +23,14 @@ class PostList(ListView):
     context_object_name = "post_list"
     paginate_by = 5
 
+    def get_queryset(self):
+        query = Post.objects.all()
+        queryset = post_queryset(self.request, query)
+        return queryset
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = "همه ی عکس ها"
+        context["title"] = post_title(self.request, "همه ی عکس ها")
         context["namespace"] = "post_list"
         context["current_page"] = self.kwargs.get("page", 1)
         return context
@@ -46,7 +51,7 @@ class PostDetail(DetailView):
 
     def get_obj(self):
         slug = self.kwargs.get("slug")
-        obj = get_object_or_404(Post.objects.all(), slug=slug)
+        obj = get_object_or_404(Post, slug=slug)
         return obj
 
     def set_ip_hit(self):
@@ -98,12 +103,15 @@ class PublisherList(ListView):
 
     def get_queryset(self):
         self.username = self.kwargs.get("username")
-        self.publisher = get_object_or_404(User.objects.all(), username=self.username)
-        return self.publisher.posts.all()
+        self.publisher = get_object_or_404(User, username=self.username)
+        query = self.publisher.posts.all()
+        queryset = post_queryset(self.request, query)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = f"عکس های {self.publisher.get_name_or_username}"
+        context["title"] = post_title(self.request, 
+        f"عکس های {self.publisher.get_name_or_username}")
         context["current_page"] = self.kwargs.get("page", 1)
         context["namespace"] = "publisher_list"
         context["username"] = self.username
@@ -118,39 +126,22 @@ class CategoryList(ListView):
     def get_queryset(self):
         slug = self.kwargs.get("slug")
         self.category = get_object_or_404(Category.objects.active(), slug=slug)
-        return self.category.posts.all()
+        query = self.category.posts.all()
+        queryset = post_queryset(self.request, query)
+        return queryset
         
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = f"دسته بندی {self.category.title}" 
+        context["title"] = post_title(self.request, 
+        f"دسته بندی {self.category.title}") 
         context["current_page"] = self.kwargs.get("page", 1)
         context["namespace"] = "category_list"
         context["category_slug"] = self.category.slug
         return context
 
-class SearchList(ListView):
-    template_name = "app/post_list.html"
-    context_object_name = "post_list"
-    paginate_by = 5
-    search_name = None
-
-    def get_queryset(self):
-        self.search_name = self.kwargs.get("search")
-        query = Post.objects.filter(Q(title__icontains=self.search_name) | 
-        Q(category__title__icontains=self.search_name))
-        return query
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = f"نتیجه جستجوی {self.search_name}" 
-        context["current_page"] = self.kwargs.get("page", 1)
-        context["namespace"] = "search_list"
-        context["search_name"] = self.search_name
-        return context
-
 class DownloadView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        obj = get_object_or_404(Post.objects.all(), slug=kwargs.get("slug"))
+        obj = get_object_or_404(Post, slug=kwargs.get("slug"))
         file_name = get_files_list(os.path.join(settings.DOWNLOAD_ROOT, obj.slug))[-1]
         img = Image.open(file_name)
          
@@ -162,13 +153,12 @@ class DownloadView(LoginRequiredMixin, View):
         response["X-Sendfile"] = smart_str(img)
 
         obj.downloads.add(request.user)
-        obj.save()
 
         return response
 
 class LikeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        obj = get_object_or_404(Post.objects.all(), slug=kwargs.get("slug"))
+        obj = get_object_or_404(Post, slug=kwargs.get("slug"))
         username = request.user.username
         email = request.user.email
         user = User.objects.get(username=username, email=email)
@@ -184,3 +174,31 @@ class LikeView(LoginRequiredMixin, View):
 class LoginView(LoginView_):
     template_name = "account/login.html"
     success_url = "/"
+
+
+# ? Functions
+def post_queryset(request, query):
+    # ? This function set default query or search or ordering
+    if request.GET.get("search") is None:
+        queryset = query
+    else:
+        queryset = PostSearchFilter(request.GET, query).qs
+
+    ordering = request.GET.get("ordering")
+    if ordering is not None and ordering in Post.get_model_fields_name():
+        queryset = queryset.order_by(ordering)
+
+    return queryset
+
+def post_title(request, default_title):
+    # ? For set post title
+    search_name = None
+
+    if request.GET.get("search") is not None:
+        if request.GET.get("title") or request.GET.get("publisher"):
+            search_name = "جستجوی عبارت ' {} ' در {}" \
+            .format((request.GET.get('title') or \
+            request.GET.get('publisher')), default_title)
+
+    title = search_name or default_title
+    return title

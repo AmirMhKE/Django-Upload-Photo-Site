@@ -5,7 +5,7 @@ from random import randint
 
 import imagehash
 from django.utils.crypto import get_random_string
-
+from django.http import QueryDict
 
 def get_random_str(min_length, max_length):
     """
@@ -62,3 +62,22 @@ def compare_similarities_two_images(image1, image2):
     if image_hash1 - image_hash2 < cutoff:
         return True
     return False
+
+def param_request_get_to_url_param(request_get: QueryDict):
+    """
+    This function convert request.GET QueryDict to url parameters.
+    example: <QueryDict: {'search': ['example'], 'publisher': ['username']}>
+    converted to --> ?search=example&publisher=username
+    """
+    result = None
+
+    for index, (key, value) in enumerate(request_get.items()):
+        if index == 0:
+            result = f"?{key}"
+        else:
+            result = f"&{key}"
+
+        if value:
+            result += f"={value}"
+
+    return result

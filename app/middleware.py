@@ -9,6 +9,18 @@ from .models import Ip
 
 User = get_user_model()
 
+
+class RequestProcessMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        return response
+
+    def process_view(self, request, view_func, view_args, view_kwargs):
+        save_request_count(request, view_func)
+
 def check_excessive_requests(request, obj):
     """
     This function can prevent DDOS attacks as much as possible
@@ -111,14 +123,3 @@ def save_request_count(request, view_func):
     if user and view_func.__name__ == "DownloadView":
         user.requests_download_count += 1
         user.save()
-
-class RequestProcessMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        response = self.get_response(request)
-        return response
-
-    def process_view(self, request, view_func, view_args, view_kwargs):
-        save_request_count(request, view_func)
