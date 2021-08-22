@@ -6,7 +6,7 @@ $("a").click(function (e) {
     e.preventDefault();
 });
 
-$(".dropdown-item").click(function (e) { 
+$(".profile .dropdown-item").click(function (e) { 
     e.preventDefault();
 
     let href = $(this).attr("href");

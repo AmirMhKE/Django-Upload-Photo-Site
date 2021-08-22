@@ -36,12 +36,17 @@ def get_most_viewd_category_from_user(user):
     the posts related to that category.
     """
     if user.is_authenticated:
-        query = Post.objects.filter(category__id=(
-            Category.objects.filter(posts__user_hits__id=user.id) \
-            .annotate(category_count=Count("posts")) \
-            .values("id", "category_count").order_by("-category_count").first()["id"]
-        ))
-        return query
+        try:
+            query = Post.objects.filter(category__id=(
+                Category.objects.filter(posts__user_hits__id=user.id) \
+                .annotate(category_count=Count("posts")) \
+                .values("id", "category_count").order_by("-category_count") \
+                .first()["id"]
+            ))
+            return query
+        except TypeError:
+            pass
+
     return None
 
 def suggestion_posts(request, num: int) -> dict:

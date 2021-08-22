@@ -109,10 +109,6 @@ label.is_change::before {
     font-size: 1.5em;
     color: red;
 }
-select option:hover {
-    background-color: var(--Main-Blue);
-    color: #fff;
-}
 @media screen and (max-width: 767px) {
     .user-settings form {
         padding: 2em;

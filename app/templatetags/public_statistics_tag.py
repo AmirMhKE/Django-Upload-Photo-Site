@@ -12,6 +12,10 @@ def get_download_count():
     query = Post.objects.annotate(download_count=Count("downloads")) \
     .aggregate(download_sum=Sum("download_count"))
     result = query["download_sum"]
+
+    if result is None:
+        result = 0
+
     return result
 
 @register.inclusion_tag("app/partials/public_statistics.html")

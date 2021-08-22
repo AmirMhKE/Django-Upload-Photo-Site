@@ -49,20 +49,6 @@ $(".login-link").click(function (e) {
     $("body").css("overflow-y", "hidden");
 });
 
-$(".contact-us .close, .outer-contact-us").click(function (e) {
-    if (e.target === document.querySelector(".contact-us .close i") || e.target === document.querySelector(".outer-contact-us")) {
-        $(".contact-us").removeClass("animate__slideInDown");
-        $(".contact-us").addClass("animate__slideOutUp");
-
-        setTimeout(() => {
-            $(".outer-contact-us + .overlay").fadeOut(300);
-            $(".contact-us").css("display", "none");
-            $(".outer-contact-us").css("display", "none");
-            $("body").css("overflow-y", "visible");
-        }, 300);
-    }
-});
-
 $(".login .close, .outer-login").click(function (e) {
     if (e.target === document.querySelector(".login .close i") ||
      e.target === document.querySelector(".outer-login")) {
@@ -79,46 +65,131 @@ $(".login .close, .outer-login").click(function (e) {
 });
 
 // search
+$(".search-box .dropdown-item").click(function () {
+    $(".search-box .dropdown button").text($(this).text());
+    $(".search-box .dropdown button").attr("state", $(this).attr("state"));
+    $(".search-box .box input").remove();
+    let copy_inp = $('<input type="text" autocomplete="off" spellcheck="false"/>');
+
+    if($("#wrap-inp").length > 0) {
+        $(".search-box .box input").unwrap();
+        $("#wrap-inp").remove();
+    }
+
+    if($(this).attr("state") === "1") {
+        let inp = copy_inp.clone();
+        inp.attr("placeholder", "متن جستجوی مورد نظر خود را وارد کنید ...");
+        inp.attr("name", "title");
+        $(".search-box .box").prepend(inp);
+    }
+
+    if($(this).attr("state") === "2") {
+        let inp = copy_inp.clone();
+        inp.attr("placeholder", "نام کاربری مورد نظر خود را وارد کنید ....");
+        inp.attr("name", "publisher");
+        $(".search-box .box").prepend(inp);
+    }
+
+    if($(this).attr("state") === "3") {
+        let inp1 = copy_inp.clone();
+        inp1.attr("placeholder", "نام کاربری مورد نظر خود را وارد کنید ...");
+        inp1.attr("name", "publisher");
+        inp1.addClass("mr-1");
+        $(".search-box .box").prepend(inp1);
+
+        let inp2 = copy_inp.clone();
+        inp2.attr("placeholder", "متن جستجوی مورد نظر خود را وارد کنید ...");
+        inp2.attr("name", "title");
+        $(".search-box .box").prepend(inp2);
+
+        $(".search-box .box input").wrapAll("<div id='wrap-inp' class='col m-0 p-0'></div>");
+    }
+});
+
 $("#_search_").click(function () { 
-    if($("#_search_input_").val().replace(/\s+/g, ' ').trim() === "") {
-        Swal.fire({
-            "title": "ورودی خالی",
-            "text": "لطفا چیزی وارد کنید!",
-            "icon": "warning",
-            "confirmButtonText": "باشه"
-        });
-    } else {
+    search();
+});
+
+$(".search-box .box").keyup(function (e) { 
+    if(e.keyCode === 13) {
         search();
     }
 });
 
-$("#_search_input_").keyup(function (e) { 
-    if(e.keyCode === 13) {
-        if($("#_search_input_").val().replace(/\s+/g, ' ').trim() === "") {
+function search() {
+    var scrollNum = 0;
+    let state = $(".search-box .dropdown button").attr("state");
+    let url = new URL(window.location);
+    let validate = false;
+
+    url.searchParams.delete("title");
+    url.searchParams.delete("publisher");
+    url.searchParams.set("search", "");
+
+    if(state === "1") {
+        let title_name = $(".search-box .box input[name='title']")
+        .val().replace(/\s+/g, ' ').trim();
+        url.searchParams.set("title", title_name);
+
+        if(title_name === "") {
             Swal.fire({
-                "title": "ورودی خالی",
-                "text": "لطفا چیزی وارد کنید!",
-                "icon": "warning",
-                "confirmButtonText": "باشه"
+                icon: "warning",
+                title: "ورودی خالی",
+                text: "لطفا ورودی مورد نظر را خالی نگذارید.",
+                confirmButtonText: "باشه"
             });
         } else {
-            search();
+            validate = true;
         }
     }
-});
 
-function search() {
-    let search_name = $("#_search_input_").val().replace(/\s+/g, ' ').trim();
-    let url = "/search/" + search_name + "/";
-    var scrollNum = 0;
+    if(state === "2") {
+        let publisher_name = $(".search-box .box input[name='publisher']")
+        .val().replace(/\s+/g, ' ').trim();
+        url.searchParams.set("publisher", publisher_name);
+
+        if(publisher_name === "") {
+            Swal.fire({
+                icon: "warning",
+                title: "ورودی خالی",
+                text: "لطفا ورودی مورد نظر را خالی نگذارید.",
+                confirmButtonText: "باشه"
+            });
+        } else {
+            validate = true;
+        }
+    }
+
+    if(state === "3") {
+        let title_name = $(".search-box .box input[name='title']")
+        .val().replace(/\s+/g, ' ').trim();
+        let publisher_name = $(".search-box .box input[name='publisher']")
+        .val().replace(/\s+/g, ' ').trim();
+        url.searchParams.set("title", title_name);
+        url.searchParams.set("publisher", publisher_name);
+
+        if(title_name === "" || publisher_name === "") {
+            Swal.fire({
+                icon: "warning",
+                title: "ورودی خالی",
+                text: "لطفا ورودی های مورد نظر را خالی نگذارید.",
+                confirmButtonText: "باشه"
+            });
+        } else {
+            validate = true;
+        }
+    }
 
     try {
         scrollNum = $("#scroll-target").offset().top - 100;
     } catch(TypeError) {
         // ***
     } finally {
-        localStorage.setItem("scroll", scrollNum);
-        window.location.pathname = url;
+        if(validate) {
+            localStorage.setItem("scroll", scrollNum);
+            url = url.toString().replace("search=", "search");
+            window.location = url;
+        }
     }
 }
 
@@ -166,27 +237,6 @@ function showAllImages() {
     $(".all-items + .overlay").fadeIn(500);
     $("body").css("overflow-y", "hidden");
 }
-
-// contact-us
-$(".contact-us form button").click(function (e) {
-    e.preventDefault();
-
-    let username = $(".contact-us form input[name='username']").val();
-    let message = $(".contact-us form textarea[name='message']").val();
-    let usernameReg = /^[ آابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهیئ\s]+$/;
-
-    if (username.replaceAll(" ", "") === "" || !usernameReg.test(username) || message.replaceAll(" ", "") === "") {
-        if(username.replaceAll(" ", "") === "" || !usernameReg.test(username)) $(".contact-us .usernameValidate").fadeIn(0);
-
-        if(message.replaceAll(" ", "") === "") $(".contact-us .messageValidate").fadeIn(0);
-
-    } else {
-        alert("پیام مورد نظر شما ارسال شد!(همینطوری الکی)");
-        $(".outer-contact-us").click();
-        $(".contact-us .usernameValidate").fadeOut(0);
-        $(".contact-us .messageValidate").fadeOut(0);
-    }
-});
 
 // other link
 $(".angle-down").click(function () {

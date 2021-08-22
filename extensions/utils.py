@@ -75,7 +75,7 @@ def param_request_get_to_url_param(request_get: QueryDict):
         if index == 0:
             result = f"?{key}"
         else:
-            result = f"&{key}"
+            result += f"&{key}"
 
         if value:
             result += f"={value}"

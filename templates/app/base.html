@@ -37,12 +37,29 @@
         <div>
            {% fws "close" %}
         </div>
+        
+        <div class="col mx-auto">
+            <div class="d-flex justify-content-between mx-auto box col-11 col-sm-10 col-md-8 col-xl-6">
+                <input name="title" type="text" spellcheck="false" autocomplete="off" 
+                placeholder="متن جستجوی مورد نظر خود را وارد کنید ..." />
+            
+                <div id="_search_">
+                    {% fws "search" %}
+                </div>
+            </div>
 
-        <div id="_search_">
-            {% fws "search" %}
+            <div class="dropdown col-4 mt-5 mr-5">
+                <button class="btn dropdown-toggle" state="1" type="button" data-toggle="dropdown">
+                    جستجو بر اساس عنوان
+                </button>
+                <div class="dropdown-menu text-right">
+                    <p class="dropdown-item" state="1">جستجو بر اساس عنوان</p>
+                    <p class="dropdown-item" state="2">جستجو بر اساس نام منتشر کننده</p>
+                    <p class="dropdown-item" state="3">جستجو بر اساس عنوان و نام منتشر کننده</p>
+                </div>
+            </div>
+            
         </div>
-
-        <input id="_search_input_" type="text" autocomplete="off" placeholder="متن جستجوی خود را وارد کنید ..." />
     </div>
 
     {% if not request.user.is_authenticated %}
