@@ -690,6 +690,32 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     top: 22%;
     margin: .5em 0;
 }
+.filter button, #filter-btn {
+    color: #fff;
+    box-shadow: none;
+}
+.filter button {
+    background-color: var(--Main-Gray);
+}
+#filter-btn {
+    background-color: var(--Main-Blue) !important;
+}
+.filter button:hover, #filter-btn:hover {
+    background: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .1));
+}
+.filter button:hover {
+    background-color: var(--Main-Gray);
+    color: #fff;
+}
+.filter button:focus {
+    box-shadow: none;
+}
+.filter p {
+    color: var(--Main-Gray);
+}
+.filter .dropdown-item {
+    cursor: pointer;
+}
 /* responsive */
 @media screen and (max-width: 1399px) {
     .my-navbar ul li {

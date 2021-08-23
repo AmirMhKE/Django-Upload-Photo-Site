@@ -17,7 +17,7 @@
             </div>
 
             <!-- upload -->
-            <div class="row upload">
+            <div class="row upload d-none d-md-block">
                 {% if not request.user.is_authenticated %}
                     <a href="#" onclick="$('.login-link').click()">
                         {% fws "upload" %} آپلود عکس</a>

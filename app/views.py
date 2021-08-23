@@ -184,6 +184,7 @@ def post_queryset(request, query):
     else:
         queryset = PostSearchFilter(request.GET, query).qs
 
+    # ? Ordering filter
     ordering = request.GET.get("ordering")
     if ordering is not None and ordering in Post.get_model_fields_name():
         queryset = queryset.order_by(ordering)
