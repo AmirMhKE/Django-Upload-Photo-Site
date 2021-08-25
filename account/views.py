@@ -40,8 +40,7 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
         username = kwargs.get("username") 
 
         # ? Check permission when submit form
-        if not any([request.user == user, request.user.is_superuser and not user.is_superuser, 
-        request.user.is_admin and not user.is_admin]):
+        if not any([request.user == user, request.user.is_admin and not user.is_admin]):
         
             event = {"type": "permission_denied", "content": None}
             request.session["event"] = json.dumps(event)
@@ -51,16 +50,17 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
             return redirect("account:settings", username)
 
         return super().post(request, *args, **kwargs)
-
+    
     def form_valid(self, form):
         # ? Set alert
         content = ""
         user = User.objects.get(username__iexact=self.kwargs.get(
         "username", self.request.user.username))
+        
         if user == self.request.user:
             content = "حساب کاربری شما با موفقیت ویرایش شد."
         else:
-            content = f"حساب کاربری {self.request.user.get_name_or_username} با موفقیت آپدیت شد."
+            content = f"حساب کاربری {user} با موفقیت ویرایش شد."
 
         event = {"type": "user_profile_updated", "content": content}
         self.request.session["event"] = json.dumps(event)

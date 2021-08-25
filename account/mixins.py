@@ -18,7 +18,7 @@ class SuperUserOrUserMixin:
     def dispatch(self, request, *args, **kwargs):
         user = User.objects.get(username__iexact=kwargs.get("username", request.user.username))
     
-        if not (request.user.username == user.username or request.user.is_superuser): 
+        if not (request.user == user or request.user.is_superuser): 
             return redirect("/", request.META.get("HTTP_REFERER", "/"))
 
         return super().dispatch(request, *args, **kwargs)

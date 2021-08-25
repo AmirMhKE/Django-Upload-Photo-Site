@@ -29,7 +29,7 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ("first_name", "last_name", "username", "about_me", 
-        "profile_image", "is_superuser", "is_staff")
+        "profile_image", "is_superuser", "is_staff", "is_active")
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
@@ -48,15 +48,22 @@ class UserUpdateForm(forms.ModelForm):
         self.fields["about_me"].help_text = \
         "درباره من باید با حروف فارسی باشد و می توانید از علامت های (، .) استفاده کنید."
 
-        keys = ("initial", "checked")
-        
-        value = json.dumps(self.initial["is_superuser"])
-        self.fields["is_superuser"].widget.attrs.update({}.fromkeys(keys, value))
-        self.fields["is_superuser"].label = "دسترسی ابر کاربر"
-        
-        value = json.dumps(self.initial["is_staff"])
-        self.fields["is_staff"].widget.attrs.update({}.fromkeys(keys, value))
-        self.fields["is_staff"].label = "دسترسی به پنل ادمین"
+        # ? Set user levels
+        self.set_user_level_front("is_superuser", "دسترسی ابر کاربر")
+        self.set_user_level_front("is_staff", "دسترسی به پنل ادمین")
+        self.set_user_level_front("is_active", "فعال بودن کاربر")
+
+    def set_user_level_front(self, level_name, label_name):
+        # ? This function show initial data if form invalid
+        value = self.initial[level_name]
+        self.fields[level_name].widget.attrs["initial"] = json.dumps(value)
+
+        if value:
+            self.fields[level_name].widget.attrs["checked"] = json.dumps(True)
+        else:
+            self.fields.pop("checked", {})
+
+        self.fields[level_name].label = label_name
 
     def clean_profile_image(self):
         data = self.cleaned_data["profile_image"]
@@ -94,21 +101,23 @@ class UserUpdateForm(forms.ModelForm):
 
     def clean_is_superuser(self):
         data = self.cleaned_data["is_superuser"]
-        if ((self.request.user.is_superuser and self.request.user != self.user) \
-        and (not self.user.is_superuser or self.request.user.is_admin)) \
-        or self.user.is_superuser == data:
-            return data
-            
-        raise ValidationError(
-            "شما نمی توانید سطح دسترسی خود را تغییر دهید.",
-            code="permission_error"
-        )
+        return self.change_user_level("is_superuser", data)
 
     def clean_is_staff(self):
         data = self.cleaned_data["is_staff"]
-        if ((self.request.user.is_superuser and self.request.user != self.user) \
-        and (not self.user.is_superuser or self.request.user.is_admin)) or \
-        self.user.is_staff == data:
+        return self.change_user_level("is_staff", data)
+
+    def clean_is_active(self):
+        data = self.cleaned_data["is_active"]
+        return self.change_user_level("is_active", data)
+
+    def change_user_level(self, level_name, data):
+        # ? This function change permissions of user
+        request_user_is_admin = getattr(self.request.user, "is_admin")
+        user_level = getattr(self.user, level_name)
+
+        if (request_user_is_admin and self.user != self.request.user 
+        and not self.user.is_admin) or user_level == data:
             return data
 
         raise ValidationError(

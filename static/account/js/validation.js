@@ -105,20 +105,22 @@ function userUpdateFormValidation() {
         this["about_me"].value.trim() !== this["about_me"].getAttribute("initial")
     )
 
-    let superuser_is_changed, staff_is_changed;
+    let superuser_is_changed, staff_is_changed, active_is_changed;
     try {
         superuser_is_changed = this["is_superuser"].checked !== JSON.parse(this["is_superuser"].getAttribute("initial"))
         staff_is_changed = this["is_staff"].checked !== JSON.parse(this["is_staff"].getAttribute("initial"))
+        active_is_changed = this["is_active"].checked !== JSON.parse(this["is_active"].getAttribute("initial"))
     } catch {
-        superuser_is_changed = false
-        staff_is_changed = false
+        superuser_is_changed = false;
+        staff_is_changed = false;
+        active_is_changed = false;
     }
 
     if(((username_condition && first_name_is_empty && last_name_is_empty && about_me_condition) || 
     (username_condition && about_me_condition && (!first_name_is_empty && first_name_condition) && 
     (!last_name_is_empty && last_name_condition))) && 
     (username_is_changed || first_name_is_changed || last_name_is_changed || 
-    about_me_is_changed || superuser_is_changed || staff_is_changed)) {
+    about_me_is_changed || superuser_is_changed || staff_is_changed || active_is_changed)) {
         submit_btn.removeAttribute("disabled");
     } else {
         submit_btn.setAttribute("disabled", "");
