@@ -1,21 +1,17 @@
-import os
-
-from account.mixins import LoginRequiredMixin
-from django.conf import settings
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404
-from django.utils.encoding import smart_str
-from django.views import View
-from django.views.generic import DetailView, ListView
+from app.filters import PostSearchFilter
+from app.models import Category, Download, Hit, Ip, Like, Post, UserHit
+from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView as LoginView_
-from extensions.utils import get_files_list, get_random_str
-from PIL import Image
+from django.shortcuts import get_object_or_404
+from django.db.models import Count
+from django.views.generic import DetailView, ListView
 
-from app.middleware import User
+__all__ = (
+    "PostList", "PostDetail", "PublisherList", 
+    "CategoryList", "LoginView"
+)
 
-from .models import Category, Ip, Post
-from .filters import PostSearchFilter
-
+User = get_user_model()
 
 class PostList(ListView):
     model = Post
@@ -49,47 +45,49 @@ class PostDetail(DetailView):
 
         return ip_address
 
-    def get_obj(self):
+    def get_object(self, queryset=None):
         slug = self.kwargs.get("slug")
         obj = get_object_or_404(Post, slug=slug)
         return obj
 
-    def set_ip_hit(self):
-        ip_obj = Ip.objects.get(ip_address=self.get_client_ip())
-        obj = self.get_obj()
-        
-        if ip_obj not in obj.hits.all():
-            obj.hits.add(ip_obj)
-            obj.save()
-
-    def set_user_hit(self):
-        user = self.request.user
-        obj = self.get_obj()
-
-        if user.is_authenticated and user not in obj.user_hits.all():
-            obj.user_hits.add(user)
-            obj.save()
-
-    def get_queryset(self):
+    def get(self, request, *args, **kwargs):
         self.set_ip_hit()
         self.set_user_hit()
-        return super().get_queryset()
+        return super().get(request, *args, **kwargs)
+
+    def set_ip_hit(self):
+        obj = self.get_object()
+        ip_obj = Ip.objects.get(ip_address=self.get_client_ip())
+        hit_query = Hit.objects.filter(post=obj, ip_address=ip_obj)
+        
+        if not hit_query.exists():
+            Hit.objects.create(post=obj, ip_address=ip_obj)
+
+    def set_user_hit(self):
+        obj = self.get_object()
+        user = self.request.user
+
+        if user.is_authenticated:
+            user_hit_query = UserHit.objects.filter(post=obj, user=user)
+
+            if not user_hit_query.exists():
+                UserHit.objects.create(post=obj, user=user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        user = self.request.user
         is_downloaded, is_liked = False, False
-        obj = self.get_obj()
+        obj = self.get_object()
 
-        if self.request.user.is_authenticated:
-            username = self.request.user.username
-            email = self.request.user.email
-            user = User.objects.get(username=username, email=email)
+        if user.is_authenticated:
+            like_query = Like.objects.filter(post=obj, user=user)
+            download_query = Download.objects.filter(post=obj, user=user)
 
-            if user in obj.downloads.all():
-                is_downloaded = True
-
-            if user in obj.likes.all():
+            if like_query.exists():
                 is_liked = True
+
+            if download_query.exists():
+                is_downloaded = True
 
         context["is_downloaded"] = is_downloaded
         context["is_liked"] = is_liked
@@ -138,43 +136,11 @@ class CategoryList(ListView):
         context["namespace"] = "category_list"
         context["category_slug"] = self.category.slug
         return context
-
-class DownloadView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        obj = get_object_or_404(Post, slug=kwargs.get("slug"))
-        file_name = get_files_list(os.path.join(settings.DOWNLOAD_ROOT, obj.slug))[-1]
-        img = Image.open(file_name)
-         
-        extension = obj.img.path.split(".")[-1]
-        content = \
-        f"attachment; filename={os.path.basename(f'{get_random_str(10, 50)}-akscade.{extension}')}" 
-        response = HttpResponse(img, content_type="application/force-download")
-        response["Content-Disposition"] = content
-        response["X-Sendfile"] = smart_str(img)
-
-        obj.downloads.add(request.user)
-
-        return response
-
-class LikeView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        obj = get_object_or_404(Post, slug=kwargs.get("slug"))
-        username = request.user.username
-        email = request.user.email
-        user = User.objects.get(username=username, email=email)
-
-        if user in obj.likes.all():
-            obj.likes.remove(user)
-            return JsonResponse({"action": "dislike", "count": obj.likes.count()})
-
-        obj.likes.add(user)
-        return JsonResponse({"action": "like", "count": obj.likes.count()})
             
 # ? For debug mode
 class LoginView(LoginView_):
     template_name = "account/login.html"
     success_url = "/"
-
 
 # ? Functions
 def post_queryset(request, query):
@@ -185,9 +151,23 @@ def post_queryset(request, query):
         queryset = PostSearchFilter(request.GET, query).qs
 
     # ? Ordering filter
-    ordering = request.GET.get("ordering")
-    if ordering is not None and ordering in Post.get_model_fields_name():
-        queryset = queryset.order_by(ordering)
+    ordering = request.GET.get("ordering", "")
+    _ordering = "".join(ordering.split("-"))
+    countable_fields = ["hits", "user_hits", "likes", "downloads"]
+
+    if _ordering in Post.get_model_fields_name():
+        if _ordering in countable_fields:
+            # ? -ordering_count or ordering_count
+            ordering_filter_name = f"{ordering}_count"
+            # ? -ordering_count -> ordering_count
+            ordering_name = f"{_ordering}_count"
+
+            field_annotate = {ordering_name: Count(_ordering)}
+
+            queryset = queryset.annotate(**field_annotate) \
+            .order_by(ordering_filter_name)
+        else:
+            queryset = queryset.order_by(ordering)
 
     return queryset
 

@@ -12,13 +12,13 @@ def auto_backup_old_profile_image(sender, instance, **kwargs):
     try:
         instance.old_profile_image = instance.profile_image
     except ValueError:
-        if hasattr(instance, "_old_profile_image"):
-            delattr(instance, "_old_profile_image")
+        if hasattr(instance, "old_profile_image"):
+            delattr(instance, "old_profile_image")
 
 @receiver(post_save, sender=CustomUser)
 def delete_old_profile_image(sender, instance, **kwargs):
     try:
-        if hasattr(instance, "_old_profile_image"):
+        if hasattr(instance, "old_profile_image"):
             if instance.old_profile_image != instance.profile_image:
                 os.remove(instance.old_profile_image.path)
     except ValueError:

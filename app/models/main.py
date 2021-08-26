@@ -8,6 +8,8 @@ from extensions.timestamp import TimeStamp
 from extensions.utils import get_random_str
 from PIL import Image
 
+__all__ = ("Category", "Post")
+
 User = get_user_model()
 
 class CategoryManager(models.Manager):
@@ -25,24 +27,10 @@ class Category(models.Model):
     class Meta:
         verbose_name = "دسته بندی"
         verbose_name_plural = "دسته بندی ها"
-        ordering = ["-status", "position"]
+        ordering = ("-status", "position")
 
     def __str__(self):
         return self.title
-
-class Ip(models.Model):
-    ip_address = models.GenericIPAddressField(verbose_name="آدرس آیپی")
-    last_excessive_request_time = models.DateTimeField(verbose_name="آخرین وقت درخواست غیر مجاز")
-    excessive_requests_count = models.PositiveIntegerField(
-    verbose_name="تعداد درخواست های بیش از حد اندازه", null=True, 
-    blank=True, default=0)
-
-    class Meta:
-        verbose_name = "آیپی"
-        verbose_name_plural = "آیپی ها"
-
-    def __str__(self):
-        return self.ip_address
 
 def upload_location(instance, filename):
     return f"images/{instance.slug}/{get_random_str(10, 50)}.jpg"
@@ -57,13 +45,6 @@ class Post(TimeStamp):
     verbose_name="منتشر کننده", related_name="posts")
     category = models.ForeignKey(Category, verbose_name="دسته بندی", related_name="posts", 
     on_delete=models.CASCADE, null=True)
-    hits = models.ManyToManyField(Ip, blank=True, related_name="hits", verbose_name="بازدید ها")
-    likes = models.ManyToManyField(User, blank=True, related_name="likes", 
-    verbose_name="تعداد پسند ها")
-    downloads = models.ManyToManyField(User, blank=True, related_name="downloads", 
-    verbose_name="تعداد دانلود ها")
-    user_hits = models.ManyToManyField(User, blank=True, related_name="viewed_posts", 
-    verbose_name="بازدید های کاربران")
 
     class Meta:
         verbose_name = "پست"
@@ -77,7 +58,7 @@ class Post(TimeStamp):
     def get_model_fields_name():
         result = []
         
-        for field in Post._meta.fields:
+        for field in Post._meta.get_fields():
             result.append(field.name)
 
         return result
@@ -90,7 +71,7 @@ class Post(TimeStamp):
     thumbnail_img.short_description = "عکس شما"
 
     def save(self, *args, **kwargs):
-        # ? if model not created, override save method
+        # ? if model not created
         if not self.pk:
             self.slug_save()
             super().save(*args, **kwargs)
@@ -132,6 +113,6 @@ class Post(TimeStamp):
 
         # ? This image for show in site
         with Image.open(self.img) as img:
-            img.thumbnail((750, 750))
+            img.thumbnail((1000, 1000))
             img.save(self.img.path, format=download_image.format)
             img.close()

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Ip, Post
+from .models import Category, Ip, Post, Hit, UserHit, Like, Download
 
 admin.site.site_header = "مدیریت سایت عکس کده"
 
@@ -52,3 +52,7 @@ class PostAdmin(admin.ModelAdmin):
     actions = [make_back, make_publish]
 
 admin.site.register(Ip)
+admin.site.register(Hit)
+admin.site.register(UserHit)
+admin.site.register(Like)
+admin.site.register(Download)

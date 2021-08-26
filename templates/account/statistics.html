@@ -21,6 +21,11 @@
                     <td class="text-right">{{ like_count|en_nums_to_fa_nums }}</td>
                 </tr>
                 <tr>
+                    <th class="text-right">{% fws "eye" "l" "2" %}
+                         تعداد بازدید ها</th>
+                    <td class="text-right">{{ hits_count|en_nums_to_fa_nums }}</td>
+                </tr>
+                <tr>
                     <th class="text-right">{% fws "upload" "l" "2" %}
                         تعداد تمام درخواست ها</th>
                     <td class="text-right">{{ all_requests_count|en_nums_to_fa_nums }}</td>
@@ -29,11 +34,6 @@
                     <th class="text-right">{% fws "download" "l" "2" %}
                         تعداد درخواست های دانلود</th>
                     <td class="text-right">{{ requests_download_count|en_nums_to_fa_nums }}</td>
-                </tr>
-                <tr>
-                    <th class="text-right">{% fws "search" "l" "2" %}
-                        تعداد درخواست های جستجو</th>
-                    <td class="text-right">{{ requests_search_count|en_nums_to_fa_nums }}</td>
                 </tr>
                 {% if not user.is_superuser %}
                     <tr>

@@ -27,7 +27,8 @@ def image_validation(data):
 
     if data.image.format not in formats:
         raise ValidationError(
-            "شما فقط می توانید فایلی با نوع JPEG یا PNG آپلود کنید.",
+            "شما فقط می توانید فایلی با نوع {} آپلود کنید."
+            .format(" یا ".join(formats)),
             code="format_invalid"
         )
 
@@ -70,6 +71,7 @@ def check_number_uploaded_images(model, user):
 
         if query.count() >= max_count:
             raise ValidationError(
-                "شما نمی توانید در هر روز بیشتر از {} عکس آپلود کنید.".format(max_count),
+                "شما نمی توانید در هر روز بیشتر از {} عکس آپلود کنید."
+                .format(max_count),
                 code="max_image_uploaded"
             )

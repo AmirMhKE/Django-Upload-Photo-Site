@@ -23,8 +23,6 @@ class CustomUser(AbstractUser):
     verbose_name="درباره من", null=True, blank=True)
     all_requests_count = models.PositiveBigIntegerField(verbose_name="تعداد کل درخواست ها", 
     null=True, blank=True, default=0)
-    requests_search_count = models.PositiveBigIntegerField(verbose_name="تعداد درخواست های جستجو", 
-    null=True, blank=True, default=0)
     requests_download_count = models.PositiveBigIntegerField(
     verbose_name="تعداد درخواست های دانلود کردن", null=True, blank=True, default=0)
     excessive_requests_count = models.PositiveBigIntegerField(

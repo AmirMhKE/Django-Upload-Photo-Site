@@ -1,10 +1,9 @@
 from django.contrib.auth.views import LogoutView
 from django.urls import path
 
-from .dashboard_views import (DashBoardView, DeletePostView, EditPostView,
-                              PostCreateView)
-from .views import (StatisticsView, UserAboutView, UserDeleteView,
-                    UserSettingsView)
+from .views import (DashBoardView, DeletePostView, EditPostView, PostCreateView,
+                   StatisticsView, UserAboutView, UserDeleteView,
+                   UserSettingsView)
 
 urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),

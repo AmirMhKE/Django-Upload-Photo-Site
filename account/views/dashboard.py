@@ -2,34 +2,20 @@ import json
 
 from app.models import Category, Post
 from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic import ListView, UpdateView, CreateView, DeleteView, View
+from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 from extensions.utils import set_default_data_forms
 
-from .forms import PostForm
-from .mixins import LoginRequiredMixin, SuperUserOrUserMixin
+from account.forms import PostForm
+from account.mixins import LoginRequiredMixin, SuperUserOrUserMixin
+
+__all__ = (
+    "DashBoardView", "PostCreateView", "EditPostView",
+    "DeletePostView"
+)
 
 User = get_user_model()
-
-# ? Functions
-def get_publisher(request, username=None):
-    if username is None:
-        user = User.objects.get(pk=request.user.pk)
-    else:
-        user = get_object_or_404(User, username__iexact=username)
-
-    return user
-
-def get_success_url(request, dashboard_user):
-    user = get_publisher(request, dashboard_user.username)
-    if request.user == user:
-        success_url = reverse("account:dashboard")
-    else:
-        success_url = reverse("account:dashboard", 
-        kwargs={"username": user.username})
-
-    return success_url
 
 # ? Classes
 class DashBoardView(LoginRequiredMixin, SuperUserOrUserMixin, ListView):
@@ -186,3 +172,21 @@ class DeletePostView(LoginRequiredMixin, SuperUserOrUserMixin, DeleteView):
 
         return super().delete(request, *args, **kwargs)
         
+# ? Functions
+def get_publisher(request, username=None):
+    if username is None:
+        user = User.objects.get(pk=request.user.pk)
+    else:
+        user = get_object_or_404(User, username__iexact=username)
+
+    return user
+
+def get_success_url(request, dashboard_user):
+    user = get_publisher(request, dashboard_user.username)
+    if request.user == user:
+        success_url = reverse("account:dashboard")
+    else:
+        success_url = reverse("account:dashboard", 
+        kwargs={"username": user.username})
+
+    return success_url        

@@ -6,8 +6,13 @@ from django.urls import reverse
 from django.views.generic import DetailView, TemplateView, UpdateView, View
 from extensions.utils import set_default_data_forms
 
-from .forms import UserUpdateForm
-from .mixins import LoginRequiredMixin, SuperUserOrUserMixin
+from account.forms import UserUpdateForm
+from account.mixins import LoginRequiredMixin, SuperUserOrUserMixin
+
+__all__ = (
+    "StatisticsView", "UserSettingsView", "UserDeleteView",
+    "UserAboutView"
+)
 
 User = get_user_model()
 
@@ -23,8 +28,8 @@ class StatisticsView(LoginRequiredMixin, SuperUserOrUserMixin, TemplateView):
             "username": "شما" if this_user == self.request.user else this_user.get_name_or_username,
             "post_count": this_user.posts.count(),
             "like_count": this_user.likes.count(),
+            "hits_count": this_user.hits.count(),
             "all_requests_count": this_user.all_requests_count,
-            "requests_search_count": this_user.requests_search_count,
             "requests_download_count": this_user.requests_download_count,
             "excessive_requests_count": this_user.excessive_requests_count,
         })

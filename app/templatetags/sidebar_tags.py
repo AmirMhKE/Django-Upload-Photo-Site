@@ -1,4 +1,3 @@
-from itertools import count
 import random
 
 from django import template
@@ -38,7 +37,7 @@ def get_most_viewd_category_from_user(user):
     if user.is_authenticated:
         try:
             query = Post.objects.filter(category__id=(
-                Category.objects.filter(posts__user_hits__id=user.id) \
+                Category.objects.filter(posts__user_hits__user__id=user.id) \
                 .annotate(category_count=Count("posts")) \
                 .values("id", "category_count").order_by("-category_count") \
                 .first()["id"]

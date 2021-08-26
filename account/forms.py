@@ -87,6 +87,7 @@ class UserUpdateForm(forms.ModelForm):
         first_name = self.request.POST.get("first_name")
         last_name = self.request.POST.get("last_name")
 
+        # ? first name and last name can be empty or both full
         if first_name or last_name:
             if not (first_name and last_name):
                 raise ValidationError(
@@ -95,9 +96,9 @@ class UserUpdateForm(forms.ModelForm):
                 )
 
     def clean_first_name(self):
-        date = self.cleaned_data["first_name"]
+        data = self.cleaned_data["first_name"]
         self.check_full_name()
-        return date
+        return data
 
     def clean_is_superuser(self):
         data = self.cleaned_data["is_superuser"]

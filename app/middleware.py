@@ -114,11 +114,6 @@ def save_request_count(request, view_func):
         user.all_requests_count += 1
         user.save()
 
-    # ? Count all search requests
-    if user and view_func.__name__ == "SearchList":
-        user.requests_search_count += 1
-        user.save()
-
     # ? Count all download requests
     if user and view_func.__name__ == "DownloadView":
         user.requests_download_count += 1
