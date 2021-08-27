@@ -14,6 +14,13 @@ $(window).resize(function () {
 
 // Show tooltip on active topbar item
 if($(".top-bar .active").length > 0) {
+    $(".tubelight").click(function () { 
+        setTimeout(() => {
+            let url = remove_url_params($(".top-bar .active").attr("target"));
+            window.location = url;
+        }, 500);
+    });
+
     $(".tubelight").mouseenter(function () { 
         $(".top-bar .active span").tooltip("show");
     });
@@ -36,7 +43,8 @@ $(".top-bar ul li span").click(function () {
 
     setTimeout(() => {
         if($(this).parent().attr("target")) {
-            window.location.pathname = $(this).parent().attr("target");
+            let url = remove_url_params($(this).parent().attr("target"));
+            window.location = url;
         }
     }, 500);
 });
@@ -64,3 +72,30 @@ $(".delete span").click(function (e) {
         }
     });
 });
+// search
+$(".search").keyup(function (e) { 
+    if(e.keyCode === 13) {
+        search($(".search").val().replace(/\s+/g, ' ').trim());
+    }
+});
+
+$(".search + span").click(function () {
+    search($(".search").val().replace(/\s+/g, ' ').trim());
+});
+
+function search(name) {
+    if(name) {
+        let url = new URL(window.location);
+        url.searchParams.set("search", "");
+        url.searchParams.set("title", name);
+        window.location = url;
+        localStorage.setItem("scroll", 0);
+    } else {
+        Swal.fire({
+            icon: "warning",
+            title: "ورودی خالی",
+            text: "لطفا چیزی وارد کنید.",
+            confirmButtonText: "باشه"
+        });
+    }
+}

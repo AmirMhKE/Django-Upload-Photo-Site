@@ -1,4 +1,5 @@
 {% extends 'account/base_dashboard.html' %}
+{% load static %}
 {% load tool_tags %}
 {% load jformat %}
 {% load pagination %}
@@ -7,6 +8,17 @@
     <h1 class="my-5 mx-auto text-center title">مدیریت عکس های {{ title }}</h1>
     <div class="line col-11 row mx-auto my-5"></div>
     <div class="mt-5 mx-auto col-11 post_list">
+    <div class="col-12 col-md-10 mx-auto mb-5 mt-3">
+        {% if request.GET.title %}
+            <h5 class="text-right my-4 search-name">
+            جستجوی عبارت ' {{ request.GET.title }} '</h6>
+        {% endif %}
+        <div class="d-flex justify-content-right">
+            <input class="search" placeholder="جستجوی عبارت مورد نظر ..." type="text">
+            {% fws "search" %}
+        </div>
+    </div>
+    {% include "app/partials/filters.html" %}
     {% if post_list %}
         <div class="text-right">
             <b class="text-right mb-4"><u class="ml-1">{{ post_count|en_nums_to_fa_nums }} </u> عکس :</p>
@@ -72,3 +84,11 @@
         {% endfor %}
     </div>
 {% endblock main %}
+
+{% block custom_style %}
+    <link rel="stylesheet" href="{% static 'app/css/filters.css' %}">
+{% endblock custom_style %}
+    
+{% block custom_script %}
+    <script src="{% static 'app/js/filters.js' %}"></script>
+{% endblock custom_script %}

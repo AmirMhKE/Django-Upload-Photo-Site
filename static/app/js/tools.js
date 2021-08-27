@@ -76,3 +76,11 @@ function image_validation(instance, options) {
         }
     }
 }
+
+function remove_url_params(path) {
+    let url = new URL(`${window.location.protocol}//${window.location.host}${path}`);
+    url.searchParams.forEach((value, key) => {
+        url.searchParams.delete(key);
+    });
+    return url;
+}

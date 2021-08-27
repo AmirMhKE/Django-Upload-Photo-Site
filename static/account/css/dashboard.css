@@ -95,3 +95,40 @@ img.show {
     padding: 0;
     cursor: pointer;
 }
+.search {
+    width: 95%;
+    padding: 10px;
+    border: 3px solid #808080;
+    border-radius: 5px;
+    outline: none;
+    transition: all .25s ease-in-out;
+    background-color: #fff;
+    font-size: 1rem;
+}
+.search + span {
+    font-size: 1.8rem;
+    color: var(--Main-Gray);
+    cursor: pointer;
+    position: absolute;
+    left: 4em;
+}
+.search input:hover {
+    border-color: var(--Main-Blue);
+}
+.search input:focus {
+    border-color: var(--Main-Red);
+}
+.search-name {
+    color: var(--Main-Gray);
+    font-weight: bold;
+}
+@media screen and (max-width: 991px) {
+    .search + span {
+        left: 3em;
+    }
+}
+@media screen and (max-width: 575px) {
+    .search + span {
+        left: 2em;
+    }
+}

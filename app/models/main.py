@@ -54,11 +54,11 @@ class Post(TimeStamp):
     def __str__(self):
         return self.title
 
-    @staticmethod
-    def get_model_fields_name():
+    @classmethod
+    def get_model_fields_name(cls):
         result = []
         
-        for field in Post._meta.get_fields():
+        for field in cls._meta.get_fields():
             result.append(field.name)
 
         return result

@@ -1,14 +1,14 @@
 import json
 
+from account.forms import PostForm
+from account.mixins import LoginRequiredMixin, SuperUserOrUserMixin
+from app.filters import post_queryset
 from app.models import Category, Post
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic import ListView, UpdateView, CreateView, DeleteView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from extensions.utils import set_default_data_forms
-
-from account.forms import PostForm
-from account.mixins import LoginRequiredMixin, SuperUserOrUserMixin
 
 __all__ = (
     "DashBoardView", "PostCreateView", "EditPostView",
@@ -29,7 +29,9 @@ class DashBoardView(LoginRequiredMixin, SuperUserOrUserMixin, ListView):
 
     def get_queryset(self):
         user = self.get_publisher()
-        return user.posts.all()
+        query = user.posts.all()
+        queryset = post_queryset(self.request, query)
+        return queryset
 
     def get_context_data(self, **kwargs):
         user = get_publisher(self.request, self.kwargs.get("username"))

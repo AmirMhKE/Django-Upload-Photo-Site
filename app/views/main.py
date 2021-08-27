@@ -1,9 +1,8 @@
-from app.filters import PostSearchFilter
+from app.filters import post_queryset
 from app.models import Category, Download, Hit, Ip, Like, Post, UserHit
 from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView as LoginView_
 from django.shortcuts import get_object_or_404
-from django.db.models import Count
 from django.views.generic import DetailView, ListView
 
 __all__ = (
@@ -141,35 +140,6 @@ class CategoryList(ListView):
 class LoginView(LoginView_):
     template_name = "account/login.html"
     success_url = "/"
-
-# ? Functions
-def post_queryset(request, query):
-    # ? This function set default query or search or ordering
-    if request.GET.get("search") is None:
-        queryset = query
-    else:
-        queryset = PostSearchFilter(request.GET, query).qs
-
-    # ? Ordering filter
-    ordering = request.GET.get("ordering", "")
-    _ordering = "".join(ordering.split("-"))
-    countable_fields = ["hits", "user_hits", "likes", "downloads"]
-
-    if _ordering in Post.get_model_fields_name():
-        if _ordering in countable_fields:
-            # ? -ordering_count or ordering_count
-            ordering_filter_name = f"{ordering}_count"
-            # ? -ordering_count -> ordering_count
-            ordering_name = f"{_ordering}_count"
-
-            field_annotate = {ordering_name: Count(_ordering)}
-
-            queryset = queryset.annotate(**field_annotate) \
-            .order_by(ordering_filter_name)
-        else:
-            queryset = queryset.order_by(ordering)
-
-    return queryset
 
 def post_title(request, default_title):
     # ? For set post title

@@ -1,4 +1,5 @@
 {% extends 'app/base.html' %}
+{% load static %}
 {% load category_navbar %}
 {% load public_statistics_tag %}
 {% load sidebar_tags %}
@@ -68,48 +69,7 @@
                 </aside>
                 <!-- slider -->
                 <div class="col-12 col-md-10 mx-auto wow animate__animated animate__fadeInUp">
-                    <div class="d-flex flex-column flex-md-row mt-0 mt-md-4 mb-5">
-                        <!-- filter -->
-                        <div class="row mr-5 filter mt-4 mt-md-0">
-                            <p class="ml-2 text-right">{% fws "align-right" "l" "1" %} ترتیب مرتب سازی بر اساس:</p>
-                            <div class="dropdown">
-                                <button state="1" class="btn dropdown-toggle" data-toggle="dropdown">
-                                    {% fws "arrow-up" "l" "1" %} جدیدترین
-                                </button>
-                                <div class="dropdown-menu">
-                                    <p state="1" class="dropdown-item py-2 text-right">
-                                        {% fws "arrow-up" "l" "1" %} جدیدترین</p>
-                                    <p state="2" class="dropdown-item py-2 text-right">
-                                        {% fws "arrow-down" "l" "1" %} قدیمی ترین</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mr-5 filter mt-4 mt-md-0">
-                            <p class="ml-2 text-right">{% fws "align-right" "l" "1" %} مرتب سازی بر اساس:</p>
-                            <div class="dropdown">
-                                <button state="1" class="btn dropdown-toggle" data-toggle="dropdown">
-                                    {% fws "calendar" "l" "1" %} تاریخ ایجاد
-                                </button>
-                                <div class="dropdown-menu">
-                                    <p class="dropdown-item py-2 text-right" state="1">
-                                        {% fws "calendar" "l" "1" %} تاریخ ایجاد</p>
-                                    <p class="dropdown-item py-2 text-right" state="2">
-                                        {% fws "eye" "l" "1" %} تعداد بازدید ها</p>
-                                    <p class="dropdown-item py-2 text-right" state="3">
-                                        {% fws "heart" "l" "1" %} تعداد لایک ها</p>
-                                    <p class="dropdown-item py-2 text-right" state="4">
-                                        {% fws "download" "l" "1" %} تعداد دانلود ها</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row p-0 m-0">
-                            <button class="btn text-center text-nowrap mr-5 mt-4 mt-md-0" 
-                            id="filter-btn">{% fws "filter" "l" "1" %} اعمال فیلتر</button>
-                        </div>
-                    </div>
-
+                    {% include "app/partials/filters.html" %}
                     <div class="col-12 row line mb-4 mx-0 mx-md-2"></div>
                     <div class="lbl col-6 col-sm-5 col-md-4 col-lg-3 mx-0 mx-md-4 target-1">
                         <p class="text-center p-0 m-0" id="scroll-target">{{ title }}</p>
@@ -153,3 +113,11 @@
     </div>
 {% endblock %}
 <!-- Scroll Set -->
+
+{% block custom_style %}
+    <link rel="stylesheet" href="{% static 'app/css/filters.css' %}">
+{% endblock custom_style %}
+
+{% block custom_script %}
+    <script src="{% static 'app/js/filters.js' %}"></script>
+{% endblock custom_script %}
