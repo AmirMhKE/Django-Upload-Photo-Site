@@ -36,7 +36,7 @@ def upload_location(instance, filename):
     return f"images/{instance.slug}/{get_random_str(10, 50)}.jpg"
 
 class Post(TimeStamp):
-    title = models.CharField(max_length=100, verbose_name="عنوان عکس")
+    title = models.CharField(max_length=100, verbose_name="عنوان عکس", db_index=True)
     slug = models.CharField(max_length=250, unique=True, verbose_name="آدرس عکس", blank=True)
     img = models.ImageField(upload_to=upload_location, verbose_name="عکس شما")
     original_size_image = models.CharField(max_length=50, verbose_name="سایز پیش فرض عکس", 

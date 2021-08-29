@@ -44,7 +44,8 @@
                         target="{% set_dashboard_url 'post_create' view_kwargs=view.kwargs %}">
                             {% fws "plus" title="اضافه کردن عکس" %}
                         </li>
-                        <li>
+                        <li class="{% if namespace == 'dashboard_statistics' %}active{% endif %}"
+                        target="{% set_dashboard_url 'dashboard_statistics' view_kwargs=view.kwargs %}">
                             {% fws "bar-chart" title="آمار" %}
                         </li>
                     </ul>

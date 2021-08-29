@@ -2,17 +2,18 @@ import json
 
 from account.forms import PostForm
 from account.mixins import LoginRequiredMixin, SuperUserOrUserMixin
+from account.statistics import user_posts_statistics
 from app.filters import post_queryset
-from app.models import Category, Post
+from app.models import Category, Post, Hit, Like, Download
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView, TemplateView
 from extensions.utils import set_default_data_forms
 
 __all__ = (
     "DashBoardView", "PostCreateView", "EditPostView",
-    "DeletePostView"
+    "DeletePostView", "DashboardStatisticsView"
 )
 
 User = get_user_model()
@@ -174,6 +175,28 @@ class DeletePostView(LoginRequiredMixin, SuperUserOrUserMixin, DeleteView):
 
         return super().delete(request, *args, **kwargs)
         
+class DashboardStatisticsView(LoginRequiredMixin, SuperUserOrUserMixin, TemplateView):
+    template_name = "account/dashboard_statistics.html"
+
+    def get_publisher(self):
+        user = get_publisher(self.request, self.kwargs.get("username"))
+        return user
+
+    def get_context_data(self, **kwargs):
+        user = self.get_publisher()
+        hit_query = Hit.objects.filter(post__publisher__id=user.id)
+        like_query = Like.objects.active().filter(post__publisher__id=user.id)
+        download_query = Download.objects.filter(post__publisher__id=user.id)
+
+        context = super().get_context_data(**kwargs)
+        context["namespace"] = "dashboard_statistics"
+        context["title"] = self.kwargs.get("username", "شما")
+        context["stat"] = json.dumps(user_posts_statistics(user, 14))
+        context["hits_count"] = hit_query.count()
+        context["likes_count"] = like_query.count()
+        context["downloads_count"] = download_query.count()
+        return context
+    
 # ? Functions
 def get_publisher(request, username=None):
     if username is None:

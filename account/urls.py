@@ -3,7 +3,7 @@ from django.urls import path
 
 from .views import (DashBoardView, DeletePostView, EditPostView, PostCreateView,
                    StatisticsView, UserAboutView, UserDeleteView,
-                   UserSettingsView)
+                   UserSettingsView, DashboardStatisticsView)
 
 urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
@@ -25,4 +25,8 @@ urlpatterns = [
     path('<slug:username>/dashboard/edit/<slug:slug>/', EditPostView.as_view(), name='post_edit'),
     path('dashboard/create/', PostCreateView.as_view(), name='post_create'),
     path('<slug:username>/dashboard/create/', PostCreateView.as_view(), name='post_create'),
+    path('dashboard/statistics/', DashboardStatisticsView.as_view(), 
+    name='dashboard_statistics'),
+    path('<slug:username>/dashboard/statistics/', DashboardStatisticsView.as_view(), 
+    name='dashboard_statistics'),
 ]
