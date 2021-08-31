@@ -1,7 +1,7 @@
 from django import template
 from django.contrib.auth import get_user_model
 
-from ..models import Post, Download
+from ..models import Download, Post
 
 User = get_user_model()
 

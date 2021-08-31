@@ -55,15 +55,11 @@
             </p>
             {% if request.user.is_superuser %}
             <div class="row">
-                <div class="col-12 col-xl-4">
+                <div class="col-12 col-xl-6">
                     <label for="{{ form.is_superuser.id }}" class="ch">:{{ form.is_superuser.label }}</label>
                     {{ form.is_superuser }}
                 </div>
-                <div class="col-12 col-xl-4">
-                    <label for="{{ form.is_super.id }}" class="ch">:{{ form.is_staff.label }}</label>
-                    {{ form.is_staff }}
-                </div>
-                <div class="col-12 col-xl-4">
+                <div class="col-12 col-xl-6">
                     <label for="{{ form.is_active.id }}" class="ch">:{{ form.is_active.label }}</label>
                     {{ form.is_active }}
                 </div>

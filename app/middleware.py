@@ -1,9 +1,12 @@
 import importlib
 import inspect
 from datetime import datetime, timedelta
+from random import randint
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.http import Http404
+from extensions.utils import get_client_ip
 
 from .models import Ip
 
@@ -27,7 +30,8 @@ def check_excessive_requests(request, obj):
     """
     if not request.user.is_superuser:
         minus = datetime.now().timestamp() - obj.last_excessive_request_time.timestamp()
-        block_time_minute = 10
+        block_time_minute = randint(settings.MIN_BLOCK_TIME_EXCESSIVE_REQUESTS,
+        settings.MAX_BLOCK_TIME_EXCESSIVE_REQUESTS)
         minimum_difference_float = 1.0
         max_count = 5
         
@@ -45,9 +49,7 @@ def check_excessive_requests(request, obj):
 
             # ? Save excessive count request user
             if obj.excessive_requests_count == max_count and request.user.is_authenticated:
-                username = request.user.username
-                email = request.user.email
-                user = User.objects.get(username=username, email=email)
+                user = User.objects.get(pk=request.user.pk)
                 user.excessive_requests_count += 1
                 user.save()
         else:
@@ -67,13 +69,10 @@ def process_client_ip(request):
     """
     This function save new ip address users in the database
     """
-    x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
-    if x_forwarded_for:
-        ip_address = x_forwarded_for.split(",")[0]
-    else:
-        ip_address = request.META.get("REMOTE_ADDR")
+    ip_address = get_client_ip(request)
 
     query = Ip.objects.filter(ip_address=ip_address).exists()
+    
     if not query:
         obj = Ip.objects.create(ip_address=ip_address, last_excessive_request_time=datetime.now())
         obj.save()
@@ -88,7 +87,7 @@ def get_apps_views():
     for app in apps:
         for name, cls in inspect.getmembers(importlib.
         import_module(app + ".views"), inspect.isclass):
-            if cls.__module__ == app + ".views":
+            if cls.__module__.find(app + ".views") != -1:
                 result.append(name)
 
     return result

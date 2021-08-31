@@ -1,7 +1,9 @@
-import jdatetime
 from datetime import datetime, timedelta
 
-from app.models import Hit, Like, Download
+import jdatetime
+from app.models import Download, Hit, Like
+from django.db.models import F, Count
+
 
 def user_posts_statistics(user, days_ago, reverse=None):
     """
@@ -14,28 +16,63 @@ def user_posts_statistics(user, days_ago, reverse=None):
     if reverse is None:
         reverse = False
 
-    query1 = Hit.objects.filter(post__publisher__id=user.id)
-    query2 = Like.objects.active().filter(post__publisher__id=user.id)
-    query3 = Download.objects.filter(post__publisher__id=user.id)
+    start_time = datetime.now() - timedelta(days=days_ago)
 
-    hits, likes, downloads = [], [], []
-    for day in range(days_ago + 1):
-        get_date = datetime.now() - timedelta(days=day)
-        get_jdate = jdatetime.date.fromgregorian(date=get_date)
+    created_dates = tuple([*(
+        date[0] for date in
 
-        hit_query = query1.filter(created__date=get_date)
-        like_query = query2.filter(created__date=get_date)
-        download_query = query3.filter(created__date=get_date)
+        Hit.objects.filter(post__publisher__id=user.id, created__date__gte=start_time)
+        .values(created_date=F("created__date")).union(
 
-        if hit_query.exists() or like_query.exists() or download_query.exists():
-            hits.append((get_jdate.strftime("%Y/%m/%d"), hit_query.count()))
-            likes.append((get_jdate.strftime("%Y/%m/%d"), like_query.count()))
-            downloads.append((get_jdate.strftime("%Y/%m/%d"), download_query.count()))
+            Like.objects.filter(post__publisher__id=user.id, 
+            created__date__gte=start_time, status=True)
+            .values(created_date=F("updated__date")),
+
+            Download.objects.filter(post__publisher__id=user.id, 
+            created__date__gte=start_time)
+            .values(created_date=F("created__date"))
+
+        ).values_list("created_date").iterator()
+    )])
+
+    hit_query = Hit.objects.filter(post__publisher__id=user.id, 
+    created__date__gte=start_time).values(created_date=F("created__date")) \
+    .annotate(number=Count("pk")).order_by("created_date")
+
+    like_query = Like.objects.filter(post__publisher__id=user.id, 
+    created__date__gte=start_time, status=True).values(created_date=F("updated__date")) \
+    .annotate(number=Count("pk")).order_by("created_date")
+
+    download_query = Download.objects.filter(post__publisher__id=user.id, 
+    created__date__gte=start_time).values(created_date=F("created__date")) \
+    .annotate(number=Count("pk")).order_by("created_date")
+
+    hits = [*(
+        hit_query.filter(created_date=date)[0]["number"] 
+        if hit_query.filter(created_date=date).exists() 
+        else 0 for date in created_dates
+    )]
+
+    likes = [*(
+        like_query.filter(created_date=date)[0]["number"] 
+        if like_query.filter(created_date=date).exists() 
+        else 0 for date in created_dates
+    )]
+
+    downloads = [*(
+        download_query.filter(created_date=date)[0]["number"] 
+        if download_query.filter(created_date=date).exists() 
+        else 0 for date in created_dates
+    )]
+
+    dates = [jdatetime.date.fromgregorian(date=date)
+    .strftime("%Y/%m/%d") for date in created_dates]
 
     if reverse:
         hits, likes, downloads = hits[::-1], likes[::-1], downloads[::-1]
 
     return {
+        "dates": dates,
         "hits": hits,
         "likes": likes,
         "downloads": downloads

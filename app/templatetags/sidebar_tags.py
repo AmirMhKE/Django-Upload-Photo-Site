@@ -1,7 +1,7 @@
 import random
 
 from django import template
-from django.db.models import Count
+from django.db.models import Count, Q
 
 from ..models import Category, Post
 
@@ -84,7 +84,12 @@ def get_most(m2m_column_name: str, title: str, num: int) -> dict:
     This function displays the posts that have 
     the most your m2m to the desired number.
     """
-    annotate_dict = {f"{m2m_column_name}_count": Count(m2m_column_name)}
+    if m2m_column_name != "likes":
+        annotate_dict = {f"{m2m_column_name}_count": Count(m2m_column_name)}
+    else:
+        annotate_dict = {f"{m2m_column_name}_count": Count(m2m_column_name, 
+        filter=Q(likes__status=True))}
+
     query = Post.objects.annotate(**annotate_dict) \
     .order_by(f"-{m2m_column_name}_count", "-created")
 
