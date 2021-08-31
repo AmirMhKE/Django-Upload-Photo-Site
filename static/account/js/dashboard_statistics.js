@@ -1,27 +1,5 @@
 $(document).ready(function() {
-    let stat = JSON.parse($("#stat").val());
-    let hits = [];
-    let likes = [];
-    let downloads = [];
-
-    let dates = new Set();
-
-    for(let item of stat["hits"]) {
-        dates.add(en_nums_to_fa_nums(item[0]));
-        hits.push(item[1]);    
-    }
-
-    for(let item of stat["likes"]) {
-        dates.add(en_nums_to_fa_nums(item[0]));
-        likes.push(item[1]);    
-    }
-
-    for(let item of stat["downloads"]) {
-        dates.add(en_nums_to_fa_nums(item[0]));
-        downloads.push(item[1]);    
-    }
-
-    dates = [...dates];
+    let stat = JSON.parse($("#stat").html());
     
     let chart = {
         type: 'column'
@@ -33,7 +11,7 @@ $(document).ready(function() {
         text: 'آمار اخیر'  
     };
     let xAxis = {
-        categories: dates,
+        categories: stat["dates"],
         crosshair: true,
         className: "d-none d-xl-inline-block"
     };
@@ -64,15 +42,15 @@ $(document).ready(function() {
     let series= [
         {
             name: 'تعداد لایک ها',
-            data: likes
+            data: stat["likes"]
         }, 
         {
             name: 'تعداد دانلود ها',
-            data: downloads
+            data: stat["downloads"]
         }, 
         {
             name: 'تعداد بازدید ها',
-            data: hits
+            data: stat["hits"]
         }, 
     ];
     

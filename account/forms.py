@@ -50,7 +50,6 @@ class UserUpdateForm(forms.ModelForm):
 
         # ? Set user levels
         self.set_user_level_front("is_superuser", "دسترسی ابر کاربر")
-        self.set_user_level_front("is_staff", "دسترسی به پنل ادمین")
         self.set_user_level_front("is_active", "فعال بودن کاربر")
 
     def set_user_level_front(self, level_name, label_name):
@@ -104,10 +103,6 @@ class UserUpdateForm(forms.ModelForm):
         data = self.cleaned_data["is_superuser"]
         return self.change_user_level("is_superuser", data)
 
-    def clean_is_staff(self):
-        data = self.cleaned_data["is_staff"]
-        return self.change_user_level("is_staff", data)
-
     def clean_is_active(self):
         data = self.cleaned_data["is_active"]
         return self.change_user_level("is_active", data)
@@ -149,7 +144,7 @@ class PostForm(forms.ModelForm):
         data = self.cleaned_data["img"]
         
         if data and hasattr(data, "image"):
-            image_validation(data)
+            image_validation(data.image)
             check_similar_images(Post, data, self.post_id)
 
             if self.operation == "create":

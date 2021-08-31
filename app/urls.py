@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import (CategoryList, DownloadView, LikeView, LoginView, PostDetail, PostList,
+from .views import (CategoryList, DownloadView, LikeView, PostDetail, PostList,
                     PublisherList)
 
 urlpatterns = [
@@ -14,5 +14,4 @@ urlpatterns = [
     path('category/<slug:slug>/page/<int:page>/', CategoryList.as_view(), name='category_list'),
     path('download/<slug:slug>/', DownloadView.as_view(), name='download'),
     path('like/<slug:slug>/', LikeView.as_view(), name='like'),
-    path('login/', LoginView.as_view(), name='login')
 ]

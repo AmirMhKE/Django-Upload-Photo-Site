@@ -1,13 +1,12 @@
 import json
 
+from account.forms import UserUpdateForm
+from account.mixins import LoginRequiredMixin, SuperUserOrUserMixin
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import DetailView, TemplateView, UpdateView, View
 from extensions.utils import set_default_data_forms
-
-from account.forms import UserUpdateForm
-from account.mixins import LoginRequiredMixin, SuperUserOrUserMixin
 
 __all__ = (
     "StatisticsView", "UserSettingsView", "UserDeleteView",
@@ -22,12 +21,14 @@ class StatisticsView(LoginRequiredMixin, SuperUserOrUserMixin, TemplateView):
     def get_context_data(self, **kwargs):
         username = kwargs.get("username", self.request.user.username)
 
-        this_user = User.objects.get(username__iexact=username)
+        this_user = User.objects.prefetch_related("posts", "likes", "hits") \
+        .get(username__iexact=username)
+
         context = super().get_context_data(**kwargs)
         context.update({
             "username": "شما" if this_user == self.request.user else this_user.get_name_or_username,
             "post_count": this_user.posts.count(),
-            "like_count": this_user.likes.count(),
+            "like_count": this_user.likes.active().count(),
             "hits_count": this_user.hits.count(),
             "all_requests_count": this_user.all_requests_count,
             "requests_download_count": this_user.requests_download_count,
@@ -118,7 +119,8 @@ class UserAboutView(LoginRequiredMixin, DetailView):
 
     def get_object(self, queryset=None):
         username = self.kwargs.get("username", self.request.user.username)
-        user = get_object_or_404(User, username=username)
+        user = get_object_or_404(User.objects.prefetch_related("posts"), 
+        username=username)
         return user
 
     def get_context_data(self, **kwargs):

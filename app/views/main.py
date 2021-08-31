@@ -1,13 +1,14 @@
 from app.filters import post_queryset
 from app.models import Category, Download, Hit, Ip, Like, Post, UserHit
+from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.auth.views import LoginView as LoginView_
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView
+from extensions.utils import get_client_ip
 
 __all__ = (
     "PostList", "PostDetail", "PublisherList", 
-    "CategoryList", "LoginView"
+    "CategoryList"
 )
 
 User = get_user_model()
@@ -16,7 +17,7 @@ class PostList(ListView):
     model = Post
     template_name = "app/post_list.html"
     context_object_name = "post_list"
-    paginate_by = 5
+    paginate_by = settings.PAGE_SIZE
 
     def get_queryset(self):
         query = Post.objects.all()
@@ -35,15 +36,6 @@ class PostDetail(DetailView):
     template_name = "app/post_detail.html"
     context_object_name = "post"
 
-    def get_client_ip(self):
-        x_forwarded_for = self.request.META.get("HTTP_X_FORWARDED_FOR")
-        if x_forwarded_for:
-            ip_address = x_forwarded_for.split(",")[0]
-        else:
-            ip_address = self.request.META.get("REMOTE_ADDR")
-
-        return ip_address
-
     def get_object(self, queryset=None):
         slug = self.kwargs.get("slug")
         obj = get_object_or_404(Post, slug=slug)
@@ -56,7 +48,7 @@ class PostDetail(DetailView):
 
     def set_ip_hit(self):
         obj = self.get_object()
-        ip_obj = Ip.objects.get(ip_address=self.get_client_ip())
+        ip_obj = Ip.objects.get(ip_address=get_client_ip(self.request))
         hit_query = Hit.objects.filter(post=obj, ip_address=ip_obj)
         
         if not hit_query.exists():
@@ -79,7 +71,7 @@ class PostDetail(DetailView):
         obj = self.get_object()
 
         if user.is_authenticated:
-            like_query = Like.objects.filter(post=obj, user=user)
+            like_query = Like.objects.active().filter(post=obj, user=user)
             download_query = Download.objects.filter(post=obj, user=user)
 
             if like_query.exists():
@@ -95,7 +87,7 @@ class PostDetail(DetailView):
 class PublisherList(ListView):
     template_name = "app/post_list.html"
     context_object_name = "post_list"
-    paginate_by = 5
+    paginate_by = settings.PAGE_SIZE
     publisher, username = None, None
 
     def get_queryset(self):
@@ -117,7 +109,7 @@ class PublisherList(ListView):
 class CategoryList(ListView):
     template_name = "app/post_list.html"
     context_object_name = "post_list"
-    paginate_by = 5
+    paginate_by = settings.PAGE_SIZE
     category = None
 
     def get_queryset(self):
@@ -135,11 +127,6 @@ class CategoryList(ListView):
         context["namespace"] = "category_list"
         context["category_slug"] = self.category.slug
         return context
-            
-# ? For debug mode
-class LoginView(LoginView_):
-    template_name = "account/login.html"
-    success_url = "/"
 
 def post_title(request, default_title):
     # ? For set post title

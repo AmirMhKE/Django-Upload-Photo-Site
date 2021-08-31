@@ -23,16 +23,16 @@ def image_validation(data):
     This function is for image validation and prevents the upload 
     of low quality images to some extent.
     """
-    formats = ["JPEG", "PNG"]
+    formats = settings.VALID_IMAGE_FORMATS
 
-    if data.image.format not in formats:
+    if data.format not in formats:
         raise ValidationError(
             "شما فقط می توانید فایلی با نوع {} آپلود کنید."
             .format(" یا ".join(formats)),
             code="format_invalid"
         )
 
-    if data.image.width < 300 or data.image.height < 300:
+    if data.width < 300 or data.height < 300:
         raise ValidationError(
             "شما باید فایلی آپلود کنید که حداقل طول و عرض آن ۳۰۰ باشد.",
             code="size_invalid"
@@ -65,7 +65,7 @@ def check_number_uploaded_images(model, user):
     and the user can not upload a large number of images per day.
     """
     if not user.is_superuser:
-        max_count = 5
+        max_count = settings.MAX_IMAGE_UPLOAD_COUNT
         now_time = timezone.now().date()
         query = model.objects.filter(publisher=user, created__date=now_time)
 

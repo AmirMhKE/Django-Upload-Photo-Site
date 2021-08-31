@@ -1,5 +1,5 @@
 import django_filters
-from django.db.models import Count
+from django.db.models import Count, Q
 
 from .models import Post
 
@@ -32,7 +32,11 @@ def post_queryset(request, query):
             # ? -ordering_count -> ordering_count
             ordering_name = f"{_ordering}_count"
 
-            field_annotate = {ordering_name: Count(_ordering)}
+            if _ordering != "likes":
+                field_annotate = {ordering_name: Count(_ordering)}
+            else:
+                field_annotate = {ordering_name: Count(_ordering,
+                filter=Q(likes__status=True))}
 
             queryset = queryset.annotate(**field_annotate) \
             .order_by(ordering_filter_name)

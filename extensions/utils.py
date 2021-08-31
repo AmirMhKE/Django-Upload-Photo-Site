@@ -4,8 +4,9 @@ from pathlib import Path
 from random import randint
 
 import imagehash
-from django.utils.crypto import get_random_string
 from django.http import QueryDict
+from django.utils.crypto import get_random_string
+
 
 def get_random_str(min_length, max_length):
     """
@@ -31,6 +32,18 @@ def get_files_list(path: str) -> list:
         pass
     
     return result
+
+def get_client_ip(request):
+    """
+    This function get ip from request
+    """
+    x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+    if x_forwarded_for:
+        ip_address = x_forwarded_for.split(",")[0]
+    else:
+        ip_address = request.META.get("REMOTE_ADDR")
+
+    return ip_address
 
 def set_default_data_forms(data: dict, initial_data: dict) -> dict:
     """

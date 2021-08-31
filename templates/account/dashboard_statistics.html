@@ -3,25 +3,31 @@
 {% load tool_tags %}
 
 {% block main %}
-    <h1 class="mx-auto text-center mt-5 title" 
-    style="color: var(--Main-Gray);font-weight: bold;">آمار عکس های {{ title }}</h1>
+    <h1 class="mx-auto text-center mt-5 title">آمار عکس های {{ title }}</h1>
     <div class="line row mx-auto col-12 col-md-10 mt-5"></div>
-    <div id="container" class="col-12 col-md-10 mx-auto mt-5"></div>
 
-    <div class="col-12 col-md-10 mx-auto my-5 d-flex flex-column flex-lg-row 
-    align-items-center justify-content-around bottom">
-        <b class="m-2">{% fws "eye" "l" "1" %} تعداد کل بازدید ها: {{ hits_count|en_nums_to_fa_nums }}</b>
-        <b class="m-2">{% fws "heart" "l" "1" %}تعداد کل لایک ها: 
-        <span id="like_count">{{ likes_count|en_nums_to_fa_nums }}</span></b>
-        <b class="m-2">{% fws "download" "l" "1" %} تعداد کل دانلود ها: 
-        <span id="downloads">{{ downloads_count|en_nums_to_fa_nums }}</span></b>
+    <div class="p-0 m-0 wow animate__animated animate__fadeInDown">
+        <div id="container" class="col-12 col-md-10 mx-auto mt-5"></div>
+
+        <div class="col-12 col-md-10 mx-auto my-5 d-flex flex-column flex-lg-row 
+        align-items-center justify-content-around bottom">
+            <b class="m-2">{% fws "eye" "l" "1" %} تعداد کل بازدید ها: {{ hits_count|en_nums_to_fa_nums }}</b>
+            <b class="m-2">{% fws "heart" "l" "1" %}تعداد کل لایک ها: 
+            <span id="like_count">{{ likes_count|en_nums_to_fa_nums }}</span></b>
+            <b class="m-2">{% fws "download" "l" "1" %} تعداد کل دانلود ها: 
+            <span id="downloads">{{ downloads_count|en_nums_to_fa_nums }}</span></b>
+        </div>
     </div>
 
-    <input id="stat" type="hidden" value="{{ stat }}">
+    <div hidden id="stat">{{ stat }}</div>
 {% endblock main %}
 
 {% block custom_style %}
     <style>
+        .title {
+            color: var(--Main-Gray);
+            font-weight: bold;
+        }
         .bottom {
             color: var(--Main-Gray);
         }

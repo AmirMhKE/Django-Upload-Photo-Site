@@ -4,11 +4,13 @@ from account.forms import PostForm
 from account.mixins import LoginRequiredMixin, SuperUserOrUserMixin
 from account.statistics import user_posts_statistics
 from app.filters import post_queryset
-from app.models import Category, Post, Hit, Like, Download
+from app.models import Category, Download, Hit, Like, Post
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView, TemplateView
+from django.views.generic import (CreateView, DeleteView, ListView,
+                                  TemplateView, UpdateView)
 from extensions.utils import set_default_data_forms
 
 __all__ = (
@@ -22,7 +24,7 @@ User = get_user_model()
 class DashBoardView(LoginRequiredMixin, SuperUserOrUserMixin, ListView):
     template_name = "account/dashboard.html"
     context_object_name = "post_list"
-    paginate_by = 5
+    paginate_by = settings.PAGE_SIZE
 
     def get_publisher(self):
         user = get_publisher(self.request, self.kwargs.get("username"))
