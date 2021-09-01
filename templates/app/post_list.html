@@ -59,12 +59,12 @@
             <div class="d-flex flex-column">
                 <aside class="col-12 col-md-10 mx-auto mt-5 mt-md-0 wow animate__animated animate__fadeInUp order-2">
                     <div class="col d-lg-flex">
-                        {% sidebar request "suggestion" 6 %}
-                        {% sidebar request "popular" 6 %}
+                        {% sidebar request "suggestion" side_count %}
+                        {% sidebar request "popular" side_count %}
                     </div>
                     <div class="col d-lg-flex">
-                        {% sidebar request "download" 6 %}
-                        {% sidebar request "hit" 6 %}
+                        {% sidebar request "download" side_count %}
+                        {% sidebar request "hit" side_count %}
                     </div>
                 </aside>
                 <!-- slider -->

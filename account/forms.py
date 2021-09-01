@@ -134,6 +134,8 @@ class PostForm(forms.ModelForm):
         self.post_id = kwargs.pop("id", None)
         super().__init__(*args, **kwargs)
 
+        self.fields["title"].widget.attrs.update({**_INP_DEFAULT_OPTIONS})
+
         try:
             self.fields["title"].widget.attrs["initial"] = self.initial["title"]
             self.fields["category"].widget.attrs["initial"] = self.initial["category"]

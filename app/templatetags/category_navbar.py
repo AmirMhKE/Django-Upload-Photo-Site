@@ -1,6 +1,7 @@
 from random import randint
 
 from django import template
+from django.conf import settings
 
 from ..models import Category
 
@@ -8,10 +9,12 @@ register = template.Library()
 
 @register.inclusion_tag("app/partials/navbar.html")
 def category(request):
-    categories = random_categories(5)
+    number = settings.MAIN_CATEGORIES_NUMBER
+    categories = random_categories(number)
 
     return {
         "request": request,
+        "email": settings.EMAIL,
         **categories
     }
 

@@ -86,10 +86,10 @@ def fws(name, margin_right_or_left=None, margin_number=None, custom_class=None, 
 def user_profile_image(user, width=None, height=None, **kwargs):
     """
     This function return user profile image if user has profile image else
-    return summary of username or naprint(datetime_obj)me
-    parameter user for get user
+    return summary of username or first name and last name.
+    parameter user for get user.
     parameter width and height for set user profile image width and height
-    and parameter kwargs for other options
+    and parameter kwargs for other options.
     example in html: {% user_profile_image user "3rem" "3rem" 
     profile_tag="a" has_title=True profile_classes="user-profile, text-center" %}
     """

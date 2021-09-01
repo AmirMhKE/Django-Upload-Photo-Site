@@ -202,7 +202,7 @@ class DashboardStatisticsView(LoginRequiredMixin, SuperUserOrUserMixin, Template
 # ? Functions
 def get_publisher(request, username=None):
     if username is None:
-        user = User.objects.get(pk=request.user.pk)
+        user = User.objects.prefetch_related("posts").get(pk=request.user.pk)
     else:
         user = get_object_or_404(User, username__iexact=username)
 

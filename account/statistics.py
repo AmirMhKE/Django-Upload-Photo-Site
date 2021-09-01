@@ -69,7 +69,7 @@ def user_posts_statistics(user, days_ago, reverse=None):
     .strftime("%Y/%m/%d") for date in created_dates]
 
     if reverse:
-        hits, likes, downloads = hits[::-1], likes[::-1], downloads[::-1]
+        hits, likes, downloads, dates = hits[::-1], likes[::-1], downloads[::-1], dates[::-1]
 
     return {
         "dates": dates,

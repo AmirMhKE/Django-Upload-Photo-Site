@@ -29,6 +29,7 @@ class PostList(ListView):
         context["title"] = post_title(self.request, "همه ی عکس ها")
         context["namespace"] = "post_list"
         context["current_page"] = self.kwargs.get("page", 1)
+        context["side_count"] = settings.SIDEBAR_ITEMS_COUNT
         return context
 
 class PostDetail(DetailView):
@@ -104,6 +105,7 @@ class PublisherList(ListView):
         context["current_page"] = self.kwargs.get("page", 1)
         context["namespace"] = "publisher_list"
         context["username"] = self.username
+        context["side_count"] = settings.SIDEBAR_ITEMS_COUNT
         return context
 
 class CategoryList(ListView):
@@ -126,6 +128,7 @@ class CategoryList(ListView):
         context["current_page"] = self.kwargs.get("page", 1)
         context["namespace"] = "category_list"
         context["category_slug"] = self.category.slug
+        context["side_count"] = settings.SIDEBAR_ITEMS_COUNT
         return context
 
 def post_title(request, default_title):

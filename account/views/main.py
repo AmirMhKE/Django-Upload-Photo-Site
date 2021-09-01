@@ -2,6 +2,7 @@ import json
 
 from account.forms import UserUpdateForm
 from account.mixins import LoginRequiredMixin, SuperUserOrUserMixin
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
@@ -120,11 +121,12 @@ class UserAboutView(LoginRequiredMixin, DetailView):
     def get_object(self, queryset=None):
         username = self.kwargs.get("username", self.request.user.username)
         user = get_object_or_404(User.objects.prefetch_related("posts"), 
-        username=username)
+        username__iexact=username)
         return user
 
     def get_context_data(self, **kwargs):
         user = self.get_object()
+        post_count = settings.USER_LAST_POSTS_COUNT
         context = super().get_context_data(**kwargs)
-        context["last_posts"] = user.posts.all()[:6]
+        context["last_posts"] = user.posts.all()[:post_count]
         return context

@@ -24,6 +24,8 @@ def image_validation(data):
     of low quality images to some extent.
     """
     formats = settings.VALID_IMAGE_FORMATS
+    min_width = settings.MIN_IMAGE_WIDTH
+    min_height = settings.MIN_IMAGE_HEIGHT
 
     if data.format not in formats:
         raise ValidationError(
@@ -32,9 +34,10 @@ def image_validation(data):
             code="format_invalid"
         )
 
-    if data.width < 300 or data.height < 300:
+    if data.width < min_width or data.height < min_height:
         raise ValidationError(
-            "شما باید فایلی آپلود کنید که حداقل طول و عرض آن ۳۰۰ باشد.",
+            "شما باید فایلی آپلود کنید که حداقل طول آن {} و عرض آن {} باشد."
+            .format(min_width, min_height),
             code="size_invalid"
         )
 
@@ -50,7 +53,7 @@ def check_similar_images(model, data, instance_pk=None):
     check_images = (
         compare_similarities_two_images(Image.open(data), 
         Image.open(settings.MEDIA_ROOT / img_path[0]))
-        for img_path in query
+        for img_path in query.iterator()
     )
 
     if any([*check_images]):

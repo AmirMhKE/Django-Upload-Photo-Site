@@ -18,14 +18,14 @@ class DownloadView(LoginRequiredMixin, View):
         file_name = get_files_list(os.path.join(settings.DOWNLOAD_ROOT, obj.slug))[-1]
         img = Image.open(file_name)
          
-        extension = obj.img.path.split(".")[-1]
         content = \
-        f"attachment; filename={os.path.basename(f'{get_random_str(10, 50)}-akscade.{extension}')}" 
+        f"attachment; filename={os.path.basename(f'{get_random_str(10, 50)}-akscade.jpg')}" 
         response = HttpResponse(img, content_type="application/force-download")
         response["Content-Disposition"] = content
         response["X-Sendfile"] = smart_str(img)
 
         download_query = Download.objects.filter(post=obj, user=request.user)
+        
         if not download_query.exists():
             Download.objects.create(post=obj, user=request.user)
 

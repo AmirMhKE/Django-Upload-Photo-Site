@@ -3,7 +3,6 @@ import os
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils.html import format_html
 from extensions.timestamp import TimeStamp
 from extensions.utils import get_random_str
 from PIL import Image
@@ -63,13 +62,6 @@ class Post(TimeStamp):
 
         return result
 
-    def thumbnail_img(self):
-        return format_html(f"""
-            <img width=100 height=75 style='border-radius: 2px;border: 1px solid gray;'
-            src='{self.img.url}'>
-        """)
-    thumbnail_img.short_description = "عکس شما"
-
     def save(self, *args, **kwargs):
         # ? if model not created
         if not self.pk:
@@ -112,7 +104,10 @@ class Post(TimeStamp):
         self.original_size_image = f"{str(width)} × {str(height)}"
 
         # ? This image for show in site
+        show_width = settings.SHOW_IMAGE_WIDTH
+        show_height = settings.SHOW_IMAGE_HEIGHT
+        
         with Image.open(self.img) as img:
-            img.thumbnail((1000, 1000))
+            img.thumbnail((show_height, show_width))
             img.save(self.img.path, format=download_image.format)
             img.close()

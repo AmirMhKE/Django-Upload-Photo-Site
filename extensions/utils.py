@@ -4,7 +4,7 @@ from pathlib import Path
 from random import randint
 
 import imagehash
-from django.http import QueryDict
+from django.http import HttpRequest, QueryDict
 from django.utils.crypto import get_random_string
 
 
@@ -33,7 +33,7 @@ def get_files_list(path: str) -> list:
     
     return result
 
-def get_client_ip(request):
+def get_client_ip(request: HttpRequest) -> str:
     """
     This function get ip from request
     """
@@ -76,7 +76,7 @@ def compare_similarities_two_images(image1, image2):
         return True
     return False
 
-def param_request_get_to_url_param(request_get: QueryDict):
+def param_request_get_to_url_param(request_get: QueryDict) -> str:
     """
     This function convert request.GET QueryDict to url parameters.
     example: <QueryDict: {'search': ['example'], 'publisher': ['username']}>

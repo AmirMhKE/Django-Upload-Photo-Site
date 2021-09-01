@@ -38,7 +38,7 @@ def post_queryset(request, query):
                 field_annotate = {ordering_name: Count(_ordering,
                 filter=Q(likes__status=True))}
 
-            queryset = queryset.annotate(**field_annotate) \
+            queryset = queryset.alias(**field_annotate) \
             .order_by(ordering_filter_name)
         else:
             queryset = queryset.order_by(ordering)

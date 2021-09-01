@@ -32,8 +32,8 @@ def check_excessive_requests(request, obj):
         minus = datetime.now().timestamp() - obj.last_excessive_request_time.timestamp()
         block_time_minute = randint(settings.MIN_BLOCK_TIME_EXCESSIVE_REQUESTS,
         settings.MAX_BLOCK_TIME_EXCESSIVE_REQUESTS)
-        minimum_difference_float = 1.0
-        max_count = 5
+        minimum_difference_float = settings.MINIMUM_DIFFERENCE_REQUESTS
+        max_count = settings.MAX_COUNT_EXCESSIVE_REQUESTS
         
         if obj.excessive_requests_count < max_count:
             if not obj.excessive_requests_count:
@@ -53,8 +53,8 @@ def check_excessive_requests(request, obj):
                 user.excessive_requests_count += 1
                 user.save()
         else:
-            difference_block_time = obj.last_excessive_request_time + \
-            timedelta(seconds=block_time_minute)
+            difference_block_time = obj.last_excessive_request_time \
+            + timedelta(seconds=block_time_minute)
 
             if datetime.now().timestamp() < difference_block_time.timestamp():
                 diffrence = difference_block_time.timestamp() - datetime.now().timestamp()

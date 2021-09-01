@@ -1,26 +1,20 @@
 import random
 
 from django import template
+from django.conf import settings
 from django.db.models import Count, Q
 
 from ..models import Category, Post
 
 register = template.Library()
 
-M2M_TITLES = {
-    "suggestion": "عکس های پیشنهادی برای شما",
-    "popular": "محبوب ترین عکس ها",
-    "download": "پر دانلود ترین عکس ها",
-    "hit": "پر بازدید ترین عکس ها",
-}
-
 @register.inclusion_tag("app/partials/sidebar.html")
 def sidebar(request, name, num):
     queries = {
         "suggestion": lambda num: suggestion_posts(request, num),
-        "popular": lambda num: get_most("likes", M2M_TITLES["popular"], num),
-        "download": lambda num: get_most("downloads", M2M_TITLES["download"], num),
-        "hit": lambda num: get_most("hits", M2M_TITLES["hit"], num),
+        "popular": lambda num: get_most("likes", settings.SIDEBAR_TAG_TITLES["popular"], num),
+        "download": lambda num: get_most("downloads", settings.SIDEBAR_TAG_TITLES["download"], num),
+        "hit": lambda num: get_most("hits", settings.SIDEBAR_TAG_TITLES["hit"], num),
     }
 
     return {
@@ -28,7 +22,7 @@ def sidebar(request, name, num):
         **queries[name](num)
     }
 
-def get_most_viewd_category_from_user(user):
+def get_most_viewed_category_from_user(user):
     """
     This function, if the user is logged in to the site, 
     shows the most categories that the user has visited, 
@@ -54,7 +48,7 @@ def suggestion_posts(request, num: int) -> dict:
     the user to the desired number from the database.
     """
     all_posts_item = Post.objects.all()
-    query = get_most_viewd_category_from_user(request.user) or all_posts_item
+    query = get_most_viewed_category_from_user(request.user) or all_posts_item
         
     # ? Set random items
     random_items = []
@@ -75,7 +69,7 @@ def suggestion_posts(request, num: int) -> dict:
             [*exlude_most_category], other_items_count))
 
     return {
-        "title": "عکس های پیشنهادی برای شما",
+        "title": settings.SIDEBAR_TAG_TITLES["suggestion"],
         "sidebar_items": random_items
     }
 
@@ -90,7 +84,7 @@ def get_most(m2m_column_name: str, title: str, num: int) -> dict:
         annotate_dict = {f"{m2m_column_name}_count": Count(m2m_column_name, 
         filter=Q(likes__status=True))}
 
-    query = Post.objects.annotate(**annotate_dict) \
+    query = Post.objects.alias(**annotate_dict) \
     .order_by(f"-{m2m_column_name}_count", "-created")
 
     return {
