@@ -15,6 +15,16 @@ function en_nums_to_fa_nums(value) {
 }
 
 function image_validation(instance, options) {
+    let img_formats = JSON.parse(document.querySelector("#img_formats").innerHTML);
+    let img_width = Number(document.querySelector("#img_width").value);
+    let img_height = Number(document.querySelector("#img_height").value);
+
+    let formats = [];
+
+    for(format of img_formats) {
+        formats.push(`image/${format.toLowerCase()}`);
+    }
+
     if(instance.value !== "") {
         var preview_image = instance.files[0];
         var reader = new FileReader();
@@ -28,22 +38,22 @@ function image_validation(instance, options) {
                 let width = this.width;
                 let height = this.height;
 
-                if(width < 300 || height < 300) {
+                if(width < img_width || height < img_height) {
                     Swal.fire({
                         icon: "error",
                         title: "فایل با اندازه غیر مجاز",
-                        text: "شما باید فایلی آپلود کنید که حداقل طول و عرض آن ۳۰۰ باشد.",
+                        text: `شما باید فایلی آپلود کنید که حداقل طول آن ${en_nums_to_fa_nums(img_width)} و عرض آن ${en_nums_to_fa_nums(img_height)} باشد.`,
                         confirmButtonText: "باشه"
                     }).then(() => {
                         if(options.invalid_callback) {
                             options.invalid_callback();
                         }
                     });
-                } else if(!["image/jpeg", "image/png"].includes(preview_image.type)) {
+                } else if(!formats.includes(preview_image.type)) {
                     Swal.fire({
                         icon: "error",
                         title: "فایل با فرمت غیر مجاز",
-                        text: "شما باید فایلی آپلود کنید که نوع آن JPEG یا PNG باشد.",
+                        text: `شما باید فایلی آپلود کنید که نوع آن ${img_formats.join(" یا ")} باشد.`,
                         confirmButtonText: "باشه"
                     }).then(() => {
                         if(options.invalid_callback) {
@@ -54,7 +64,7 @@ function image_validation(instance, options) {
                     Swal.fire({
                         imageUrl: reader.result,
                         imageWidth: 300,
-                        imageHeight: 300,
+                        imageHeight: "auto",
                         title: options.title,
                         text: options.text,
                         showDenyButton: true,

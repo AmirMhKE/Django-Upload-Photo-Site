@@ -17,6 +17,10 @@
             <button type="submit" class="btn mt-3" id="update" disabled>اعمال تغییرات</button>
         </form>
     </div>
+
+    <div id="img_formats" hidden>{{ img_formats|js }}</div>
+    <input type="hidden" id="img_width" value="{{ img_width|js }}">
+    <input type="hidden" id="img_height" value="{{ img_height|js }}">
 {% endblock main %}
 
 {% block custom_style %}

@@ -75,6 +75,10 @@
             <button class="btn mr-md-1 delete_account-btn">پاک کردن اکانت کاربری</button>
         </form>
     </div>
+
+    <div id="img_formats" hidden>{{ img_formats|js }}</div>
+    <input type="hidden" id="img_width" value="{{ img_width|js }}">
+    <input type="hidden" id="img_height" value="{{ img_height|js }}">
 {% endblock %}
 
 {% block custom_style %}

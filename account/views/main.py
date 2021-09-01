@@ -105,6 +105,9 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
         "username", self.request.user.username))
         context["user"] = user
         context["username"] = "شما" if user == self.request.user else user.get_name_or_username
+        context["img_formats"] = settings.VALID_IMAGE_FORMATS
+        context["img_width"] = settings.MIN_IMAGE_WIDTH
+        context["img_height"] = settings.MIN_IMAGE_WIDTH
         return context
 
 class UserDeleteView(LoginRequiredMixin, View):

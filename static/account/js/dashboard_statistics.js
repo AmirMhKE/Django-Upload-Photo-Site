@@ -11,7 +11,9 @@ $(document).ready(function() {
         text: 'آمار اخیر'  
     };
     let xAxis = {
-        categories: stat["dates"],
+        categories: stat["dates"].map((value) => {
+            return en_nums_to_fa_nums(value);
+        }),
         crosshair: true,
         className: "d-none d-xl-inline-block"
     };

@@ -43,8 +43,6 @@ image_input_file.onchange = function() {
 }
 
 function postCreateValidation() {
-    console.log("salam!");
-
     let title_condition = (
         this["title"].value.trim() !== ""
     )

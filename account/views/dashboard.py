@@ -68,6 +68,9 @@ class PostCreateView(LoginRequiredMixin, SuperUserOrUserMixin, CreateView):
         context["namespace"] = "post_create"
         context["title"] = username
         context["publisher"] = user
+        context["img_formats"] = settings.VALID_IMAGE_FORMATS
+        context["img_width"] = settings.MIN_IMAGE_WIDTH
+        context["img_height"] = settings.MIN_IMAGE_WIDTH
         return context
 
     def get_form_kwargs(self):
@@ -119,6 +122,9 @@ class EditPostView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
         context["category"] = Category.objects.all()
         context["publisher"] = user
         context["title"] = username
+        context["img_formats"] = settings.VALID_IMAGE_FORMATS
+        context["img_width"] = settings.MIN_IMAGE_WIDTH
+        context["img_height"] = settings.MIN_IMAGE_WIDTH
         return context
 
     def get_form_kwargs(self):
