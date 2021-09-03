@@ -13,17 +13,17 @@ from .models import Post
 @receiver(pre_delete, sender=Post)
 def image_delete(sender, instance, **kwargs):
     dir_name = os.path.dirname(instance.img.path)
-    download_dir_name = settings.DOWNLOAD_ROOT / instance.slug
+    download_dir_name = os.path.join(settings.DOWNLOAD_ROOT, instance.slug)
     shutil.rmtree(dir_name)
     shutil.rmtree(download_dir_name)
 
 # ? delete old image if image updated
 @receiver(post_save, sender=Post)
 def delete_old_images(sender, instance, **kwargs):
-    show_path = os.path.join(settings.MEDIA_ROOT, f"images/{instance.slug}")
+    show_path = os.path.join(settings.MEDIA_ROOT, "images", instance.slug)
     show_image_list = get_files_list(show_path)
   
-    download_path = settings.DOWNLOAD_ROOT / instance.slug
+    download_path = os.path.join(settings.DOWNLOAD_ROOT, instance.slug)
     download_image_list = get_files_list(download_path)
 
     # ? if exists duplicate file

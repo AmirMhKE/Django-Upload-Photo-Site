@@ -91,16 +91,15 @@ class Post(TimeStamp):
         if not os.path.exists(settings.DOWNLOAD_ROOT):
             os.makedirs(settings.DOWNLOAD_ROOT)
 
-        if not os.path.exists(settings.DOWNLOAD_ROOT / self.slug):
-            os.makedirs(settings.DOWNLOAD_ROOT / self.slug)
+        if not os.path.exists(os.path.join(settings.DOWNLOAD_ROOT, self.slug)):
+            os.makedirs(os.path.join(settings.DOWNLOAD_ROOT, self.slug))
 
         download_image = Image.open(self.img)
-        download_image.save(settings.DOWNLOAD_ROOT / f"{self.slug}/ \
-        {get_random_str(10, 50)}-akscade.jpg".replace(" ", ""), 
-        format=download_image.format)
+        download_image.save(os.path.join(settings.DOWNLOAD_ROOT, self.slug,
+        f"{get_random_str(10, 50)}-akscade.jpg"), format=download_image.format)
 
         # ? Save size image
-        height, width = download_image.size
+        width, height = download_image.width, download_image.height
         self.original_size_image = f"{str(width)} × {str(height)}"
 
         # ? This image for show in site

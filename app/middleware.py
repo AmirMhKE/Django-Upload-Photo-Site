@@ -70,14 +70,8 @@ def process_client_ip(request):
     This function save new ip address users in the database
     """
     ip_address = get_client_ip(request)
-
-    query = Ip.objects.filter(ip_address=ip_address).exists()
-    
-    if not query:
-        obj = Ip.objects.create(ip_address=ip_address, last_excessive_request_time=datetime.now())
-        obj.save()
-    else:
-        obj = Ip.objects.get(ip_address=ip_address)
+    obj = Ip.objects.get_or_create(ip_address=ip_address, 
+    last_excessive_request_time=datetime.now())
 
     check_excessive_requests(request, obj)
 

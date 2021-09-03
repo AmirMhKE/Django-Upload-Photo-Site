@@ -4,6 +4,7 @@ from pathlib import Path
 from random import randint
 
 import imagehash
+from django.core.files import File
 from django.http import HttpRequest, QueryDict
 from django.utils.crypto import get_random_string
 
@@ -94,3 +95,9 @@ def param_request_get_to_url_param(request_get: QueryDict) -> str:
             result += f"={value}"
 
     return result
+
+def get_test_image(path):
+    """
+    This function returns the image for testing from the desired path.
+    """
+    return File(open(path, "rb"))
