@@ -71,6 +71,9 @@
                         {% fws "whatsapp" "l" "1" %} اشتراک گذاری در واتساپ</a>
                         <a target="_blank" class="dropdown-item text-right" 
                         href="https://twitter.com/intent/tweet?url={{ request.META.HTTP_HOST }}{{ request.path }}&text={{ post.title }}">{% fws "twitter" "l" "1" %}اشتراک گذاری در توییتر</a>
+                        <a href="#" class="dropdown-item text-right clipboard">
+                            {% fws "clipboard" "l" "1" %}کپی کردن آدرس صفحه
+                        </a>
                       </div>
                 </div>
             </div>    

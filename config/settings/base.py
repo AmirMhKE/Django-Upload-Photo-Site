@@ -167,3 +167,5 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 DOWNLOAD_ROOT = BASE_DIR / 'download'
+
+TEST_RUNNER = "redgreenunittest.django.runner.RedGreenDiscoverRunner"

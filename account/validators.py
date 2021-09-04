@@ -1,3 +1,5 @@
+import os
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
@@ -52,7 +54,7 @@ def check_similar_images(model, data, instance_pk=None):
 
     check_images = (
         compare_similarities_two_images(Image.open(data), 
-        Image.open(settings.MEDIA_ROOT / img_path[0]))
+        Image.open(os.path.join(settings.MEDIA_ROOT, img_path[0])))
         for img_path in query.iterator()
     )
 

@@ -1,6 +1,6 @@
 import importlib
 import inspect
-from datetime import datetime, timedelta
+from jdatetime import datetime, timedelta
 from random import randint
 
 from django.conf import settings
@@ -21,8 +21,55 @@ class RequestProcessMiddleware:
         response = self.get_response(request)
         return response
 
-    def process_view(self, request, view_func, view_args, view_kwargs):
+    @staticmethod
+    def process_view(request, view_func, view_args, view_kwargs):
         save_request_count(request, view_func)
+
+def save_request_count(request, view_func):
+    """
+    This function save request count users in the database
+    """
+    user = None
+    view_lists = get_apps_views()
+
+    if view_func.__name__ in view_lists:
+        process_client_ip(request)
+
+    if request.user.is_authenticated:
+        username = request.user.username
+        email = request.user.email
+        user = User.objects.filter(username=username, email=email)[0]
+
+    # ? Count all requests
+    if user and view_func.__name__ in view_lists:
+        user.all_requests_count += 1
+        user.save()
+
+    # ? Count all download requests
+    if user and view_func.__name__ == "DownloadView":
+        user.requests_download_count += 1
+        user.save()
+
+def get_apps_views():
+    result, apps = [], ["app", "account"]
+
+    for app in apps:
+        for name, cls in inspect.getmembers(importlib.
+        import_module(app + ".views"), inspect.isclass):
+            if cls.__module__.find(app + ".views") != -1:
+                result.append(name)
+
+    return result
+
+def process_client_ip(request):
+    """
+    This function save new ip address users in the database
+    """
+    ip_address = get_client_ip(request)
+
+    obj = Ip.objects.get_or_create(ip_address=ip_address)[0]
+
+    check_excessive_requests(request, obj)
 
 def check_excessive_requests(request, obj):
     """
@@ -64,50 +111,3 @@ def check_excessive_requests(request, obj):
 
             obj.excessive_requests_count = 0
             obj.save()
-
-def process_client_ip(request):
-    """
-    This function save new ip address users in the database
-    """
-    ip_address = get_client_ip(request)
-    obj = Ip.objects.get_or_create(ip_address=ip_address, 
-    last_excessive_request_time=datetime.now())
-
-    check_excessive_requests(request, obj)
-
-def get_apps_views():
-    result, apps = [], ["app", "account"]
-
-    for app in apps:
-        for name, cls in inspect.getmembers(importlib.
-        import_module(app + ".views"), inspect.isclass):
-            if cls.__module__.find(app + ".views") != -1:
-                result.append(name)
-
-    return result
-
-
-def save_request_count(request, view_func):
-    """
-    This function save request count users in the database
-    """
-    user = None
-    view_lists = get_apps_views()
-
-    if view_func.__name__ in view_lists:
-        process_client_ip(request)
-
-    if request.user.is_authenticated:
-        username = request.user.username
-        email = request.user.email
-        user = User.objects.filter(username=username, email=email)[0]
-
-    # ? Count all requests
-    if user and view_func.__name__ in view_lists:
-        user.all_requests_count += 1
-        user.save()
-
-    # ? Count all download requests
-    if user and view_func.__name__ == "DownloadView":
-        user.requests_download_count += 1
-        user.save()

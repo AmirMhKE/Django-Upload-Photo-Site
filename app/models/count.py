@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django_jalali.db import models as jmodels
 from extensions.timestamp import TimeStamp
 
 from .main import Post
@@ -10,7 +11,8 @@ User = get_user_model()
 
 class Ip(models.Model):
     ip_address = models.GenericIPAddressField(verbose_name="آدرس آیپی")
-    last_excessive_request_time = models.DateTimeField(verbose_name="آخرین وقت درخواست غیر مجاز")
+    last_excessive_request_time = jmodels.jDateTimeField(
+    verbose_name="آخرین وقت درخواست غیر مجاز", auto_now_add=True)
     excessive_requests_count = models.PositiveIntegerField(
     verbose_name="تعداد درخواست های بیش از حد اندازه", null=True, 
     blank=True, default=0)

@@ -71,6 +71,21 @@ function likeImage(e) {
     }
 }
 
+$(".clipboard").click(function (e) { 
+    e.preventDefault();
+
+    let url = window.location;
+    navigator.clipboard.writeText(url);
+
+    Swal.fire({
+        title: "کپی آدرس صفحه",
+        icon: "success",
+        text: "آدرس صفحه با موفقیت در کلیپ بورد شما کپی شد.",
+        confirmButtonText: "باشه",
+        timer: 3000
+    });
+});
+
 // share btn set width
 $(function() {
     set_share_btn_width();

@@ -100,7 +100,7 @@ class Post(TimeStamp):
 
         # ? Save size image
         width, height = download_image.width, download_image.height
-        self.original_size_image = f"{str(width)} × {str(height)}"
+        self.original_size_image = f"{str(height)} × {str(width)}"
 
         # ? This image for show in site
         show_width = settings.SHOW_IMAGE_WIDTH
