@@ -1,11 +1,17 @@
 from os import path
 
+from account.models import CustomUser as User
+from app.models import Category, Post
 from django.test import TestCase, override_settings
 from extensions.utils import get_files_list, get_test_image
-from app.models import Category, Post
 from PIL import Image
+
 from .base import options, remove_media
 
+__all__ = (
+    "CategoryModelTestCase", "PostModelTestCase",
+    "UserModelTestCase"
+)
 
 class CategoryModelTestCase(TestCase):
     def setUp(self):
@@ -132,6 +138,72 @@ class PostModelTestCase(TestCase):
 
         self.assertEqual(len(get_files_list(old_media_img_path_3)), 1)
         self.assertEqual(len(get_files_list(old_download_img_path_3)), 1)    
+
+    @staticmethod
+    def tearDown():
+        remove_media()
+
+@override_settings(MEDIA_ROOT=options["MEDIA_ROOT"])
+class UserModelTestCase(TestCase):
+    def setUp(self):
+        user1 = User.objects.create_user(username="test1", email="test1@gmail.com",
+        password="12345")
+        user2 = User.objects.create_user(username="test2", email="test2@gmail.com",
+        password="12345")
+        user3 = User.objects.create_user(username="test3", email="test3@gmail.com",
+        password="12345")
+
+        user1.profile_image = get_test_image("tests/test_images/profile.jpg")
+        user2.profile_image = get_test_image("tests/test_images/profile.jpg")
+        user3.profile_image = get_test_image("tests/test_images/profile.jpg")
+
+        user1.save()
+        user2.save()
+        user3.save()
+
+    def test_signal_auto_backup_old_profile_image(self):
+        users = User.objects.all()
+        user1, user2, user3 = users[0], users[1], users[2]
+
+        self.assertEqual(user1.old_profile_image.path, user1.profile_image.path)
+        self.assertEqual(user2.old_profile_image.path, user2.profile_image.path)
+        self.assertEqual(user3.old_profile_image.path, user3.profile_image.path)
+
+    def test_signal_delete_old_profile_image(self):
+        users = User.objects.all()
+        user1, user2, user3 = users[0], users[1], users[2]
+
+        old_user1_profile_path = user1.profile_image.path
+        old_user2_profile_path = user1.profile_image.path
+        old_user3_profile_path = user1.profile_image.path
+
+        user1.profile_image = get_test_image("tests/test_images/profile2.jpg")
+        user2.profile_image = get_test_image("tests/test_images/profile2.jpg")
+        user3.profile_image = get_test_image("tests/test_images/profile2.jpg")
+
+        user1.save()
+        user2.save()
+        user3.save()
+
+        self.assertEqual(path.exists(old_user1_profile_path), False)
+        self.assertEqual(path.exists(old_user2_profile_path), False)
+        self.assertEqual(path.exists(old_user3_profile_path), False)
+
+    def test_signal_delete_user_profile_folder(self):
+        users = User.objects.all()
+        user1, user2, user3 = users[0], users[1], users[2]
+
+        user1_profile_dir = path.dirname(user1.profile_image.path)
+        user2_profile_dir = path.dirname(user2.profile_image.path)
+        user3_profile_dir = path.dirname(user3.profile_image.path)
+
+        user1.delete()
+        user2.delete()
+        user3.delete()
+
+        self.assertEqual(path.exists(user1_profile_dir), False)
+        self.assertEqual(path.exists(user2_profile_dir), False)
+        self.assertEqual(path.exists(user3_profile_dir), False)
 
     @staticmethod
     def tearDown():

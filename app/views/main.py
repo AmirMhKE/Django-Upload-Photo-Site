@@ -17,7 +17,7 @@ class PostList(ListView):
     model = Post
     template_name = "app/post_list.html"
     context_object_name = "post_list"
-    paginate_by = settings.PAGE_SIZE
+    paginate_by = settings.POST_LIST_PAGE_SIZE
 
     def get_queryset(self):
         query = Post.objects.all()
@@ -88,7 +88,7 @@ class PostDetail(DetailView):
 class PublisherList(ListView):
     template_name = "app/post_list.html"
     context_object_name = "post_list"
-    paginate_by = settings.PAGE_SIZE
+    paginate_by = settings.POST_LIST_PAGE_SIZE
     publisher, username = None, None
 
     def get_queryset(self):
@@ -111,7 +111,7 @@ class PublisherList(ListView):
 class CategoryList(ListView):
     template_name = "app/post_list.html"
     context_object_name = "post_list"
-    paginate_by = settings.PAGE_SIZE
+    paginate_by = settings.POST_LIST_PAGE_SIZE
     category = None
 
     def get_queryset(self):

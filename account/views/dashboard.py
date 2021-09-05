@@ -24,7 +24,7 @@ User = get_user_model()
 class DashBoardView(LoginRequiredMixin, SuperUserOrUserMixin, ListView):
     template_name = "account/dashboard.html"
     context_object_name = "post_list"
-    paginate_by = settings.PAGE_SIZE
+    paginate_by = settings.DASHBOARD_POST_LIST_PAGE_SIZE
 
     def get_publisher(self):
         user = get_publisher(self.request, self.kwargs.get("username"))

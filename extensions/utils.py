@@ -52,7 +52,7 @@ def set_default_data_forms(data: dict, initial_data: dict) -> dict:
     Because in Django, when even the forms are wrong, 
     they do not display the initial value of the inputs after the return
     """
-    for key, _ in data.items():
+    for key in data.keys():
         try:
             data[key] = initial_data[key]
         except KeyError:

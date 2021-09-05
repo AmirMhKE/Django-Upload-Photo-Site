@@ -1,6 +1,8 @@
 import os
 import shutil
 
+from django.test import RequestFactory
+
 options = {
     "MEDIA_ROOT": os.path.join(os.getcwd(), "tests", "media"),
     "DOWNLOAD_ROOT": os.path.join(os.getcwd(), "tests", "download")
@@ -8,4 +10,7 @@ options = {
 
 def remove_media():
     for path in options.values():
-        shutil.rmtree(path)
+        if os.path.exists(path):
+            shutil.rmtree(path)
+
+request = RequestFactory()

@@ -26,7 +26,7 @@ def delete_old_profile_image(sender, instance, **kwargs):
 
 # ? When account deleted, profile user remove
 @receiver(pre_delete, sender=CustomUser)
-def delete_user_profile_image(sender, instance, **kwargs):
+def delete_user_profile_folder(sender, instance, **kwargs):
     try:
         user_profile_dir_name = os.path.dirname(instance.profile_image.path)
         shutil.rmtree(user_profile_dir_name)
