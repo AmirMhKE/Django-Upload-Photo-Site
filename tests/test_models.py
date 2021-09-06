@@ -6,7 +6,7 @@ from django.test import TestCase, override_settings
 from extensions.utils import get_files_list, get_test_image
 from PIL import Image
 
-from .base import options, remove_media
+from .base import media_paths, remove_media
 
 __all__ = (
     "CategoryModelTestCase", "PostModelTestCase",
@@ -30,15 +30,15 @@ class CategoryModelTestCase(TestCase):
         first_cat = Category.objects.first()
         last_cat = Category.objects.last()
 
-        self.assertEqual(first_cat.status, True)
+        self.assertTrue(first_cat.status)
         self.assertEqual(first_cat.position, 0)
-        self.assertEqual(last_cat.status, False)
+        self.assertFalse(last_cat.status)
         self.assertEqual(last_cat.position, 1)
 
-@override_settings(**options)
+@override_settings(**media_paths)
 class PostModelTestCase(TestCase):
-    mdr = options["MEDIA_ROOT"]
-    dwr = options["DOWNLOAD_ROOT"]
+    mdr = media_paths["MEDIA_ROOT"]
+    dwr = media_paths["DOWNLOAD_ROOT"]
 
     def setUp(self):
         Post(title="test1", img=get_test_image("tests/test_images/1.jpg")).save()
@@ -81,14 +81,14 @@ class PostModelTestCase(TestCase):
         objects = Post.objects.all()
         obj1, obj2, obj3 = objects[0], objects[1], objects[2]
 
-        self.assertEqual(path.exists(path.join(self.mdr, "images", obj1.slug)), True)
-        self.assertEqual(path.exists(path.join(self.dwr, obj1.slug)), True)
+        self.assertTrue(path.exists(path.join(self.mdr, "images", obj1.slug)))
+        self.assertTrue(path.exists(path.join(self.dwr, obj1.slug)))
 
-        self.assertEqual(path.exists(path.join(self.mdr, "images", obj2.slug)), True)
-        self.assertEqual(path.exists(path.join(self.dwr, obj2.slug)), True)
+        self.assertTrue(path.exists(path.join(self.mdr, "images", obj2.slug)))
+        self.assertTrue(path.exists(path.join(self.dwr, obj2.slug)))
 
-        self.assertEqual(path.exists(path.join(self.mdr, "images", obj3.slug)), True)
-        self.assertEqual(path.exists(path.join(self.dwr, obj3.slug)), True)
+        self.assertTrue(path.exists(path.join(self.mdr, "images", obj3.slug)))
+        self.assertTrue(path.exists(path.join(self.dwr, obj3.slug)))
 
     def test_signal_delete_media_folders_images(self):
         objects = Post.objects.all()
@@ -99,14 +99,14 @@ class PostModelTestCase(TestCase):
         obj2.delete()
         obj3.delete()
 
-        self.assertEqual(path.exists(path.join(self.mdr, "images", obj1_slug)), False)
-        self.assertEqual(path.exists(path.join(self.dwr, obj1_slug)), False)
+        self.assertFalse(path.exists(path.join(self.mdr, "images", obj1_slug)))
+        self.assertFalse(path.exists(path.join(self.dwr, obj1_slug)))
 
-        self.assertEqual(path.exists(path.join(self.mdr, "images", obj2_slug)), False)
-        self.assertEqual(path.exists(path.join(self.dwr, obj2_slug)), False)
+        self.assertFalse(path.exists(path.join(self.mdr, "images", obj2_slug)))
+        self.assertFalse(path.exists(path.join(self.dwr, obj2_slug)))
 
-        self.assertEqual(path.exists(path.join(self.mdr, "images", obj3_slug)), False)
-        self.assertEqual(path.exists(path.join(self.dwr, obj3_slug)), False)
+        self.assertFalse(path.exists(path.join(self.mdr, "images", obj3_slug)))
+        self.assertFalse(path.exists(path.join(self.dwr, obj3_slug)))
 
     def test_signal_delete_old_images(self):
         objects = Post.objects.all()
@@ -143,7 +143,7 @@ class PostModelTestCase(TestCase):
     def tearDown():
         remove_media()
 
-@override_settings(MEDIA_ROOT=options["MEDIA_ROOT"])
+@override_settings(**media_paths)
 class UserModelTestCase(TestCase):
     def setUp(self):
         user1 = User.objects.create_user(username="test1", email="test1@gmail.com",
@@ -185,9 +185,9 @@ class UserModelTestCase(TestCase):
         user2.save()
         user3.save()
 
-        self.assertEqual(path.exists(old_user1_profile_path), False)
-        self.assertEqual(path.exists(old_user2_profile_path), False)
-        self.assertEqual(path.exists(old_user3_profile_path), False)
+        self.assertFalse(path.exists(old_user1_profile_path))
+        self.assertFalse(path.exists(old_user2_profile_path))
+        self.assertFalse(path.exists(old_user3_profile_path))
 
     def test_signal_delete_user_profile_folder(self):
         users = User.objects.all()
@@ -201,9 +201,9 @@ class UserModelTestCase(TestCase):
         user2.delete()
         user3.delete()
 
-        self.assertEqual(path.exists(user1_profile_dir), False)
-        self.assertEqual(path.exists(user2_profile_dir), False)
-        self.assertEqual(path.exists(user3_profile_dir), False)
+        self.assertFalse(path.exists(user1_profile_dir))
+        self.assertFalse(path.exists(user2_profile_dir))
+        self.assertFalse(path.exists(user3_profile_dir))
 
     @staticmethod
     def tearDown():

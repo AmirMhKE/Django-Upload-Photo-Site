@@ -1,16 +1,22 @@
 import os
 import shutil
 
-from django.test import RequestFactory
+from django.test import Client, RequestFactory
+
+media_paths = {
+    "MEDIA_ROOT": os.path.join(os.getcwd(), "tests", "media"),
+    "DOWNLOAD_ROOT": os.path.join(os.getcwd(), "tests", "download"),
+}
 
 options = {
-    "MEDIA_ROOT": os.path.join(os.getcwd(), "tests", "media"),
-    "DOWNLOAD_ROOT": os.path.join(os.getcwd(), "tests", "download")
+    "MIN_BLOCK_TIME_EXCESSIVE_REQUESTS": 1,
+    "MAX_BLOCK_TIME_EXCESSIVE_REQUESTS": 1,
 }
 
 def remove_media():
-    for path in options.values():
+    for path in media_paths.values():
         if os.path.exists(path):
             shutil.rmtree(path)
 
+client = Client()
 request = RequestFactory()

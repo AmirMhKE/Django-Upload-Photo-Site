@@ -1,12 +1,10 @@
-import importlib
-import inspect
-from jdatetime import datetime, timedelta
 from random import randint
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.http import Http404
-from extensions.utils import get_client_ip
+from extensions.utils import get_apps_views, get_client_ip
+from jdatetime import datetime, timedelta
 
 from .models import Ip
 
@@ -36,9 +34,7 @@ def save_request_count(request, view_func):
         process_client_ip(request)
 
     if request.user.is_authenticated:
-        username = request.user.username
-        email = request.user.email
-        user = User.objects.filter(username=username, email=email)[0]
+        user = User.objects.get(pk=request.user.pk)
 
     # ? Count all requests
     if user and view_func.__name__ in view_lists:
@@ -49,17 +45,6 @@ def save_request_count(request, view_func):
     if user and view_func.__name__ == "DownloadView":
         user.requests_download_count += 1
         user.save()
-
-def get_apps_views():
-    result, apps = [], ["app", "account"]
-
-    for app in apps:
-        for name, cls in inspect.getmembers(importlib.
-        import_module(app + ".views"), inspect.isclass):
-            if cls.__module__.find(app + ".views") != -1:
-                result.append(name)
-
-    return result
 
 def process_client_ip(request):
     """
@@ -77,7 +62,7 @@ def check_excessive_requests(request, obj):
     """
     if not request.user.is_superuser:
         minus = datetime.now().timestamp() - obj.last_excessive_request_time.timestamp()
-        block_time_minute = randint(settings.MIN_BLOCK_TIME_EXCESSIVE_REQUESTS,
+        block_time_seconds = randint(settings.MIN_BLOCK_TIME_EXCESSIVE_REQUESTS,
         settings.MAX_BLOCK_TIME_EXCESSIVE_REQUESTS)
         minimum_difference_float = settings.MINIMUM_DIFFERENCE_REQUESTS
         max_count = settings.MAX_COUNT_EXCESSIVE_REQUESTS
@@ -101,7 +86,7 @@ def check_excessive_requests(request, obj):
                 user.save()
         else:
             difference_block_time = obj.last_excessive_request_time \
-            + timedelta(seconds=block_time_minute)
+            + timedelta(seconds=block_time_seconds)
 
             if datetime.now().timestamp() < difference_block_time.timestamp():
                 diffrence = difference_block_time.timestamp() - datetime.now().timestamp()

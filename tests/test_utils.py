@@ -1,7 +1,11 @@
+from account.views import dashboard as account_dashboard
+from account.views import main as account_main
+from app.views import count as app_count
+from app.views import main as app_main
 from django.http import QueryDict
 from django.test import SimpleTestCase
-from extensions.utils import (compare_similarities_two_images, get_client_ip,
-                              param_request_get_to_url_param)
+from extensions.utils import (compare_similarities_two_images, get_apps_views,
+                              get_client_ip, param_request_get_to_url_param)
 from PIL import Image
 
 from .base import request
@@ -9,6 +13,12 @@ from .base import request
 __all__ = ("ExtensionUtilsTestCase",)
 
 class ExtensionUtilsTestCase(SimpleTestCase):
+    def test_get_apps_views(self):
+        content_list = [*app_main.__all__, *app_count.__all__,
+        *account_main.__all__, *account_dashboard.__all__]
+
+        self.assertListEqual(sorted(content_list), sorted(get_apps_views()))
+
     def test_get_client_ip(self):
         req = request.get("/")
 
@@ -18,27 +28,27 @@ class ExtensionUtilsTestCase(SimpleTestCase):
     def test_compare_similarities_two_images(self):
         base_dir = "tests/test_images/"
 
-        self.assertEqual(compare_similarities_two_images(
-        Image.open(base_dir + "1.jpg"), Image.open(base_dir + "1.jpg")), True)
-        self.assertEqual(compare_similarities_two_images(
-        Image.open(base_dir + "2.jpg"), Image.open(base_dir + "2.jpg")), True)
-        self.assertEqual(compare_similarities_two_images(
-        Image.open(base_dir + "3.jpg"), Image.open(base_dir + "3.jpg")), True)
-        self.assertEqual(compare_similarities_two_images(
-        Image.open(base_dir + "4.jpg"), Image.open(base_dir + "4.jpg")), True)
-        self.assertEqual(compare_similarities_two_images(
-        Image.open(base_dir + "5.jpg"), Image.open(base_dir + "5.jpg")), True)
+        self.assertTrue(compare_similarities_two_images(
+        Image.open(base_dir + "1.jpg"), Image.open(base_dir + "1.jpg")))
+        self.assertTrue(compare_similarities_two_images(
+        Image.open(base_dir + "2.jpg"), Image.open(base_dir + "2.jpg")))
+        self.assertTrue(compare_similarities_two_images(
+        Image.open(base_dir + "3.jpg"), Image.open(base_dir + "3.jpg")))
+        self.assertTrue(compare_similarities_two_images(
+        Image.open(base_dir + "4.jpg"), Image.open(base_dir + "4.jpg")))
+        self.assertTrue(compare_similarities_two_images(
+        Image.open(base_dir + "5.jpg"), Image.open(base_dir + "5.jpg")))
 
-        self.assertEqual(compare_similarities_two_images(
-       Image.open(base_dir + "1.jpg"),Image.open(base_dir + "2.jpg")), False)
-        self.assertEqual(compare_similarities_two_images(
-       Image.open(base_dir + "3.jpg"),Image.open(base_dir + "5.jpg")), False)
-        self.assertEqual(compare_similarities_two_images(
-       Image.open(base_dir + "2.jpg"),Image.open(base_dir + "4.jpg")), False)
-        self.assertEqual(compare_similarities_two_images(
-       Image.open(base_dir + "6.jpg"),Image.open(base_dir + "5.jpg")), False)
-        self.assertEqual(compare_similarities_two_images(
-       Image.open(base_dir + "2.jpg"),Image.open(base_dir + "3.jpg")), False)
+        self.assertFalse(compare_similarities_two_images(
+       Image.open(base_dir + "1.jpg"),Image.open(base_dir + "2.jpg")))
+        self.assertFalse(compare_similarities_two_images(
+       Image.open(base_dir + "3.jpg"),Image.open(base_dir + "5.jpg")))
+        self.assertFalse(compare_similarities_two_images(
+       Image.open(base_dir + "2.jpg"),Image.open(base_dir + "4.jpg")))
+        self.assertFalse(compare_similarities_two_images(
+       Image.open(base_dir + "6.jpg"),Image.open(base_dir + "5.jpg")))
+        self.assertFalse(compare_similarities_two_images(
+       Image.open(base_dir + "2.jpg"),Image.open(base_dir + "3.jpg")))
 
     def test_param_request_get_to_url_param(self):
         test_param_1 = "publisher=test1&ordering=-likes&search=post1"

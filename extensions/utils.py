@@ -1,5 +1,7 @@
 import os
 import string
+import inspect
+import importlib
 from pathlib import Path
 from random import randint
 
@@ -8,6 +10,19 @@ from django.core.files import File
 from django.http import HttpRequest, QueryDict
 from django.utils.crypto import get_random_string
 
+def get_apps_views() -> list:
+    """
+    This function return all class views string name from all apps.
+    """
+    result, apps = [], ["app", "account"]
+
+    for app in apps:
+        for name, cls in inspect.getmembers(importlib.
+        import_module(app + ".views"), inspect.isclass):
+            if cls.__module__.find(app + ".views") != -1:
+                result.append(name)
+
+    return result
 
 def get_random_str(min_length, max_length):
     """
