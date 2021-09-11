@@ -205,6 +205,54 @@ class UserModelTestCase(TestCase):
         self.assertFalse(path.exists(user2_profile_dir))
         self.assertFalse(path.exists(user3_profile_dir))
 
+    def test_signal_auto_is_admin_field_trigger(self):
+        users = User.objects.all()
+        user1, user2, user3 = users[0], users[1], users[2]
+
+        user1.is_admin = True
+        user2.is_admin = True
+        user3.is_admin = True
+
+        user1.save()
+        user2.save()
+        user3.save()
+
+        self.assertTrue(user1.is_superuser)
+        self.assertTrue(user1.is_admin)
+
+        self.assertTrue(user2.is_superuser)
+        self.assertTrue(user2.is_admin)
+
+        self.assertTrue(user3.is_superuser)
+        self.assertTrue(user3.is_admin)
+
+    def test_get_name_or_username(self):
+        users = User.objects.all()
+        user1, user2, user3 = users[0], users[1], users[2]
+
+        self.assertEqual(user1.get_name_or_username, user1.username)
+        self.assertEqual(user2.get_name_or_username, user2.username)
+        self.assertEqual(user3.get_name_or_username, user3.username)
+
+        user1.first_name = "امیر"
+        user2.first_name = "آرمان"
+        user3.first_name = "اصغر"
+
+        user1.last_name = "محمدی"
+        user2.last_name = "ایمانی"
+        user3.last_name = "خدایار نژاد"
+
+        user1.save()
+        user2.save()
+        user3.save()
+
+        self.assertEqual(user1.get_name_or_username, 
+        (user1.first_name + " " + user1.last_name))
+        self.assertEqual(user2.get_name_or_username, 
+        (user2.first_name + " " + user2.last_name))
+        self.assertEqual(user3.get_name_or_username, 
+        (user3.first_name + " " + user3.last_name))
+
     @staticmethod
     def tearDown():
         remove_media()

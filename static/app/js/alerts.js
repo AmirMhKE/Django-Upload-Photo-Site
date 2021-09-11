@@ -52,6 +52,22 @@ $(function () {
                 confirmButtonText: "باشه"
             });
             break;
+        case "max_upload_image_error":
+            Swal.fire({
+                title: "خطای آپلود",
+                icon: "error",
+                html: en_nums_to_fa_nums(event["content"]),
+                confirmButtonText: "باشه"
+            });
+            break;
+        case "similar_image_error":
+            Swal.fire({
+                title: "شباهت عکس",
+                icon: "error",
+                text: "عکسی مشابه عکس شما در سایت وجود دارد.",
+                confirmButtonText: "باشه"
+            });
+            break;
     }
     
     $("#event").remove();

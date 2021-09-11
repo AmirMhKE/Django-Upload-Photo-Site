@@ -16,6 +16,13 @@ def auto_backup_old_profile_image(sender, instance, **kwargs):
             delattr(instance, "old_profile_image")
 
 @receiver(post_save, sender=CustomUser)
+def auto_is_admin_field_trigger(sender, instance, **kwargs):
+    if instance.is_admin:
+        if not instance.is_superuser:
+            instance.is_superuser = True
+            instance.save()
+
+@receiver(post_save, sender=CustomUser)
 def delete_old_profile_image(sender, instance, **kwargs):
     try:
         if hasattr(instance, "old_profile_image"):

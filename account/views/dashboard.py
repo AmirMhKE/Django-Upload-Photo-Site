@@ -1,33 +1,31 @@
 import json
 
 from account.forms import PostForm
+from account.functions import (check_number_uploaded_images,
+                               check_similar_images, get_dashboard_publisher,
+                               get_dashboard_success_url)
 from account.mixins import LoginRequiredMixin, SuperUserOrUserMixin
 from account.statistics import user_posts_statistics
 from app.filters import post_queryset
 from app.models import Category, Download, Hit, Like, Post
 from django.conf import settings
-from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
-from django.urls import reverse
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (CreateView, DeleteView, ListView,
                                   TemplateView, UpdateView)
-from extensions.utils import set_default_data_forms
+from extensions.utils import send_message, set_default_data_forms
 
 __all__ = (
     "DashBoardView", "PostCreateView", "EditPostView",
     "DeletePostView", "DashboardStatisticsView"
 )
 
-User = get_user_model()
-
-# ? Classes
 class DashBoardView(LoginRequiredMixin, SuperUserOrUserMixin, ListView):
     template_name = "account/dashboard.html"
     context_object_name = "post_list"
     paginate_by = settings.DASHBOARD_POST_LIST_PAGE_SIZE
 
     def get_publisher(self):
-        user = get_publisher(self.request, self.kwargs.get("username"))
+        user = get_dashboard_publisher(self.request, self.kwargs.get("username"))
         return user
 
     def get_queryset(self):
@@ -37,7 +35,7 @@ class DashBoardView(LoginRequiredMixin, SuperUserOrUserMixin, ListView):
         return queryset
 
     def get_context_data(self, **kwargs):
-        user = get_publisher(self.request, self.kwargs.get("username"))
+        user = get_dashboard_publisher(self.request, self.kwargs.get("username"))
         username = self.kwargs.get("username", "شما")
         context = super().get_context_data(**kwargs)
         context["post_count"] = Post.objects.filter(publisher=user).count()
@@ -52,13 +50,40 @@ class PostCreateView(LoginRequiredMixin, SuperUserOrUserMixin, CreateView):
     template_name = "account/post_create.html"
     form_class = PostForm
 
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        
+        form = self.get_form()
+        form.errors.as_data()
+        user = self.get_publisher()
+        context = {**self.get_context_data(), "form": form}
+        get_image = request.FILES.get("img")
+        check_upload = check_number_uploaded_images(Post, user)
+
+        if get_image:
+            check_similar = check_similar_images(Post, get_image)
+
+            if not check_similar:
+                send_message(self.request, "similar_image_error")
+                return self.render_to_response(context)
+
+        if not check_upload[0]:
+            content = "شما نمی توانید در هر روز بیشتر از {} عکس آپلود کنید." \
+            .format(check_upload[1])
+            send_message(self.request, "max_upload_image_error", content)
+            return self.render_to_response(context)
+
+        if form.is_valid():
+            return self.form_valid(form)
+        return self.render_to_response(context)
+
     def get_publisher(self):
-        user = get_publisher(self.request, self.kwargs.get("username"))
+        user = get_dashboard_publisher(self.request, self.kwargs.get("username"))
         return user
 
     def get_success_url(self):
         user = self.get_publisher()
-        success_url = get_success_url(self.request, user)
+        success_url = get_dashboard_success_url(self.request, user)
         return success_url
 
     def get_context_data(self, **kwargs):
@@ -73,26 +98,17 @@ class PostCreateView(LoginRequiredMixin, SuperUserOrUserMixin, CreateView):
         context["img_height"] = settings.MIN_IMAGE_WIDTH
         return context
 
-    def get_form_kwargs(self):
-        user = self.get_publisher()
-        kwargs = super().get_form_kwargs()
-        kwargs["user"] = user
-        kwargs["operation"] = "create"
-        return kwargs
-
     def form_valid(self, form):
         user = self.get_publisher()
         obj = form.save(commit=False)
         obj.publisher = user
         obj.save()
-
-        # ? Set alert
+        
         username = self.kwargs.get("username", "شما")
         post_id, title = obj.id, obj.title
         content = " ".join(f"عکس <b>{username}</b> با عنوان <b>{title}</b> \
         و آیدی <b>{post_id}</b> با موفقیت ایجاد شد.".split())
-        event = {"type": "user_post_created", "content": content}
-        self.request.session["event"] = json.dumps(event)
+        send_message(self.request, "user_post_created", content)
 
         return super().form_valid(form)
 
@@ -102,13 +118,33 @@ class EditPostView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
     form_class = PostForm
     context_object_name = "post"
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        form = self.get_form()
+        context = {**self.get_context_data(), "form": form}
+        get_image = request.FILES.get("img")
+
+        if get_image:
+            check_similar = check_similar_images(Post, get_image, self.object.pk)
+
+            if not check_similar:
+                send_message(request, "similar_image_error")
+                return self.render_to_response(context)
+
+        if form.is_valid():
+            form = self.form_class(instance=self.object, 
+            data=request.POST, files=request.FILES)
+            return self.form_valid(form)
+        return self.render_to_response(context)
+
     def get_publisher(self):
-        user = get_publisher(self.request, self.kwargs.get("username"))
+        user = get_dashboard_publisher(self.request, self.kwargs.get("username"))
         return user
 
     def get_success_url(self):
         user = self.get_publisher()
-        success_url = get_success_url(self.request, user)
+        success_url = get_dashboard_success_url(self.request, user)
         return success_url
 
     def get_object(self, queryset=None):
@@ -127,15 +163,6 @@ class EditPostView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
         context["img_height"] = settings.MIN_IMAGE_WIDTH
         return context
 
-    def get_form_kwargs(self):
-        obj = self.get_object()
-        user = self.get_publisher()
-        kwargs = super().get_form_kwargs()
-        kwargs["user"] = user
-        kwargs["operation"] = "update"
-        kwargs["id"] = obj.id
-        return kwargs
-
     def form_valid(self, form):
         obj = form.save()
         get_img = self.request.FILES.get("img")
@@ -147,8 +174,7 @@ class EditPostView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
         username = self.kwargs.get("username", "شما")
         content = " ".join(f"عکس <b>{username}</b> با عنوان <b>{obj.title}</b> \
         و آیدی <b>{obj.id}</b> با موفقیت ویرایش شد.".split())
-        event = {"type": "user_post_updated", "content": content}
-        self.request.session["event"] = json.dumps(event)
+        send_message(self.request, "user_post_updated", content)
 
         return super().form_valid(form)
 
@@ -158,12 +184,12 @@ class EditPostView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
 
 class DeletePostView(LoginRequiredMixin, SuperUserOrUserMixin, DeleteView):
     def get_publisher(self):
-        user = get_publisher(self.request, self.kwargs.get("username"))
+        user = get_dashboard_publisher(self.request, self.kwargs.get("username"))
         return user
 
     def get_success_url(self):
         user = self.get_publisher()
-        success_url = get_success_url(self.request, user)
+        success_url = get_dashboard_success_url(self.request, user)
         return success_url
 
     def get_object(self, queryset=None):
@@ -175,11 +201,9 @@ class DeletePostView(LoginRequiredMixin, SuperUserOrUserMixin, DeleteView):
         obj = self.get_object()
         username = self.kwargs.get("username", "شما")
 
-        # ? Set alert
-        event = {"type": "post_deleted", 
-        "content": "عکس <b>{}</b> با عنوان <b>{}</b> با آیدی <b>{}</b> با موفقیت حذف شد.".
-        format(username, obj.title, obj.id)}
-        request.session["event"] = json.dumps(event)
+        content = "عکس <b>{}</b> با عنوان <b>{}</b> با آیدی <b>{}</b> با موفقیت حذف شد." \
+        .format(username, obj.title, obj.id)
+        send_message(request, "post_deleted", content)
 
         return super().delete(request, *args, **kwargs)
         
@@ -187,7 +211,7 @@ class DashboardStatisticsView(LoginRequiredMixin, SuperUserOrUserMixin, Template
     template_name = "account/dashboard_statistics.html"
 
     def get_publisher(self):
-        user = get_publisher(self.request, self.kwargs.get("username"))
+        user = get_dashboard_publisher(self.request, self.kwargs.get("username"))
         return user
 
     def get_context_data(self, **kwargs):
@@ -205,21 +229,3 @@ class DashboardStatisticsView(LoginRequiredMixin, SuperUserOrUserMixin, Template
         context["downloads_count"] = download_query.count()
         return context
     
-# ? Functions
-def get_publisher(request, username=None):
-    if username is None:
-        user = User.objects.prefetch_related("posts").get(pk=request.user.pk)
-    else:
-        user = get_object_or_404(User, username__iexact=username)
-
-    return user
-
-def get_success_url(request, dashboard_user):
-    user = get_publisher(request, dashboard_user.username)
-    if request.user == user:
-        success_url = reverse("account:dashboard")
-    else:
-        success_url = reverse("account:dashboard", 
-        kwargs={"username": user.username})
-
-    return success_url        

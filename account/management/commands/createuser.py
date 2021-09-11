@@ -36,13 +36,10 @@ class Command(BaseCommand):
             email=email, password=password)
             
             if level.lower() == "super":
-                user.is_staff = True
                 user.is_superuser = True
                 user.save()
 
             if level.lower() == "admin":
-                user.is_staff = True
-                user.is_superuser = True
                 user.is_admin = True
                 user.save()
 

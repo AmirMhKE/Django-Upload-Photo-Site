@@ -1,7 +1,6 @@
-import json
-
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
+from extensions.utils import send_message
 
 User = get_user_model()
 
@@ -10,8 +9,7 @@ class LoginRequiredMixin:
         if request.user.is_authenticated:
             return super().dispatch(request, *args, **kwargs)
         
-        event = {"type": "login_required", "content": None}
-        request.session["event"] = json.dumps(event)
+        send_message(request, "login_required")
         return redirect(request.GET.get("next", request.META.get("HTTP_REFERER", "/")))
 
 class SuperUserOrUserMixin:

@@ -18,7 +18,7 @@ def user_posts_statistics(user, days_ago, reverse=None):
 
     start_time = datetime.now() - timedelta(days=days_ago)
 
-    created_dates = tuple([*(
+    created_dates = tuple((
         date[0] for date in
 
         Hit.objects.filter(post__publisher__id=user.id, created__date__gte=start_time)
@@ -33,7 +33,7 @@ def user_posts_statistics(user, days_ago, reverse=None):
             .values(created_date=F("created__date"))
 
         ).values_list("created_date").iterator()
-    )])
+    ))
 
     hit_query = Hit.objects.filter(post__publisher__id=user.id, 
     created__date__gte=start_time).values(created_date=F("created__date")) \

@@ -8,6 +8,9 @@
     border-radius: 5px;
     background-color: #fff;
 }
+.user-settings form img {
+    width: 100%;
+}
 .user-settings input:not([type="checkbox"]), 
 .user-settings textarea,
 .user-settings select {

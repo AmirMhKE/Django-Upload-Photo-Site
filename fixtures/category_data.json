@@ -213,8 +213,8 @@
         "model": "app.category",
         "pk": 22,
         "fields": {
-            "title": "سایر عکس ها",
-            "slug": "others",
+            "title": "عکس ماشین",
+            "slug": "car",
             "position": 21,
             "status": true
         }
@@ -223,8 +223,8 @@
         "model": "app.category",
         "pk": 23,
         "fields": {
-            "title": "عکس ماشین",
-            "slug": "car",
+            "title": "سایر عکس ها",
+            "slug": "others",
             "position": 22,
             "status": true
         }

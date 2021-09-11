@@ -25,6 +25,8 @@ if(add_profile_fi !== null) {
         let options = {
             title: "اضافه کردن عکس پروفایل",
             text: "آیا می خواهید این عکس را به پروفایل خود اضافه کنید؟",
+            width: 300,
+            height: 300,
             valid_callback: updateProfile,
             invalid_callback: () => {
                 add_profile_fi.value = "";

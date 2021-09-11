@@ -1,5 +1,3 @@
-import json
-
 from account.forms import UserUpdateForm
 from account.mixins import LoginRequiredMixin, SuperUserOrUserMixin
 from django.conf import settings
@@ -7,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import DetailView, TemplateView, UpdateView, View
-from extensions.utils import set_default_data_forms
+from extensions.utils import set_default_data_forms, send_message
 
 __all__ = (
     "StatisticsView", "UserSettingsView", "UserDeleteView",
@@ -47,11 +45,9 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
         username = kwargs.get("username") 
 
         # ? Check permission when submit form
-        if not any([request.user == user, request.user.is_admin and not user.is_admin]):
-        
-            event = {"type": "permission_denied", "content": None}
-            request.session["event"] = json.dumps(event)
-
+        if not any([request.user == user, request.user.is_superuser and not user.is_superuser]):
+            send_message(request, "permission_denied")
+            
             if username is None:
                 return redirect("account:settings")
             return redirect("account:settings", username)
@@ -69,9 +65,8 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
         else:
             content = f"حساب کاربری {user} با موفقیت ویرایش شد."
 
-        event = {"type": "user_profile_updated", "content": content}
-        self.request.session["event"] = json.dumps(event)
-
+        send_message(self.request, "user_profile_updated", content)
+        
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -95,8 +90,6 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs["request"] = self.request
-        kwargs["user"] = User.objects.get(username__iexact=self.kwargs.get(
-        "username", self.request.user.username))
         return kwargs
 
     def get_context_data(self, **kwargs):

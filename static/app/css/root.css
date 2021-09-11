@@ -197,11 +197,11 @@ body {
 .swal2-close:hover {
     color: var(--Main-Red) !important;
 }
-button:disabled {
+.dsb:disabled {
     opacity: .5 !important;
     cursor: not-allowed !important;
 }
-button:disabled:hover {
+.dsb:disabled:hover {
     background-color: var(--Main-Blue) !important;
 }
 html.swal2-shown,

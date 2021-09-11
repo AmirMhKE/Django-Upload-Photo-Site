@@ -20,6 +20,8 @@ image_input_file.onchange = function() {
         let options = {
             title: "اضافه کردن عکس",
             text: "آیا می خواهید این عکس را اضافه کنید؟",
+            width: 300,
+            height: "auto",
             valid_callback: () => {
                 try {
                     post_create_form.click();

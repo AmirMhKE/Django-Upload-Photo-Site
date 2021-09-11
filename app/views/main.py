@@ -1,4 +1,5 @@
 from app.filters import post_queryset
+from app.functions import get_post_list_title
 from app.models import Category, Download, Hit, Ip, Like, Post, UserHit
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -26,7 +27,7 @@ class PostList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = post_title(self.request, "همه ی عکس ها")
+        context["title"] = get_post_list_title(self.request, "همه ی عکس ها")
         context["namespace"] = "post_list"
         context["current_page"] = self.kwargs.get("page", 1)
         context["side_count"] = settings.SIDEBAR_ITEMS_COUNT
@@ -100,7 +101,7 @@ class PublisherList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = post_title(self.request, 
+        context["title"] = get_post_list_title(self.request, 
         f"عکس های {self.publisher.get_name_or_username}")
         context["current_page"] = self.kwargs.get("page", 1)
         context["namespace"] = "publisher_list"
@@ -123,23 +124,10 @@ class CategoryList(ListView):
         
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = post_title(self.request, 
+        context["title"] = get_post_list_title(self.request, 
         f"دسته بندی {self.category.title}") 
         context["current_page"] = self.kwargs.get("page", 1)
         context["namespace"] = "category_list"
         context["category_slug"] = self.category.slug
         context["side_count"] = settings.SIDEBAR_ITEMS_COUNT
         return context
-
-def post_title(request, default_title):
-    # ? For set post title
-    search_name = None
-
-    if request.GET.get("search") is not None:
-        if request.GET.get("title") or request.GET.get("publisher"):
-            search_name = "جستجوی عبارت ' {} ' در {}" \
-            .format((request.GET.get('title') or \
-            request.GET.get('publisher')), default_title)
-
-    title = search_name or default_title
-    return title

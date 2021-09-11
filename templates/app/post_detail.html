@@ -14,7 +14,7 @@
     <div class="out">
         <div class="col-11 col-sm-10 mx-auto my-5 d-flex flex-column align-items-center top animate__animated animate__fadeInDown">
             <div class="pt-4 pb-0 mb-0">
-                {% user_profile_image request.user "5rem" "5rem" profile_tag="a" has_title=True profile_classes="user-profile, publisher-profile, text-center" no_profile_tag_size="2rem" %}
+                {% user_profile_image post.publisher "5rem" "5rem" profile_tag="a" has_title=True profile_classes="user-profile, publisher-profile, text-center" no_profile_tag_size="2rem" %}
             </div>
             <h1 class="title m-2 text-center mt-5">{{ post.title }}</h1>
             <div class="m-0 p-0 d-flex flex-column flex-lg-row justify-content-center">

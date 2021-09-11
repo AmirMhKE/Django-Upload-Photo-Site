@@ -49,11 +49,11 @@
                 <small class="text-right p-0 m-0">{{ form.about_me.help_text }}</small><br>
                 <small class="text-right">۱۵۰ / <span id="about_me_len">{{ user.about_me|length|en_nums_to_fa_nums }}</span></small>
             </p>
+            {% if request.user.is_superuser %}
             <p>
                 <label for="email-lbl">ایمیل: </label>
                 <input class="mr-md-1" type="email" value="{{ user.email }}" id="email-lbl" readonly>
             </p>
-            {% if request.user.is_superuser %}
             <div class="row">
                 <div class="col-12 col-xl-6">
                     <label for="{{ form.is_superuser.id }}" class="ch">:{{ form.is_superuser.label }}</label>
@@ -64,8 +64,15 @@
                     {{ form.is_active }}
                 </div>
             </div>
+            {% else %}
+            <p hidden>
+                {{ form.is_superuser }}
+            </p>
+            <p hidden>
+                {{ form.is_active }}
+            </p>
             {% endif %}
-            <button type="submit" class="btn mr-md-1 mt-3" id="change_profile-btn" disabled>اعمال تغییرات</button>
+            <button type="submit" class="btn mr-md-1 mt-3 dsb" id="change_profile-btn" disabled>اعمال تغییرات</button>
         </form>
     </div>
 

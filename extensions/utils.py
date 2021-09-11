@@ -1,14 +1,18 @@
+import importlib
+import inspect
 import os
 import string
-import inspect
-import importlib
+import json
 from pathlib import Path
 from random import randint
+from typing import Union
 
 import imagehash
 from django.core.files import File
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpRequest, QueryDict
 from django.utils.crypto import get_random_string
+
 
 def get_apps_views() -> list:
     """
@@ -24,7 +28,7 @@ def get_apps_views() -> list:
 
     return result
 
-def get_random_str(min_length, max_length):
+def get_random_str(min_length: int, max_length: int) -> str:
     """
     This simple function return random character with your min length
     and max length with ascii letters
@@ -60,6 +64,15 @@ def get_client_ip(request: HttpRequest) -> str:
         ip_address = request.META.get("REMOTE_ADDR")
 
     return ip_address
+
+def send_message(request: HttpRequest, event_type: str, content: Union[str, None] = None) -> None:
+    """
+    This function send message to template for the request 
+    with sweet alert javascript library.
+    user send the own content if event has dynamic message. 
+    """
+    event = {"type": event_type, "content": content}
+    request.session["event"] = json.dumps(event)
 
 def set_default_data_forms(data: dict, initial_data: dict) -> dict:
     """
@@ -111,8 +124,25 @@ def param_request_get_to_url_param(request_get: QueryDict) -> str:
 
     return result
 
-def get_test_image(path):
+def get_test_image(path: str) -> File:
     """
     This function returns the image for testing from the desired path.
     """
     return File(open(path, "rb"))
+
+def get_test_form_image(path: str, name: Union[str, None] = None, 
+content_type: Union[str, None] = None) -> SimpleUploadedFile:
+    """
+    This function returns the image for form testing from the desired path
+    and your name and content type.
+    """
+    if name is None:
+        name = "test_image.jpg"
+
+    if content_type is None:
+        content_type = "image/jpeg"
+
+    result = SimpleUploadedFile(name=name, content=open(path, "rb").read(),
+    content_type=content_type)
+
+    return result
