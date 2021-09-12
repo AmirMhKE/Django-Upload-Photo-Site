@@ -11,6 +11,7 @@ media_paths = {
 options = {
     "MIN_BLOCK_TIME_EXCESSIVE_REQUESTS": 1,
     "MAX_BLOCK_TIME_EXCESSIVE_REQUESTS": 1,
+    "MAX_IMAGE_UPLOAD_COUNT": 2
 }
 
 def remove_media():

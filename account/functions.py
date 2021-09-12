@@ -41,6 +41,9 @@ def get_dashboard_success_url(request: HttpRequest, dashboard_user: User) -> str
 
 def check_similar_images(model, data, instance_pk=None):
     """
+    This function checks if there is a image 
+    similar to the one you image submitted.
+    return True if image not exists else return False.
     model Post getted from out file because
     code 'from app.model import Post' has error occurred. 
     """
@@ -67,6 +70,8 @@ def check_number_uploaded_images(model, user):
     """
     This function limits the user to uploading too many images 
     and the user can not upload a large number of images per day.
+    model Post getted from out file because
+    code 'from app.model import Post' has error occurred.
     """
     max_count = settings.MAX_IMAGE_UPLOAD_COUNT
     
