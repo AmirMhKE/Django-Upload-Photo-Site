@@ -1,5 +1,3 @@
-import random
-
 from django import template
 from django.conf import settings
 from django.db.models import Count, Q
@@ -52,21 +50,16 @@ def suggestion_posts(request, num: int) -> dict:
         
     # ? Set random items
     random_items = []
-    items_count = (num if num <= query.count() else query.count())
-    random_items.extend(random.sample([*query], items_count))
+    random_items.extend(query.order_by("?")[:num].iterator())
 
     if query is not all_posts_item and query.exists():
-
         exlude_most_category = all_posts_item \
-            .exclude(category__id=query.first().category.id)
-
+        .exclude(category__id=query.first().category.id)
+        
         if query.count() < num and exlude_most_category.exists():
-            other_items_count = ((num - query.count()) \
-            if (num - query.count()) <= exlude_most_category.count() \
-            else exlude_most_category.count())
-
-            random_items.extend(random.sample(
-            [*exlude_most_category], other_items_count))
+            items_count = num - query.count()
+            random_items.extend(exlude_most_category.order_by("?")
+            [:items_count].iterator())
 
     return {
         "title": settings.SIDEBAR_TAG_TITLES["suggestion"],

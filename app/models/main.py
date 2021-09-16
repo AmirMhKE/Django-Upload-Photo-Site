@@ -54,13 +54,15 @@ class Post(TimeStamp):
         return self.title
 
     @classmethod
-    def get_model_fields_name(cls):
-        result = []
-        
-        for field in cls._meta.get_fields():
-            result.append(field.name)
+    def get_fields_name(cls):
+        return [field.name for field in cls._meta.get_fields()]
 
-        return result
+    @classmethod
+    def get_related_fields_name(cls):
+        return list(filter(lambda x: x != "",
+            [field.name if isinstance(field, models.ManyToOneRel) else "" 
+            for field in cls._meta.get_fields()]
+       ))
 
     def save(self, *args, **kwargs):
         # ? if model not created

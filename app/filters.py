@@ -1,5 +1,6 @@
 import django_filters
-from django.db.models import Count, Q
+from django.db.models import Count, QuerySet
+from django.http import HttpRequest
 
 from .models import Post
 
@@ -12,36 +13,35 @@ class PostSearchFilter(django_filters.FilterSet):
         model = Post
         fields = ("title", "publisher")
 
-# ? Search or ordering post model
-def post_queryset(request, query):
-    # ? This function set default query or search or ordering
-    if request.GET.get("search") is None:
-        queryset = query
-    else:
-        queryset = PostSearchFilter(request.GET, query).qs
+class PostOrderingFilter:
+    @classmethod
+    def filter(cls, queryset: QuerySet, value: str) -> QuerySet:
+        order = cls.get_ordering(value)
 
-    # ? Ordering filter
-    ordering = request.GET.get("ordering", "")
-    _ordering = "".join(ordering.split("-"))
-    countable_fields = ["hits", "user_hits", "likes", "downloads"]
+        if order in Post.get_fields_name():
+            if order in Post.get_related_fields_name():
+                value = value + "_count"
+                annotate_dict = {order + "_count": Count(order)}
+                queryset = queryset.alias(**annotate_dict)
 
-    if _ordering in Post.get_model_fields_name():
-        if _ordering in countable_fields:
-            # ? -ordering_count or ordering_count
-            ordering_filter_name = f"{ordering}_count"
-            # ? -ordering_count -> ordering_count
-            ordering_name = f"{_ordering}_count"
+            queryset = queryset.order_by(value)
 
-            if _ordering != "likes":
-                field_annotate = {ordering_name: Count(_ordering)}
-            else:
-                field_annotate = {ordering_name: Count(_ordering,
-                filter=Q(likes__status=True))}
+        return queryset
 
-            queryset = queryset.alias(**field_annotate) \
-            .order_by(ordering_filter_name)
-        else:
-            queryset = queryset.order_by(ordering)
+    @staticmethod
+    def get_ordering(name: str) -> str:
+        desc = name.startswith("-")
+        name = name[1:] if desc else name
+        return name
+
+def post_queryset(request: HttpRequest, queryset: QuerySet) -> QuerySet:
+    order = request.GET.get("ordering")
+
+    if request.GET.get("search") is not None:
+        queryset = PostSearchFilter(request.GET, queryset).qs
+
+    if order is not None:
+        queryset = PostOrderingFilter.filter(queryset, order)
 
     return queryset
     
