@@ -22,8 +22,7 @@ class RequestProcessMiddleware:
     def process_view(self, request, view_func, view_args, view_kwargs):
         self.save_request_count(request, view_func)
 
-    @classmethod
-    def save_request_count(cls, request, view_func):
+    def save_request_count(self, request, view_func):
         """
         This function save request count users in the database
         """
@@ -31,7 +30,7 @@ class RequestProcessMiddleware:
         view_lists = get_apps_views()
 
         if view_func.__name__ in view_lists:
-            cls.process_client_ip(request)
+            self.process_client_ip(request)
 
         if request.user.is_authenticated:
             user = User.objects.get(pk=request.user.pk)
@@ -46,8 +45,7 @@ class RequestProcessMiddleware:
             user.requests_download_count += 1
             user.save()
 
-    @classmethod
-    def process_client_ip(cls, request):
+    def process_client_ip(self, request):
         """
         This function save new ip address users in the database
         """
@@ -55,7 +53,7 @@ class RequestProcessMiddleware:
 
         obj = Ip.objects.get_or_create(ip_address=ip_address)[0]
 
-        cls.check_excessive_requests(request, obj)
+        self.check_excessive_requests(request, obj)
 
     @staticmethod
     def check_excessive_requests(request, obj):

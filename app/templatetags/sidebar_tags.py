@@ -1,6 +1,8 @@
+from app.filters import PostOrderingFilter
 from django import template
 from django.conf import settings
-from django.db.models import Count, Q
+from django.db.models import Count, QuerySet
+from django.http import HttpRequest
 
 from ..models import Category, Post
 
@@ -40,7 +42,7 @@ def get_most_viewed_category_from_user(user):
 
     return None
 
-def suggestion_posts(request, num: int) -> dict:
+def suggestion_posts(request: HttpRequest, num: int) -> dict[str, list[QuerySet]]:
     """
     This function randomly selects several posts for 
     the user to the desired number from the database.
@@ -66,19 +68,13 @@ def suggestion_posts(request, num: int) -> dict:
         "sidebar_items": random_items
     }
 
-def get_most(m2m_column_name: str, title: str, num: int) -> dict:
+def get_most(m2m_column_name: str, title: str, num: int) -> dict[str, QuerySet]:
     """
     This function displays the posts that have 
     the most your m2m to the desired number.
     """
-    if m2m_column_name != "likes":
-        annotate_dict = {f"{m2m_column_name}_count": Count(m2m_column_name)}
-    else:
-        annotate_dict = {f"{m2m_column_name}_count": Count(m2m_column_name, 
-        filter=Q(likes__status=True))}
-
-    query = Post.objects.alias(**annotate_dict) \
-    .order_by(f"-{m2m_column_name}_count", "-created")
+    posts = Post.objects.all()
+    query = PostOrderingFilter.filter(posts, "-" + m2m_column_name).order_by("-created")
 
     return {
         "title": title,

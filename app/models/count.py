@@ -62,7 +62,7 @@ class Like(TimeStamp):
     class Meta:
         verbose_name = "لایک"
         verbose_name_plural = "لایک ها"
-        ordering = ("-created",)
+        ordering = ("-updated",)
 
 class Download(TimeStamp):
     post = models.ForeignKey(Post, on_delete=models.CASCADE,

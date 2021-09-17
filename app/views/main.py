@@ -51,20 +51,14 @@ class PostDetail(DetailView):
     def set_ip_hit(self):
         obj = self.get_object()
         ip_obj = Ip.objects.get(ip_address=get_client_ip(self.request))
-        hit_query = Hit.objects.filter(post=obj, ip_address=ip_obj)
-        
-        if not hit_query.exists():
-            Hit.objects.create(post=obj, ip_address=ip_obj)
+        Hit.objects.get_or_create(post=obj, ip_address=ip_obj)
 
     def set_user_hit(self):
         obj = self.get_object()
         user = self.request.user
 
         if user.is_authenticated:
-            user_hit_query = UserHit.objects.filter(post=obj, user=user)
-
-            if not user_hit_query.exists():
-                UserHit.objects.create(post=obj, user=user)
+            UserHit.objects.get_or_create(post=obj, user=user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

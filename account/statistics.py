@@ -18,23 +18,6 @@ def user_posts_statistics(user, days_ago, reverse=None):
 
     start_time = datetime.now() - timedelta(days=days_ago)
 
-    created_dates = tuple((
-        date[0] for date in
-
-        Hit.objects.filter(post__publisher__id=user.id, created__date__gte=start_time)
-        .values(created_date=F("created__date")).union(
-
-            Like.objects.filter(post__publisher__id=user.id, 
-            created__date__gte=start_time, status=True)
-            .values(created_date=F("updated__date")),
-
-            Download.objects.filter(post__publisher__id=user.id, 
-            created__date__gte=start_time)
-            .values(created_date=F("created__date"))
-
-        ).values_list("created_date").iterator()
-    ))
-
     hit_query = Hit.objects.filter(post__publisher__id=user.id, 
     created__date__gte=start_time).values(created_date=F("created__date")) \
     .annotate(number=Count("pk")).order_by("created_date")
@@ -47,26 +30,25 @@ def user_posts_statistics(user, days_ago, reverse=None):
     created__date__gte=start_time).values(created_date=F("created__date")) \
     .annotate(number=Count("pk")).order_by("created_date")
 
-    hits = [*(
-        hit_query.filter(created_date=date)[0]["number"] 
-        if hit_query.filter(created_date=date).exists() 
-        else 0 for date in created_dates
-    )]
+    created_dates = hit_query.values("created_date").union(
+        like_query.values("created_date"), 
+        download_query.values("created_date")
+    ).values_list("created_date")
 
-    likes = [*(
-        like_query.filter(created_date=date)[0]["number"] 
-        if like_query.filter(created_date=date).exists() 
-        else 0 for date in created_dates
-    )]
+    hits = [*(hit_query.filter(created_date=date[0])[0]["number"]
+    if hit_query.filter(created_date=date[0]).exists() 
+    else 0 for date in created_dates.iterator())]
 
-    downloads = [*(
-        download_query.filter(created_date=date)[0]["number"] 
-        if download_query.filter(created_date=date).exists() 
-        else 0 for date in created_dates
-    )]
+    likes = [*(like_query.filter(created_date=date[0])[0]["number"] 
+    if like_query.filter(created_date=date[0]).exists() 
+    else 0 for date in created_dates.iterator())]
 
-    dates = [jdatetime.date.fromgregorian(date=date)
-    .strftime("%Y/%m/%d") for date in created_dates]
+    downloads = [*(download_query.filter(created_date=date[0])[0]["number"] 
+    if download_query.filter(created_date=date[0]).exists() 
+    else 0 for date in created_dates.iterator())]
+
+    dates = [jdatetime.date.fromgregorian(date=date[0])
+    .strftime("%Y/%m/%d") for date in created_dates.iterator()]
 
     if reverse:
         hits, likes, downloads, dates = hits[::-1], likes[::-1], downloads[::-1], dates[::-1]
