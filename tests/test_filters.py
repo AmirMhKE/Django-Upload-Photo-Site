@@ -25,6 +25,10 @@ class PostFiltersTestCase(TestCase):
         email="test2@gmail.com", password="12345")
         user3 = User.objects.create_user(username="test3",
         email="test3@gmail.com", password="12345")
+        user4 = User.objects.create_user(username="test4",
+        email="test4@gmail.com", password="12345")
+        user5 = User.objects.create_user(username="test5",
+        email="test5@gmail.com", password="12345")
 
         self.post1 = Post(title="Python Programming", publisher=user1,
         img=get_test_image("tests/test_images/1.jpg"))
@@ -45,12 +49,14 @@ class PostFiltersTestCase(TestCase):
         Hit(post=self.post3, ip_address=ip1).save()
         Hit(post=self.post3, ip_address=ip3).save()
 
-        Like(post=self.post2, user=user1).save()
-        Like(post=self.post2, user=user2).save()
-        Like(post=self.post2, user=user3).save()
-        Like(post=self.post3, user=user2).save()
-        Like(post=self.post1, user=user1).save()
-        Like(post=self.post1, user=user3).save()
+        Like(post=self.post2, user=user1, status=True).save()
+        Like(post=self.post2, user=user2, status=True).save()
+        Like(post=self.post2, user=user3, status=True).save()
+        Like(post=self.post3, user=user2, status=True).save()
+        Like(post=self.post1, user=user1, status=True).save()
+        Like(post=self.post1, user=user3, status=True).save()
+        Like(post=self.post1, user=user4).save()
+        Like(post=self.post1, user=user5).save()
 
         Download(post=self.post3, user=user1).save()
         Download(post=self.post3, user=user2).save()

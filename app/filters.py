@@ -1,5 +1,5 @@
 import django_filters
-from django.db.models import Count, QuerySet
+from django.db.models import Count, Q, QuerySet
 from django.http import HttpRequest
 
 from .models import Post
@@ -21,7 +21,9 @@ class PostOrderingFilter:
         if order in Post.get_fields_name():
             if order in Post.get_related_fields_name():
                 value = value + "_count"
-                annotate_dict = {order + "_count": Count(order)}
+                order_filter = {"filter": Q(likes__status=True)} \
+                if order == "likes" else {}
+                annotate_dict = {order + "_count": Count(order, **order_filter)}
                 queryset = queryset.alias(**annotate_dict)
 
             queryset = queryset.order_by(value)
