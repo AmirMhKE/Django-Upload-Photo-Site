@@ -18,6 +18,9 @@ SHOW_IMAGE_HEIGHT = 1000
 MIN_IMAGE_WIDTH = 300
 MIN_IMAGE_HEIGHT = 300
 
+RECENT_DAYS_STATISTICS_POSTS_NUMBER = 15
+STATISTICS_POSTS_REVERSE = False
+
 SIDEBAR_TAG_TITLES = {
     "suggestion": "عکس های پیشنهادی برای شما",
     "popular": "محبوب ترین عکس ها",

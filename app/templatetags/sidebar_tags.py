@@ -74,7 +74,7 @@ def get_most(m2m_column_name: str, title: str, num: int) -> dict[str, QuerySet]:
     the most your m2m to the desired number.
     """
     posts = Post.objects.all()
-    query = PostOrderingFilter.filter(posts, "-" + m2m_column_name).order_by("-created")
+    query = PostOrderingFilter.filter(posts, "-" + m2m_column_name)
 
     return {
         "title": title,

@@ -17,6 +17,7 @@ class PostOrderingFilter:
     @classmethod
     def filter(cls, queryset: QuerySet, value: str) -> QuerySet:
         order = cls.get_ordering(value)
+        order_args = (value,)
 
         if order in Post.get_fields_name():
             if order in Post.get_related_fields_name():
@@ -24,9 +25,11 @@ class PostOrderingFilter:
                 order_filter = {"filter": Q(likes__status=True)} \
                 if order == "likes" else {}
                 annotate_dict = {order + "_count": Count(order, **order_filter)}
+                other_ordering = "-created" if value.startswith("-") else "created"
+                order_args = (value, other_ordering)
                 queryset = queryset.alias(**annotate_dict)
 
-            queryset = queryset.order_by(value)
+            queryset = queryset.order_by(*order_args)
 
         return queryset
 

@@ -219,11 +219,13 @@ class DashboardStatisticsView(LoginRequiredMixin, SuperUserOrUserMixin, Template
         hit_query = Hit.objects.filter(post__publisher__id=user.id)
         like_query = Like.objects.active().filter(post__publisher__id=user.id)
         download_query = Download.objects.filter(post__publisher__id=user.id)
+        days_ago = settings.RECENT_DAYS_STATISTICS_POSTS_NUMBER
+        is_reverse = settings.STATISTICS_POSTS_REVERSE
 
         context = super().get_context_data(**kwargs)
         context["namespace"] = "dashboard_statistics"
         context["title"] = self.kwargs.get("username", "شما")
-        context["stat"] = json.dumps(user_posts_statistics(user, 14))
+        context["stat"] = json.dumps(user_posts_statistics(user, days_ago, is_reverse))
         context["hits_count"] = hit_query.count()
         context["likes_count"] = like_query.count()
         context["downloads_count"] = download_query.count()
