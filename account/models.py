@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
 from django_jalali.db import models as jmodels
-from extensions.utils import get_random_str
+from extension.utils import get_random_str
 
 from .validators import persian_name_validator, persian_text_validator
 

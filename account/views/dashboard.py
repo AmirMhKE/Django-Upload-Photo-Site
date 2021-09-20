@@ -12,7 +12,7 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (CreateView, DeleteView, ListView,
                                   TemplateView, UpdateView)
-from extensions.utils import send_message, set_default_data_forms
+from extension.utils import send_message, set_default_data_forms
 
 __all__ = (
     "DashBoardView", "PostCreateView", "EditPostView",

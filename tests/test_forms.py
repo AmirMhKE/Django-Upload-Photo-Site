@@ -2,7 +2,7 @@ from app.models import Post, Category
 from django.test import TestCase, override_settings
 from django.contrib.auth import get_user_model
 from account.forms import UserUpdateForm, PostForm
-from extensions.utils import get_test_image, get_test_form_image
+from extension.utils import get_test_image, get_test_form_image
 from .base import options, request, remove_media
 
 __all__ = ("UserUpdateFormTestCase", "PostFormTestCase")

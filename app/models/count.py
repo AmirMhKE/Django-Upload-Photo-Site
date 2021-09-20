@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django_jalali.db import models as jmodels
-from extensions.timestamp import TimeStamp
+from extension.timestamp import TimeStamp
 
 from .main import Post
 

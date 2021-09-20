@@ -1,6 +1,6 @@
 from django import template
 from django.urls import reverse
-from extensions.utils import param_request_get_to_url_param
+from extension.utils import param_request_get_to_url_param
 
 register = template.Library()
 

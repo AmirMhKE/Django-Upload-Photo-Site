@@ -5,7 +5,7 @@ from app.templatetags.sidebar_tags import (get_most_viewed_category_from_user,
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 from django.test import TestCase, override_settings
-from extensions.utils import get_test_image
+from extension.utils import get_test_image
 from jdatetime import datetime
 
 from .base import media_paths, remove_media, request

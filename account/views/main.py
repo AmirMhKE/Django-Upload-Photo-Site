@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import DetailView, TemplateView, UpdateView, View
-from extensions.utils import set_default_data_forms, send_message
+from extension.utils import set_default_data_forms, send_message
 
 __all__ = (
     "StatisticsView", "UserSettingsView", "UserDeleteView",

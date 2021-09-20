@@ -3,8 +3,8 @@ import os
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
-from extensions.timestamp import TimeStamp
-from extensions.utils import get_random_str
+from extension.timestamp import TimeStamp
+from extension.utils import get_random_str
 from PIL import Image
 
 __all__ = ("Category", "Post")

@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
-from extensions.utils import send_message
+from extension.utils import send_message
 
 User = get_user_model()
 
@@ -17,6 +17,6 @@ class SuperUserOrUserMixin:
         user = User.objects.get(username__iexact=kwargs.get("username", request.user.username))
     
         if not (request.user == user or request.user.is_superuser): 
-            return redirect("/", request.META.get("HTTP_REFERER", "/"))
+            return redirect(request.META.get("HTTP_REFERER", "/"))
 
         return super().dispatch(request, *args, **kwargs)

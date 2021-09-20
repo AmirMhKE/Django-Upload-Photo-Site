@@ -4,7 +4,7 @@ from app.views import count as app_count
 from app.views import main as app_main
 from django.http import QueryDict
 from django.test import SimpleTestCase
-from extensions.utils import (compare_similarities_two_images, get_apps_views,
+from extension.utils import (compare_similarities_two_images, get_apps_views,
                               get_client_ip, param_request_get_to_url_param)
 from PIL import Image
 

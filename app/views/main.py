@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView
-from extensions.utils import get_client_ip
+from extension.utils import get_client_ip
 
 __all__ = (
     "PostList", "PostDetail", "PublisherList", 

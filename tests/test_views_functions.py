@@ -5,7 +5,7 @@ from app.functions import get_post_list_title
 from app.models import Post
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
-from extensions.utils import get_test_image
+from extension.utils import get_test_image
 
 from .base import media_paths, options, remove_media, request
 

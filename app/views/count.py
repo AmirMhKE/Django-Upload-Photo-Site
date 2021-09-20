@@ -7,7 +7,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.utils.encoding import smart_str
 from django.views import View
-from extensions.utils import get_files_list, get_random_str
+from extension.utils import get_files_list, get_random_str
 
 __all__ = ("DownloadView", "LikeView")
 

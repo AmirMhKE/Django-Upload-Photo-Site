@@ -3,7 +3,7 @@ from os import path
 from account.models import CustomUser as User
 from app.models import Category, Post
 from django.test import TestCase, override_settings
-from extensions.utils import get_files_list, get_test_image
+from extension.utils import get_files_list, get_test_image
 from PIL import Image
 
 from .base import media_paths, remove_media

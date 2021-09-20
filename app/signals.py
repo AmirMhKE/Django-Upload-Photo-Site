@@ -4,7 +4,7 @@ import shutil
 from django.conf import settings
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch.dispatcher import receiver
-from extensions.utils import get_files_list
+from extension.utils import get_files_list
 
 from .models import Post
 

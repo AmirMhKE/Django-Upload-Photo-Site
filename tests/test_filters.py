@@ -2,7 +2,7 @@ from django.test import TestCase, override_settings
 from django.contrib.auth import get_user_model
 from app.models import Post, Hit, Like, Download, Ip
 from app.filters import PostSearchFilter, PostOrderingFilter
-from extensions.utils import get_test_image
+from extension.utils import get_test_image
 from .base import media_paths, remove_media, request
 
 __all__ = ("PostFiltersTestCase",)

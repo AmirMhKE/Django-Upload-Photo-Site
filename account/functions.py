@@ -7,7 +7,7 @@ from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
-from extensions.utils import compare_similarities_two_images
+from extension.utils import compare_similarities_two_images
 from PIL import Image, UnidentifiedImageError
 
 User = get_user_model()
