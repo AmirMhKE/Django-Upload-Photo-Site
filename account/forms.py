@@ -49,7 +49,7 @@ class UserUpdateForm(forms.ModelForm):
             self.fields["username"].help_text = \
             "شما فقط می توانید کوچکی و بزرگی حروف نام کاربری خود را تغییر دهید."
 
-            self.fields["about_me"].widget.attrs["initial"] = self.initial["about_me"]
+            self.fields["about_me"].widget.attrs["initial"] = self.initial["about_me"] or ""
             self.fields["about_me"].help_text = \
             "درباره من باید با حروف فارسی باشد و می توانید از علامت های (، .) استفاده کنید."
         except KeyError:

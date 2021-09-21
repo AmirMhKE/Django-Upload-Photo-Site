@@ -131,46 +131,48 @@ function userUpdateFormValidation() {
 const delete_account_form = document.querySelector("#delete_account-form");
 const delete_account_btn = document.querySelector(".delete_account-btn");
 const username = document.querySelector("input[name='username']").getAttribute("initial");
-const email = document.querySelector("input#email-lbl").getAttribute("initial");
+const email = document.querySelector("input#email-lbl").value;
 
-delete_account_btn.onclick = function (e) {
-    e.preventDefault();
-    Swal.fire({
-        icon: "warning",
-        title: "حذف حساب کاربری",
-        html: `
-        <p>
-            <span>آیا می خواهید اکانت کاربری خود را حذف کنید؟ </span>
-            <b>(با این کار تمام عکس های آپلود شده توسط شما پاک می شود!)</b>
-        </p>
-        `,
-        showDenyButton: true,
-        confirmButtonText: `لغو کردن`,
-        denyButtonText: `حذف اکانت کاربری`
-    }).then((result) => {
-        if(result.isDenied) {
-            Swal.fire({
-                icon: "error",
-                title: "تایید حذف اکانت",
-                html: `برای حذف اکانت خود عبارت <b>${username + "/" + email}</b> را وارد نمایید.`,
-                input: "text",
-                inputAttributes: {
-                    spellcheck: "false"
-                },
-                showCancelButton: true,
-                confirmButtonText: "حذف اکانت",
-                cancelButtonText: "لغو",
-                customClass: {
-                    confirmButton: "delete_account-btn"
-                },
-                inputValidator: (value) => {
-                    if(value != (username + "/" + email)) {
-                        return "عبارت شما با عبارت مورد نظر مطابقت ندارد!";
-                    } else {
-                        delete_account_form.submit();
+if(delete_account_btn) {
+    delete_account_btn.onclick = function (e) {
+        e.preventDefault();
+        Swal.fire({
+            icon: "warning",
+            title: "حذف حساب کاربری",
+            html: `
+            <p>
+                <span>آیا می خواهید اکانت کاربری خود را حذف کنید؟ </span>
+                <b>(با این کار تمام عکس های آپلود شده توسط شما پاک می شود!)</b>
+            </p>
+            `,
+            showDenyButton: true,
+            confirmButtonText: `لغو کردن`,
+            denyButtonText: `حذف اکانت کاربری`
+        }).then((result) => {
+            if(result.isDenied) {
+                Swal.fire({
+                    icon: "error",
+                    title: "تایید حذف اکانت",
+                    html: `برای حذف اکانت خود عبارت <b>${username + "/" + email}</b> را وارد نمایید.`,
+                    input: "text",
+                    inputAttributes: {
+                        spellcheck: "false"
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: "حذف اکانت",
+                    cancelButtonText: "لغو",
+                    customClass: {
+                        confirmButton: "delete_account-btn"
+                    },
+                    inputValidator: (value) => {
+                        if(value != (username + "/" + email)) {
+                            return "عبارت شما با عبارت مورد نظر مطابقت ندارد!";
+                        } else {
+                            delete_account_form.submit();
+                        }
                     }
-                }
-            });
-        }
-    });
+                });
+            }
+        });
+    }
 }

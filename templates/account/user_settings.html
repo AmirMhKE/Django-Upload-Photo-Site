@@ -49,7 +49,7 @@
                 <small class="text-right p-0 m-0">{{ form.about_me.help_text }}</small><br>
                 <small class="text-right">۱۵۰ / <span id="about_me_len">{{ user.about_me|length|en_nums_to_fa_nums }}</span></small>
             </p>
-            {% if request.user.is_superuser %}
+            {% if request.user.is_superuser or request.user == user %}
             <p>
                 <label for="email-lbl">ایمیل: </label>
                 <input class="mr-md-1" type="email" value="{{ user.email }}" id="email-lbl" readonly>
@@ -76,12 +76,15 @@
         </form>
     </div>
 
-    <div class="col-11 col-sm-10 col-md-8 col-lg-6 mx-auto text-right my-5 user-settings wow animate__animated animate__fadeInUp">
+    {% if request.user == user %}
+    <div class="col-11 col-sm-10 col-md-8 col-lg-6 mx-auto text-right my-5 
+    user-settings wow animate__animated animate__fadeInUp">
         <h2 class="text-center my-5 pt-5">{% fws "trash" %} پاک کردن حساب کاربری</h1>
         <form method="POST" action="{% url 'account:user_delete' %}" id="delete_account-form">{% csrf_token %}
             <button class="btn mr-md-1 delete_account-btn">پاک کردن اکانت کاربری</button>
         </form>
     </div>
+    {% endif %}
 
     <div id="img_formats" hidden>{{ img_formats|js }}</div>
     <input type="hidden" id="img_width" value="{{ img_width|js }}">

@@ -41,8 +41,8 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
     form_class = UserUpdateForm
 
     def post(self, request, *args, **kwargs):
-        user = User.objects.get(username__iexact=kwargs.get("username", request.user.username))
-        username = kwargs.get("username") 
+        user = self.get_object()
+        username = kwargs.get("username")
 
         # ? Check permission when submit form
         if not any([request.user == user, request.user.is_superuser and not user.is_superuser]):
@@ -57,8 +57,7 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
     def form_valid(self, form):
         # ? Set alert
         content = ""
-        user = User.objects.get(username__iexact=self.kwargs.get(
-        "username", self.request.user.username))
+        user = self.get_object()
         
         if user == self.request.user:
             content = "حساب کاربری شما با موفقیت ویرایش شد."
