@@ -9,7 +9,7 @@ from account.statistics import user_posts_statistics
 from app.filters import post_queryset
 from app.models import Category, Download, Hit, Like, Post
 from django.conf import settings
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.views.generic import (CreateView, DeleteView, ListView,
                                   TemplateView, UpdateView)
 from extension.utils import send_message, set_default_data_forms
@@ -148,8 +148,9 @@ class EditPostView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
         return success_url
 
     def get_object(self, queryset=None):
+        user = self.get_publisher()
         slug = self.kwargs.get("slug")
-        return get_object_or_404(Post, slug=slug)
+        return get_object_or_404(Post, slug=slug, publisher=user)
 
     def get_context_data(self, **kwargs):
         user = self.get_publisher()
@@ -193,8 +194,9 @@ class DeletePostView(LoginRequiredMixin, SuperUserOrUserMixin, DeleteView):
         return success_url
 
     def get_object(self, queryset=None):
+        user = self.get_publisher()
         slug = self.kwargs.get("slug")
-        obj = get_object_or_404(Post, slug=slug)
+        obj = get_object_or_404(Post, slug=slug, publisher=user)
         return obj
 
     def delete(self, request, *args, **kwargs):

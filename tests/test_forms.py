@@ -1,15 +1,16 @@
-from app.models import Post, Category
-from django.test import TestCase, override_settings
+from account.forms import PostForm, UserUpdateForm
+from app.models import Category, Post
 from django.contrib.auth import get_user_model
-from account.forms import UserUpdateForm, PostForm
-from extension.utils import get_test_image, get_test_form_image
-from .base import options, request, remove_media
+from django.test import TestCase, override_settings
+from extension.utils import get_test_form_image, get_test_image
+
+from .base import media_paths, remove_media, request
 
 __all__ = ("UserUpdateFormTestCase", "PostFormTestCase")
 
 User = get_user_model()
 
-@override_settings(**options)
+@override_settings(**media_paths)
 class UserUpdateFormTestCase(TestCase):
     def setUp(self):
         normal_user = User.objects.create_user(username="test1", 
@@ -304,7 +305,7 @@ class UserUpdateFormTestCase(TestCase):
     def tearDown():
         remove_media()
 
-@override_settings(**options)
+@override_settings(**media_paths)
 class PostFormTestCase(TestCase):
     fixtures = ("fixtures/category_data.json",)
 
