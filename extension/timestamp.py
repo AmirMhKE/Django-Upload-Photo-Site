@@ -5,7 +5,7 @@ from django_jalali.db import models as jmodels
 class TimeStamp(models.Model):
     """
     Created Time and Updated Time for your 
-    models with inheritingfrom this class.
+    models with inheriting from this class.
     """
     created = jmodels.jDateTimeField(auto_now_add=True)
     updated = jmodels.jDateTimeField(auto_now=True)

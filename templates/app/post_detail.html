@@ -21,9 +21,9 @@
                 <b class="m-2 text-center">{% fws "user" "l" "1" %} 
                 منتشر کننده: {{ post.publisher.get_name_or_username }}</b>
                 <b class="m-2 text-center">{% fws "clock-o" "l" "1" %} 
-                منتشر شده در تاریخ {{ post.created|jformat:"%Y/%m/%d در ساعت %H:%M"|en_nums_to_fa_nums }}</b> 
+                منتشر شده در تاریخ {{ post.created|jformat:"%Y/%m/%d در ساعت %H:%M:%S"|en_nums_to_fa_nums }}</b> 
                 <b class="m-2 text-center">{% fws "clock-o" "l" "1" %} 
-                ویرایش شده در تاریخ {{ post.created|jformat:"%Y/%m/%d در ساعت %H:%M"|en_nums_to_fa_nums }}</b> 
+                ویرایش شده در تاریخ {{ post.created|jformat:"%Y/%m/%d در ساعت %H:%M:%S"|en_nums_to_fa_nums }}</b> 
             </div>
         </div>
     
@@ -31,7 +31,8 @@
             <div class="col-10 row line mx-auto mb-5"></div>
     
             <div class="col-11 col-sm-10 col-md-8 col-lg-7 mx-auto img-detail">
-                <img class="col" id="image" src="{{ post.img.url }}" alt="{{ post.title }}">
+                <img class="col" id="image" src="{{ post.img.url }}" 
+                alt="{{ post.title }}" loading="lazy">
             </div>
         </div>
         

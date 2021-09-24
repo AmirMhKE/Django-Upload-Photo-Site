@@ -1,12 +1,13 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
-from .base import client
+from .base import client, auth
 
 __all__ = ("MixinsTestCase",)
 
 User = get_user_model()
 
+@override_settings(**auth)
 class MixinsTestCase(TestCase):
     def setUp(self):
         User.objects.create_user(username="test1",

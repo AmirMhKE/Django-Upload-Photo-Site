@@ -1,5 +1,6 @@
 import json
 
+import jdatetime
 from django import template
 from django.urls import reverse
 from django.utils.html import format_html
@@ -46,6 +47,12 @@ def get_jalali_month(num):
         "7": "مهر", "8": "آبان", "9": "آذر", "10": "دی", "11": "بهمن", "12": "اسفند"
     }
     return months.get(num)
+
+@register.filter
+def miladi_to_jalali(datetime):
+    date = jdatetime.date.fromgregorian(date=datetime).strftime("%Y/%m/%d")
+    time = datetime.time().strftime("%H:%M:%S")
+    return f"{time} - {date}"
 
 @register.simple_tag
 def fws(name, margin_right_or_left=None, margin_number=None, custom_class=None, **attrs):

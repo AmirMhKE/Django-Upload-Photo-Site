@@ -1,8 +1,6 @@
-from datetime import datetime, timedelta
-
-import jdatetime
 from app.models import Download, Hit, Like
-from django.db.models import F, Count
+from django.db.models import Count, F
+from jdatetime import date, datetime, timedelta
 
 
 def user_posts_statistics(user, days_ago, reverse=None):
@@ -44,7 +42,7 @@ def user_posts_statistics(user, days_ago, reverse=None):
     downloads = list(map(lambda date: download_query.get(created_date=date[0])["number"]
     if download_query.filter(created_date=date[0]).exists() else 0, created_dates.iterator()))
 
-    dates = list(map(lambda date: jdatetime.date.fromgregorian(date=date[0])
+    dates = list(map(lambda date_: date.fromgregorian(date=date_[0])
     .strftime("%Y/%m/%d"), created_dates.iterator()))
 
     if reverse:

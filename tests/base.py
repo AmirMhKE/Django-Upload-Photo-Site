@@ -14,6 +14,12 @@ options = {
     "MAX_IMAGE_UPLOAD_COUNT": 2
 }
 
+auth = {
+    "AUTHENTICATION_BACKENDS": (
+        "django.contrib.auth.backends.ModelBackend",
+    ),
+}
+
 def remove_media():
     for path in media_paths.values():
         if os.path.exists(path):

@@ -15,7 +15,8 @@
             <div class="row d-flex justify-content-center">
                 {% for obj in sidebar_items %}
                     <div class="suggestion-item col-10">
-                        <img class="img-fluid" src="{{ obj.img.url }}" alt="{{ obj.title }}" />
+                        <img class="img-fluid" src="{{ obj.img.url }}" 
+                        alt="{{ obj.title }}" loading="lazy" />
                         <div class="suggestion-item-overlay d-flex flex-column align-items-center">
                             <div class="pt-4 pb-0 mb-0">
                                 {% user_profile_image obj.publisher "3rem" "3rem" profile_tag="a" has_title=True profile_classes="user-profile, text-center" %}
@@ -30,7 +31,7 @@
                                 <p class="mx-2 mt-3">{{ obj.hits.count|en_nums_to_fa_nums }} 
                                 {% fws "eye" "r" "1" %}</p>
                             </div>
-                            <small class="mb-5 px-4 text-right">{% fws "clock-o" "l" "1" %} منتشر شده توسط <a class="publisher" href="{% url 'publisher_list' obj.publisher %}"><b>{{ obj.publisher.get_name_or_username }}</b></a> در تاریخ {{ obj.created|jformat:"%Y/%m/%d"|en_nums_to_fa_nums}} در ساعت {{ obj.created.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</small>
+                            <small class="mb-5 px-4 text-right">{% fws "clock-o" "l" "1" %} منتشر شده توسط <a class="publisher" href="{% url 'publisher_list' obj.publisher %}"><b>{{ obj.publisher.get_name_or_username }}</b></a> در تاریخ {{ obj.created|jformat:"%Y/%m/%d"|en_nums_to_fa_nums}} در ساعت {{ obj.created.time|jformat:"%H:%M:%S"|en_nums_to_fa_nums }}</small>
                         </div>
                     </div>
                 {% empty %}

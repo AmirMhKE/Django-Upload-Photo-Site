@@ -11,6 +11,8 @@ def upload_location(instance, filename):
     return f"user_profiles/{instance.username.lower()}/{get_random_str(10, 50)}.jpg"
 
 class CustomUser(AbstractUser):
+    username = models.CharField(max_length=50, unique=True, db_index=True, 
+    verbose_name="نام کاربری")
     first_name = models.CharField(max_length=20, validators=[persian_name_validator], 
     verbose_name="نام", blank=True)
     last_name = models.CharField(max_length=30, validators=[persian_name_validator], 

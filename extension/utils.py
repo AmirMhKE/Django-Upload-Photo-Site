@@ -1,8 +1,8 @@
 import importlib
 import inspect
+import json
 import os
 import string
-import json
 from pathlib import Path
 from random import randint
 from typing import Union
@@ -10,6 +10,7 @@ from typing import Union
 import imagehash
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.forms.models import ModelForm
 from django.http import HttpRequest, QueryDict
 from django.utils.crypto import get_random_string
 
@@ -74,7 +75,7 @@ def send_message(request: HttpRequest, event_type: str, content: Union[str, None
     event = {"type": event_type, "content": content}
     request.session["event"] = json.dumps(event)
 
-def set_default_data_forms(data: dict, initial_data: dict) -> dict:
+def set_default_data_forms(form: ModelForm, data: dict, initial_data: dict) -> dict:
     """
     This function return default data forms when forms invalid,
     Because in Django, when even the forms are wrong, 
@@ -82,7 +83,8 @@ def set_default_data_forms(data: dict, initial_data: dict) -> dict:
     """
     for key in data.keys():
         try:
-            data[key] = initial_data[key]
+            if form.has_error(key):
+                data[key] = initial_data[key]
         except KeyError:
             continue
 

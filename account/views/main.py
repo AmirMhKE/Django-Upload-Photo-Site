@@ -39,20 +39,6 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
     model = User
     template_name = "account/user_settings.html"
     form_class = UserUpdateForm
-
-    def post(self, request, *args, **kwargs):
-        user = self.get_object()
-        username = kwargs.get("username")
-
-        # ? Check permission when submit form
-        if not any([request.user == user, request.user.is_superuser and not user.is_superuser]):
-            send_message(request, "permission_denied")
-            
-            if username is None:
-                return redirect("account:settings")
-            return redirect("account:settings", username)
-
-        return super().post(request, *args, **kwargs)
     
     def form_valid(self, form):
         # ? Set alert

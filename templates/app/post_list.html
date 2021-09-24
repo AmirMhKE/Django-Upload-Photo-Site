@@ -17,7 +17,8 @@
         <div class="row col-12">
             {% for obj in post_list %}
                 <div class="col-12 col-sm-10 col-md-6 col-lg-4 all-items-img mb-4 mx-auto">
-                    <img class="img-fluid" src="{{ obj.img.url }}" alt="{{ obj.title }}" />
+                    <img class="img-fluid" src="{{ obj.img.url }}" 
+                    alt="{{ obj.title }}" loading="lazy" />
                     <div class="overlay d-flex flex-column align-items-center">
                         <div class="pt-4 pb-0 mb-0">
                             {% user_profile_image obj.publisher "3rem" "3rem" profile_tag="a" has_title=True profile_classes="user-profile, text-center" %}
@@ -32,7 +33,12 @@
                             <p class="mx-2 mt-3">{{ obj.hits.count|en_nums_to_fa_nums }} 
                             {% fws "eye" "r" "1" %}</p>
                         </div>
-                        <p class="px-4 text-right">{% fws "clock-o" "l" "1" %} منتشر شده توسط <a class="publisher" href="{% url 'publisher_list' obj.publisher %}"><b>{{ obj.publisher.get_name_or_username }}</b></a> در تاریخ {{ obj.created|jformat:"%Y/%m/%d"|en_nums_to_fa_nums}} در ساعت {{ obj.created.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</p>
+                        <p class="px-4 text-right">{% fws "clock-o" "l" "1" %} منتشر شده توسط 
+                            <a class="publisher" href="{% url 'publisher_list' obj.publisher %}">
+                            <b>{{ obj.publisher.get_name_or_username }}</b></a>
+                             در تاریخ {{ obj.created|jformat:"%Y/%m/%d"|en_nums_to_fa_nums}} 
+                            در ساعت {{ obj.created.time|jformat:"%H:%M:%S"|en_nums_to_fa_nums }}
+                        </p>
                     </div>
                 </div>
             {% empty %}
@@ -57,7 +63,8 @@
     <div class="slider_">
         <div class="container-fluid">
             <div class="d-flex flex-column">
-                <aside class="col-12 col-md-10 mx-auto mt-5 mt-md-0 wow animate__animated animate__fadeInUp order-2">
+                <aside class="col-12 col-md-10 mx-auto mt-5 mt-md-0 wow animate__animated 
+                animate__fadeInUp order-2">
                     <div class="col d-lg-flex">
                         {% sidebar request "suggestion" side_count %}
                         {% sidebar request "popular" side_count %}
@@ -79,7 +86,7 @@
                     <div class="owl-carousel owl-theme mt-2 col-12 mx-0 mx-md-4">
                         {% for obj in post_list %}
                             <div class="slider-item">
-                                <img src="{{ obj.img.url }}" alt="{{ obj.title }}" />
+                                <img src="{{ obj.img.url }}" alt="{{ obj.title }}" loading="lazy" />
                                 <div class="slider-item-overlay d-flex flex-column align-items-center">
                                     <div class="pt-4 pb-0 mb-0">
                                         {% user_profile_image obj.publisher "3rem" "3rem" profile_tag="a" has_title=True profile_classes="user-profile, text-center" %}
@@ -94,7 +101,12 @@
                                         <p class="mx-2 mt-3">{{ obj.hits.count|en_nums_to_fa_nums }} 
                                         {% fws "eye" "r" "1" %}</p>
                                     </div>
-                                    <p class="px-4 text-right">{% fws "clock-o" "l" "1" %}منتشر شده توسط <a class="publisher" href="{% url 'publisher_list' obj.publisher %}"><b>{{ obj.publisher.get_name_or_username }}</b></a> در تاریخ {{ obj.created|jformat:"%Y/%m/%d"|en_nums_to_fa_nums}} در ساعت {{ obj.created.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</p>
+                                    <p class="px-4 text-right">{% fws "clock-o" "l" "1" %}منتشر شده توسط 
+                                        <a class="publisher" href="{% url 'publisher_list' obj.publisher %}">
+                                        <b>{{ obj.publisher.get_name_or_username }}</b></a> 
+                                        در تاریخ {{ obj.created|jformat:"%Y/%m/%d"|en_nums_to_fa_nums}} 
+                                        در ساعت {{ obj.created.time|jformat:"%H:%M:%S"|en_nums_to_fa_nums }}
+                                    </p>
                                 </div>
                             </div>
                         {% empty %}

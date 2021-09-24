@@ -204,6 +204,11 @@ body {
 .dsb:disabled:hover {
     background-color: var(--Main-Blue) !important;
 }
+.h-404 {
+    color: var(--Main-Gray);
+    font-weight: bold;
+    margin-top: 5em;
+}
 html.swal2-shown,
 body.swal2-shown { 
     overflow-y: hidden !important; 

@@ -55,8 +55,8 @@
                        <td title="بازدید ها">{{ post.hits.count|en_nums_to_fa_nums }}</td>
                        <td title="لایک ها">{{ post.likes.active.count|en_nums_to_fa_nums }}</td>
                        <td title="دانلود ها">{{ post.downloads.count|en_nums_to_fa_nums }}</td>
-                       <td title="تاریخ انتشار">{{ post.created.date|jformat:"%Y/%m/%d"|en_nums_to_fa_nums }} ,<br> {{ post.created.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</td>
-                       <td title="تاریخ بروزرسانی">{{ post.updated.date|jformat:"%Y/%m/%d"|en_nums_to_fa_nums }} ,<br> {{ post.updated.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</td>
+                       <td title="تاریخ انتشار">{{ post.created.date|jformat:"%Y/%m/%d"|en_nums_to_fa_nums }} ,<br> {{ post.created.time|jformat:"%H:%M:%S"|en_nums_to_fa_nums }}</td>
+                       <td title="تاریخ بروزرسانی">{{ post.updated.date|jformat:"%Y/%m/%d"|en_nums_to_fa_nums }} ,<br> {{ post.updated.time|jformat:"%H:%M:%S"|en_nums_to_fa_nums }}</td>
                        <td class="edit" title="ویرایش عکس"><a 
                         href="{% set_dashboard_url 'post_edit' post.slug view_kwargs=view.kwargs %}">
                         {% fws "pencil" %}</a></td>

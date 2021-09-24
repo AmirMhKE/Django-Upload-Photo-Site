@@ -71,6 +71,18 @@
                                 </td>
                             </tr>
                         {% endif %}
+                        {% if request.user == user or request.user.is_superuser %}
+                            {% if user.last_login %}
+                            <tr>
+                                <td>
+                                    <h5 class="text-right">آخرین ورود:</h5>
+                                </td>
+                                <td>
+                                    <h5 class="text-center">{{ user.last_login|miladi_to_jalali|en_nums_to_fa_nums }}</h5>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -88,7 +100,8 @@
                     <div class="row d-flex justify-content-center">
                         {% for obj in last_posts %}
                             <div class="suggestion-item col-6 mx-auto">
-                                <img class="img-fluid" src="{{ obj.img.url }}" alt="{{ obj.title }}" />
+                                <img class="img-fluid" src="{{ obj.img.url }}" 
+                                alt="{{ obj.title }}" loading="lazy" />
                                 <div class="suggestion-item-overlay d-flex flex-column align-items-center">
                                     <div class="pt-4 pb-0 mb-0">
                                         {% user_profile_image request.user "3rem" "3rem" profile_tag="a" has_title=True profile_classes="user-profile, text-center" %}
@@ -106,7 +119,7 @@
                                         {% fws "eye" "r" "1" %}
                                         </p>
                                     </div>
-                                    <small class="mb-5 px-4 text-right">{% fws "clock-o" "l" "1" %}</span> منتشر شده توسط <a class="publisher" href="{% url 'publisher_list' obj.publisher %}"><b>{{ obj.publisher.get_name_or_username }}</b></a> در تاریخ {{ obj.created|jformat:"%Y/%m/%d"|en_nums_to_fa_nums}} در ساعت {{ obj.created.time|jformat:"%H:%M"|en_nums_to_fa_nums }}</small>
+                                    <small class="mb-5 px-4 text-right">{% fws "clock-o" "l" "1" %}</span> منتشر شده توسط <a class="publisher" href="{% url 'publisher_list' obj.publisher %}"><b>{{ obj.publisher.get_name_or_username }}</b></a> در تاریخ {{ obj.created|jformat:"%Y/%m/%d"|en_nums_to_fa_nums}} در ساعت {{ obj.created.time|jformat:"%H:%M:%S"|en_nums_to_fa_nums }}</small>
                                 </div>
                             </div>
                         {% empty %}

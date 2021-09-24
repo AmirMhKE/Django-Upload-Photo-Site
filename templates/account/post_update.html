@@ -10,7 +10,8 @@
     <div class="col-11 col-sm-10 col-md-8 col-lg-6 mx-auto text-right my-5 user-settings wow animate__animated animate__fadeInDown">
         <form method="POST" enctype="multipart/form-data" name="post_update">{% csrf_token %}
             <h2 class="title mx-auto text-center my-2">عکس در حال حاضر</h2>
-            <img class="my-4 mx-auto img-fluid show" src="{{ post.img.url }}" alt="{{ post.title }}">
+            <img class="my-4 mx-auto img-fluid show" src="{{ post.img.url }}" 
+            alt="{{ post.title }}" loading="lazy">
             {% for field in form %}
                 <p><label for="{{ field.id }}">{{ field.label }}:</label> {{ field }}</p>
             {% endfor %}

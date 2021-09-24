@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AnonymousUser
 from django.shortcuts import redirect
 from extension.utils import send_message
 
@@ -14,7 +15,8 @@ class LoginRequiredMixin:
 
 class SuperUserOrUserMixin:
     def dispatch(self, request, *args, **kwargs):
-        user = User.objects.get(username__iexact=kwargs.get("username", request.user.username))
+        user = User.objects.filter(username__iexact=kwargs.get("username", request.user.username))
+        user = user[0] if user.exists() else AnonymousUser()
     
         if not (request.user == user or (request.user.is_superuser and not user.is_superuser)): 
             return redirect(request.META.get("HTTP_REFERER", "/"))

@@ -136,7 +136,7 @@ class EditPostView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
             form = self.form_class(instance=self.object, 
             data=request.POST, files=request.FILES)
             return self.form_valid(form)
-        return self.render_to_response(context)
+        return self.form_invalid(form)
 
     def get_publisher(self):
         user = get_dashboard_publisher(self.request, self.kwargs.get("username"))
@@ -180,7 +180,8 @@ class EditPostView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        form.data = set_default_data_forms(form.data.copy(), form.initial.copy())
+        form.data = set_default_data_forms(form, 
+            form.data.copy(), form.initial.copy())
         return super().form_invalid(form)
 
 class DeletePostView(LoginRequiredMixin, SuperUserOrUserMixin, DeleteView):

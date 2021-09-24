@@ -3,13 +3,13 @@ import time
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 
-from .base import client, options
+from .base import client, options, auth
 
 __all__ = ("RequestProcessMiddlewareTestCase",)
 
 User = get_user_model()
 
-@override_settings(**options)
+@override_settings(**options, **auth)
 class RequestProcessMiddlewareTestCase(TestCase):
     def setUp(self):
         User.objects.create_user(username="test1", 

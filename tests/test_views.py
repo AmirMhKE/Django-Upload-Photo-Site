@@ -1,19 +1,19 @@
 import os
 
-from app.models import Post, Category
+from app.models import Category, Post
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from extension.utils import get_files_list, get_test_form_image, get_test_image
 
-from .base import client, media_paths, remove_media
+from .base import client, media_paths, auth, remove_media
 
 __all__ = ("AppCountViews", "AccountDashboardViewsTestCase")
 
 User = get_user_model()
 
-@override_settings(**media_paths)
+@override_settings(**media_paths, **auth)
 class AppCountViews(TestCase):
     def setUp(self):
         self.post1 = Post(title="test1", 
@@ -106,7 +106,7 @@ class AppCountViews(TestCase):
     def tearDown():
         remove_media()
 
-@override_settings(**media_paths)
+@override_settings(**media_paths, **auth)
 class AccountDashboardViewsTestCase(TestCase):
     fixtures = ("fixtures/category_data.json",)
 

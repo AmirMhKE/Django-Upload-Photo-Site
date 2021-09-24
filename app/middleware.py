@@ -12,6 +12,10 @@ User = get_user_model()
 
 
 class RequestProcessMiddleware:
+    minimum_difference_float = settings.MINIMUM_DIFFERENCE_REQUESTS
+    max_count = settings.MAX_COUNT_EXCESSIVE_REQUESTS
+    block_time_seconds = None
+
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -29,8 +33,7 @@ class RequestProcessMiddleware:
         user = None
         view_lists = get_apps_views()
 
-        if view_func.__name__ in view_lists:
-            self.process_client_ip(request)
+        self.process_client_ip(request)
 
         if request.user.is_authenticated:
             user = User.objects.get(pk=request.user.pk)
@@ -50,43 +53,42 @@ class RequestProcessMiddleware:
         This function save new ip address users in the database
         """
         ip_address = get_client_ip(request)
-
         obj = Ip.objects.get_or_create(ip_address=ip_address)[0]
-
         self.check_excessive_requests(request, obj)
 
-    @staticmethod
-    def check_excessive_requests(request, obj):
+    def check_excessive_requests(self, request, obj):
         """
         This function can prevent DDOS attacks as much as possible
         """
         if not request.user.is_superuser:
             minus = datetime.now().timestamp() - obj.last_excessive_request_time.timestamp()
-            block_time_seconds = randint(settings.MIN_BLOCK_TIME_EXCESSIVE_REQUESTS,
-            settings.MAX_BLOCK_TIME_EXCESSIVE_REQUESTS)
-            minimum_difference_float = settings.MINIMUM_DIFFERENCE_REQUESTS
-            max_count = settings.MAX_COUNT_EXCESSIVE_REQUESTS
-            
-            if obj.excessive_requests_count < max_count:
-                if not obj.excessive_requests_count:
-                    obj.excessive_requests_count = 1
-                    obj.last_excessive_request_time = datetime.now()
-                    obj.save()
-                elif minus < minimum_difference_float:
+
+            if obj.excessive_requests_count < self.max_count:
+                if minus < self.minimum_difference_float or not obj.excessive_requests_count:
                     obj.excessive_requests_count += 1
+                    obj.last_excessive_request_time = datetime.now()
                     obj.save()
                 else:
                     obj.excessive_requests_count = 0
                     obj.save()
 
                 # ? Save excessive count request user
-                if obj.excessive_requests_count == max_count and request.user.is_authenticated:
+                if obj.excessive_requests_count == self.max_count and request.user.is_authenticated:
                     user = User.objects.get(pk=request.user.pk)
                     user.excessive_requests_count += 1
                     user.save()
+
+                if self.block_time_seconds is not None:
+                    self.block_time_seconds = None 
             else:
+                if self.block_time_seconds is None:
+                    self.block_time_seconds = randint(
+                        settings.MIN_BLOCK_TIME_EXCESSIVE_REQUESTS,
+                        settings.MAX_BLOCK_TIME_EXCESSIVE_REQUESTS
+                    )
+
                 difference_block_time = obj.last_excessive_request_time \
-                + timedelta(seconds=block_time_seconds)
+                + timedelta(seconds=self.block_time_seconds)
 
                 if datetime.now().timestamp() < difference_block_time.timestamp():
                     diffrence = difference_block_time.timestamp() - datetime.now().timestamp()

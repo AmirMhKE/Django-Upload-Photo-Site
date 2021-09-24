@@ -18,7 +18,7 @@ class DownloadView(LoginRequiredMixin, View):
 
         with open(file_name, "rb") as img:
             content = \
-            f"attachment; filename={os.path.basename(f'{get_random_str(10, 50)}-akscade.jpg')}" 
+            f"attachment; filename={f'{get_random_str(10, 50)}-akscade.jpg'}" 
 
             response = HttpResponse(img.read(), content_type="application/force-download")
             response["Content-Disposition"] = content
