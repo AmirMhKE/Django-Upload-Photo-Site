@@ -18,6 +18,10 @@ class MixinsTestCase(TestCase):
         email="test3@gmail.com", password="12345", is_superuser=True)
         User.objects.create_user(username="test4",
         email="test4@gmail.com", password="12345", is_superuser=True)
+        User.objects.create_user(username="test5",
+        email="test5@gmail.com", password="12345", is_admin=True)
+        User.objects.create_user(username="test6",
+        email="test6@gmail.com", password="12345", is_admin=True)
 
     def test_login_required_mixin(self):
         redirect_status, success_status = 302, 200
@@ -50,19 +54,16 @@ class MixinsTestCase(TestCase):
 
         client.login(username="test1", password="12345")
 
-        req = client.get("/account/statistics/")
+        req = client.get("/account/dashboard/")
         self.assertEqual(req.status_code, success_status)
 
         req = client.get("/account/test2/dashboard/")
         self.assertEqual(req.status_code, redirect_status)
 
-        req = client.get("/account/statistics/test2")
-        self.assertEqual(req.status_code, redirect_status)
-
         req = client.get("/account/test3/dashboard/")
         self.assertEqual(req.status_code, redirect_status)
 
-        req = client.get("/account/statistics/test3")
+        req = client.get("/account/test5/dashboard/")
         self.assertEqual(req.status_code, redirect_status)
 
         client.login(username="test3", password="12345")
@@ -73,17 +74,22 @@ class MixinsTestCase(TestCase):
         req = client.get("/account/test1/dashboard/")
         self.assertEqual(req.status_code, success_status)
 
-        req = client.get("/account/statistics/test1")
-        self.assertEqual(req.status_code, success_status)
-
-        req = client.get("/account/test2/dashboard/")
-        self.assertEqual(req.status_code, success_status)
-
-        req = client.get("/account/statistics/test2")
-        self.assertEqual(req.status_code, success_status)
-
         req = client.get("/account/test4/dashboard/")
         self.assertEqual(req.status_code, redirect_status)
 
-        req = client.get("/account/statistics/test4")
+        req = client.get("/account/test5/dashboard/")
+        self.assertEqual(req.status_code, redirect_status)
+
+        client.login(username="test5", password="12345")
+
+        req = client.get("/account/statistics/")
+        self.assertEqual(req.status_code, success_status)
+
+        req = client.get("/account/test1/dashboard/")
+        self.assertEqual(req.status_code, success_status)
+
+        req = client.get("/account/test4/dashboard/")
+        self.assertEqual(req.status_code, success_status)
+
+        req = client.get("/account/test6/dashboard/")
         self.assertEqual(req.status_code, redirect_status)

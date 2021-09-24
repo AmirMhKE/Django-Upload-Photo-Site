@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, AnonymousUser as AnonymousUser_
 from django.db import models
 from django.utils import timezone
 from django_jalali.db import models as jmodels
@@ -39,3 +39,6 @@ class CustomUser(AbstractUser):
         if self.first_name and self.last_name:
             return f"{self.first_name} {self.last_name}".strip()
         return self.username
+
+class AnonymousUser(AnonymousUser_):
+    is_admin = False

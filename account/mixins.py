@@ -1,7 +1,9 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AnonymousUser
 from django.shortcuts import redirect
 from extension.utils import send_message
+
+from account.functions import check_superuser_or_user_permission
+from account.models import AnonymousUser
 
 User = get_user_model()
 
@@ -18,7 +20,8 @@ class SuperUserOrUserMixin:
         user = User.objects.filter(username__iexact=kwargs.get("username", request.user.username))
         user = user[0] if user.exists() else AnonymousUser()
     
-        if not (request.user == user or (request.user.is_superuser and not user.is_superuser)): 
+        if not check_superuser_or_user_permission(request, user): 
+            send_message(request, "permission_denied")
             return redirect(request.META.get("HTTP_REFERER", "/"))
 
         return super().dispatch(request, *args, **kwargs)

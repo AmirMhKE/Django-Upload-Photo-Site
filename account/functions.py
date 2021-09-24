@@ -84,3 +84,17 @@ def check_number_uploaded_images(model, user):
             return False, max_count
 
     return True, max_count     
+
+def check_superuser_or_user_permission(request: HttpRequest, user: User) -> bool:
+    """
+    This function check permissions of user
+    """
+    permission = any([
+        request.user == user, 
+        request.user.is_superuser and not user.is_superuser,
+        request.user.is_admin and not user.is_admin
+    ])
+
+    if not permission:
+        return False
+    return True

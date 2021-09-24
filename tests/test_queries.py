@@ -1,9 +1,9 @@
+from account.models import AnonymousUser
 from account.statistics import user_posts_statistics
 from app.models import Category, Download, Hit, Ip, Like, Post, UserHit
 from app.templatetags.sidebar_tags import (get_most_viewed_category_from_user,
                                            suggestion_posts)
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AnonymousUser
 from django.test import TestCase, override_settings
 from extension.utils import get_test_image
 from jdatetime import datetime

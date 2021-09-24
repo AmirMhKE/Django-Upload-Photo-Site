@@ -55,7 +55,7 @@ class UserSettingsView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        form.data = set_default_data_forms(form.data.copy(), form.initial.copy())
+        form.data = set_default_data_forms(form, form.data.copy(), form.initial.copy())
         return super().form_invalid(form)
 
     def get_success_url(self):
