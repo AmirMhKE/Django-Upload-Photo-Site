@@ -4,11 +4,10 @@
 
 {% block main %}
     <h1 class="mx-auto text-center mt-5 title">آمار عکس های {{ title }}</h1>
-    <div class="line row mx-auto col-12 col-md-10 mt-5"></div>
+    <div class="line row mx-auto col-11 mt-5"></div>
 
-    <div class="p-0 m-0 wow animate__animated animate__fadeInDown">
+    <div class="p-0 m-0">
         <div id="container" class="col-12 col-md-10 mx-auto mt-5"></div>
-
         <div class="col-12 col-md-10 mx-auto my-5 d-flex flex-column flex-lg-row 
         align-items-center justify-content-around bottom">
             <b class="m-2">{% fws "eye" "l" "1" %} تعداد کل بازدید ها: {{ hits_count|en_nums_to_fa_nums }}</b>
@@ -30,6 +29,11 @@
         }
         .bottom {
             color: var(--Main-Gray);
+        }
+        @media screen and (max-width: 575px) {
+            .bottom b{
+                font-size: .9rem;
+            }
         }
     </style>
 {% endblock custom_style %}

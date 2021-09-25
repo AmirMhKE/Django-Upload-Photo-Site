@@ -7,7 +7,7 @@
 {% block main %}
     <h1 class="my-5 mx-auto text-center title">ایجاد پست جدید برای {{ title }}</h1>
     <div class="line col-11 col-sm-10 col-md-8 col-lg-6 mx-auto row mx-auto my-5"></div>
-    <div class="col-11 col-sm-10 col-md-8 col-lg-6 mx-auto text-right my-5 user-settings wow animate__animated animate__fadeInDown">
+    <div class="col-11 col-sm-10 col-md-8 col-lg-6 mx-auto text-right my-5 user-settings">
         <form method="POST" enctype="multipart/form-data" name="post_create">{% csrf_token %}
             
             {% for field in form %}

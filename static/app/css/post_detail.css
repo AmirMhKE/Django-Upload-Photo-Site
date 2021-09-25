@@ -87,6 +87,21 @@
         margin: 0 1em;
     }
     .img-detail img {
-        height: 25em;
+        height: 20em;
+    }
+    .title {
+        font-size: 1.2rem;
+        line-height: 35px;
+    }
+    .top div:nth-child(3) b {
+        font-size: .9rem;
+    }
+    .bottom b {
+        font-size: .9rem;
+    }
+    .operation a:not(.dropdown-item),
+    .share button {
+        font-size: 1rem;
+        padding: 7.5px 5px;
     }
 }

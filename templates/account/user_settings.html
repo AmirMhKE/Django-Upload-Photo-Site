@@ -5,7 +5,7 @@
 {% block title %}تنظیمات حساب کاربری{% endblock %}
 
 {% block main %}
-    <div class="col-11 col-sm-10 col-md-8 col-lg-6 mx-auto text-right my-5 user-settings wow animate__animated animate__fadeInDown">
+    <div class="col-11 col-sm-10 col-md-8 col-lg-6 mx-auto text-right my-5 user-settings">
         <h2 class="text-center my-5 pt-5">{% fws "cog" %} تنظیمات حساب کاربری {{ username }}</h1>
         <form method="POST" enctype="multipart/form-data" name="user_update_form">{% csrf_token %}
             <div class="user-profile mx-auto mb-5 d-flex justify-content-center align-items-center">
@@ -79,8 +79,7 @@
     </div>
 
     {% if request.user == user %}
-    <div class="col-11 col-sm-10 col-md-8 col-lg-6 mx-auto text-right my-5 
-    user-settings wow animate__animated animate__fadeInUp">
+    <div class="col-11 col-sm-10 col-md-8 col-lg-6 mx-auto text-right my-5 user-settings">
         <h2 class="text-center my-5 pt-5">{% fws "trash" %} پاک کردن حساب کاربری</h1>
         <form method="POST" action="{% url 'account:user_delete' %}" id="delete_account-form">{% csrf_token %}
             <button class="btn mr-md-1 delete_account-btn">پاک کردن اکانت کاربری</button>

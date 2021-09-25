@@ -9,7 +9,7 @@
 
 {% block main %}
     <div class="d-flex flex-column flex-lg-row justify-content-lg-around">
-        <div class="col-10 col-sm-8 col-lg-4 col-xl-3 mx-auto mx-lg-0 about mt-5 wow animate__animated animate__fadeInRight sticky-top">
+        <div class="col-10 col-sm-8 col-lg-4 col-xl-3 mx-auto mx-lg-0 about mt-5">
             <div class="public-profile col p-0">
                 {% user_profile_image user profile_classes="no-radius, profile-about" no_profile_tag_size="10rem" %}
             </div>
@@ -88,10 +88,10 @@
             </div>
         </div>
     
-        <div class="col-10 col-sm-8 col-lg-7 mx-auto mx-lg-0 mt-5">
-            <div class="col-12 row line mb-4 mx-0 mx-md-2 wow animate__animated animate__fadeInLeft"></div>
+        <div class="col-10 col-sm-8 col-lg-7 mx-auto mx-lg-0 mt-5 p-0">
+            <div class="col-12 row line mb-4 mx-0 mx-md-2"></div>
         
-            <div class="suggestion px-4 px-md-5 wow animate__animated animate__fadeInLeft">
+            <div class="suggestion px-4 px-md-5">
                 <div class="suggestion-header">
                     <h2 class="text-center mb-3">پست های اخیر</h2>
                 </div>
@@ -99,7 +99,7 @@
                 <div class="suggestion-body">
                     <div class="row d-flex justify-content-center">
                         {% for obj in last_posts %}
-                            <div class="suggestion-item col-6 mx-auto">
+                            <div class="suggestion-item col-10 col-xl-6 mx-auto">
                                 <img class="img-fluid" src="{{ obj.img.url }}" 
                                 alt="{{ obj.title }}" loading="lazy" />
                                 <div class="suggestion-item-overlay d-flex flex-column align-items-center">
@@ -129,7 +129,7 @@
                 </div>
             </div>
             
-            <div class="col-12 mt-4 mx-0 wow animate__animated animate__fadeInLeft">
+            <div class="col-12 mt-4 mx-0">
                 <button class="btn-block showAllImages" target="{% url 'publisher_list' user.username %}">نمایش همه</button>
             </div>
         </div>

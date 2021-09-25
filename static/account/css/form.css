@@ -117,3 +117,11 @@ label.is_change::before {
         padding: 2em;
     }
 }
+@media screen and (max-width: 575px) {
+    .user-settings form {
+        font-size: .9rem;
+    }
+    .user-settings form button {
+        font-size: .9rem;
+    }
+}

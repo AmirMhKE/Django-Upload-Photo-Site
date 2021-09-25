@@ -19,9 +19,6 @@ $(".profile .dropdown-item").click(function (e) {
     }
 });
 
-// animation
-new WOW().init();
-
 $(function () {
     $("[title]").tooltip({"placement": "bottom"});
 

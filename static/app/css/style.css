@@ -141,11 +141,6 @@ color: var(--Main-White);
     padding-left: 30px;
     border-radius: 0;
 }
-@media (hover: hover) {
-    .other-link:hover > ul {
-        display: flex;
-    }
-}
 .search-btn,
 .menu-bar {
     margin: 0 .5em;
@@ -183,6 +178,7 @@ color: var(--Main-White);
 .registration {
     margin-right: 5px;
     margin-left: 5px;
+    margin-bottom: 10px;
 }
 /* header */
 .main-title {
@@ -696,11 +692,15 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
         margin: 0 5px;
         padding: 5px 10px;
     }
-    .title {
-        font-size: 1.5rem;
-    }
     .other-link > ul {
         margin-top: 5px;
+    }
+}
+@media screen and (min-width: 1200px) {
+    @media (hover: hover) {
+        .other-link:hover > ul {
+            display: flex;
+        }
     }
 }
 @media screen and (max-width: 1199px) {
@@ -829,11 +829,6 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     .all-items div:last-child button {
         width: 90%;
     }
-    #goTop {
-        width: 40px;
-        height: 40px;
-        font-size: 1.8rem;
-    }
     .login-google > div:nth-child(2) > a {
         font-size: 1.75em;
     }
@@ -859,19 +854,29 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
 }
 @media screen and (max-width: 575px) {
     .title {
+        margin: 0 1em;
         margin-right: 0;
+        margin-bottom: 10px;
     }
     .title h3 {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
+    }
+    .main-title .overlay h1 {
+        font-size: .9rem;
+        padding: 15px 20px;
+    }
+    .menu-bar {
+        margin: 0 0;
+        margin-bottom: 10px;
     }
     .search-btn span,
     .menu-bar span {
-        font-size: 1.5rem;
+        font-size: 1rem;
     }
-    .registration,
     .upload a {
         font-size: .9rem;
     }
+    .registration,
     .slider-item-overlay > a {
         font-size: .8rem;
     }
@@ -881,13 +886,83 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     .footer p {
         font-size: .9rem;
     }
-    .login-google > div:nth-child(2) > a {
-        font-size: 1.25em;
-    }
     .suggestion-item-overlay p {
         font-size: .8rem;
     }
     .contact-us, .login, .sign-up, .password-reset {
         width: 95%;
+    }
+    #scroll-target {
+        font-size: .9em;
+    }
+    #showAllImages-btn-1 {
+        font-size: .9em;
+    }
+    .slider-item-overlay > h5 {
+        font-size: .9rem;
+        line-height: 25px;
+    }
+    .slider-item-overlay > a {
+        font-size: .9rem;
+        padding: 5px 15px;
+    }
+    .slider-item-overlay > a + div p {
+        font-size: .9rem;
+    }
+    .slider-item-overlay p:last-child {
+        font-size: .7rem;
+    }
+    .profile_image .user-profile h5 {
+        font-size: .9rem;
+    }
+    .profile_image .user-profile b {
+        font-size: .8rem;
+    }
+    .suggestion-item {
+        padding: 0 0;
+    }
+    .suggestion-item-overlay > h5 {
+        font-size: .9rem;
+    }
+    .suggestion-item-overlay small:last-child {
+        font-size: .7rem;
+    }
+    .all-items h2 {
+        font-size: 1.2rem;
+    }
+    .all-items-img .overlay > h5 {
+        font-size: .9rem;
+        line-height: 25px;
+    }
+    .all-items-img .overlay > a {
+        font-size: .9rem;
+        padding: 5px 15px;
+    }
+    .all-items-img .overlay > a + div p {
+        font-size: .9rem;
+    }
+    .all-items-img .overlay p:last-child {
+        font-size: .7rem;
+    }
+    .all-items-img + div button {
+        font-size: .9rem;
+    }
+    .profile .dropdown-item {
+        font-size: .9rem;
+    }
+    .search-box input {
+        font-size: .7rem;
+    }
+    .search-box div > span {
+        font-size: 1.5rem !important;
+    }
+    .search-box .dropdown button {
+        font-size: .9rem;
+    }
+    .search-box .dropdown-item {
+        font-size: .9rem;
+    }
+    .overlay-nav + ul li {
+        font-size: .9rem;
     }
 }

@@ -219,6 +219,13 @@ body.swal2-shown {
         font-size: 1.1rem;
     }
 }
+@media screen and (max-width: 767px) {
+    #goTop {
+        width: 40px;
+        height: 40px;
+        font-size: 1.8rem;
+    }
+}
 @media screen and (max-width: 575px) {
     .paginator li {
         font-size: 1rem;

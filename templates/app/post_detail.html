@@ -12,7 +12,7 @@
 
 {% block main %}
     <div class="out">
-        <div class="col-11 col-sm-10 mx-auto my-5 d-flex flex-column align-items-center top animate__animated animate__fadeInDown">
+        <div class="col-11 col-sm-10 mx-auto my-5 d-flex flex-column align-items-center top">
             <div class="pt-4 pb-0 mb-0">
                 {% user_profile_image post.publisher "5rem" "5rem" profile_tag="a" has_title=True profile_classes="user-profile, publisher-profile, text-center" no_profile_tag_size="2rem" %}
             </div>
@@ -27,7 +27,7 @@
             </div>
         </div>
     
-        <div class="wow animate__animated animate__fadeInLeft">
+        <div>
             <div class="col-10 row line mx-auto mb-5"></div>
     
             <div class="col-11 col-sm-10 col-md-8 col-lg-7 mx-auto img-detail">
@@ -36,7 +36,7 @@
             </div>
         </div>
         
-        <div class="wow animate__animated animate__fadeInUp">
+        <div>
             <div class="col-11 col-sm-10 mx-auto my-5 d-flex flex-column flex-lg-row align-items-center justify-content-between bottom">
                 <b class="m-2">{% fws "desktop" "l" "1" %} 
                 سایز پیش فرض عکس: {{ post.original_size_image|en_nums_to_fa_nums }}</b>

@@ -14,9 +14,9 @@
             <h2 class="text-center pb-4">{{ title }}</h2>
         </div>
 
-        <div class="row col-12">
+        <div class="row col-12 p-0">
             {% for obj in post_list %}
-                <div class="col-12 col-sm-10 col-md-6 col-lg-4 all-items-img mb-4 mx-auto">
+                <div class="col-12 col-sm-10 col-md-6 col-lg-4 all-items-img mb-4 mx-auto p-0">
                     <img class="img-fluid" src="{{ obj.img.url }}" 
                     alt="{{ obj.title }}" loading="lazy" />
                     <div class="overlay d-flex flex-column align-items-center">
@@ -63,8 +63,7 @@
     <div class="slider_">
         <div class="container-fluid">
             <div class="d-flex flex-column">
-                <aside class="col-12 col-md-10 mx-auto mt-5 mt-md-0 wow animate__animated 
-                animate__fadeInUp order-2">
+                <aside class="col-12 col-md-10 p-0 m-0 mx-auto mt-5 mt-md-0 order-2">
                     <div class="col d-lg-flex">
                         {% sidebar request "suggestion" side_count %}
                         {% sidebar request "popular" side_count %}
@@ -75,7 +74,7 @@
                     </div>
                 </aside>
                 <!-- slider -->
-                <div class="col-12 col-md-10 mx-auto wow animate__animated animate__fadeInUp">
+                <div class="col-12 col-md-10 mx-auto">
                     {% include "app/partials/filters.html" %}
                     <div class="col-12 row line mb-4 mx-0 mx-md-2"></div>
                     <div class="lbl col-6 col-sm-5 col-md-4 col-lg-3 mx-0 mx-md-4 target-1">

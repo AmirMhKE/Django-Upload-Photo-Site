@@ -131,4 +131,22 @@ img.show {
     .search + span {
         left: 2em;
     }
+    .title {
+        font-size: 1.5rem;
+    }
+    .top-bar ul li i {
+        font-size: 1.5rem;
+    }
+    .top-bar ul li {
+        margin: 15px 20px;
+    }
+    .post_list table {
+        font-size: .9rem;
+    }
+    .search {
+        font-size: .9rem;
+    }
+    .search + span {
+        font-size: 1.75rem;
+    }
 }

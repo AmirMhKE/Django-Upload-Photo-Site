@@ -19,3 +19,11 @@
 .statistics tr {
     padding: 20px 10px;
 }
+@media screen and (max-width: 575px) {
+    .statistics-title {
+        font-size: 1.5rem;
+    }
+    .statistics {
+        font-size: .9rem;
+    }
+}

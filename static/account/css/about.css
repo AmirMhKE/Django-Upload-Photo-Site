@@ -68,3 +68,17 @@
 .no-radius {
     border-radius: 0 !important;
 }
+@media screen and (max-width: 575px) {
+    .suggestion-header > h2 {
+        font-size: 1.2rem;
+    }
+    .showAllImages {
+        font-size: .9rem;
+    }
+    .public-profile h5 {
+        font-size: 7.5rem !important;
+    }
+    .body table h5 {
+        font-size: 1rem;
+    }
+}

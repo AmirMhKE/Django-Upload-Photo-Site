@@ -239,17 +239,26 @@ function showAllImages() {
 }
 
 // other link
-$(".angle-down").click(function () {
-    if(($(".other-link > ul").attr("data-is-open")) === "false") {
-        $(".other-link .angle-down i").removeClass("angle-down-animation");
-        $(".other-link .angle-down i").addClass("angle-up-animation");
-        $(".other-link > ul").slideDown(500);
-        $(".other-link > ul").attr("data-is-open", "true");   
-    } else {
-        $(".other-link .angle-down i").removeClass("angle-up-animation");
-        $(".other-link .angle-down i").addClass("angle-down-animation");
-        $(".other-link > ul").slideUp(500);
-        $(".other-link > ul").attr("data-is-open", "false");   
+if($(window).outerWidth() < 1200) {
+    $(".other-link").click(function () {
+        if(($(".other-link > ul").attr("data-is-open")) === "false") {
+            $(".other-link .fa-angle-down").removeClass("angle-down-animation");
+            $(".other-link .fa-angle-down").addClass("angle-up-animation");
+            $(".other-link > ul").slideDown(500);
+            $(".other-link > ul").attr("data-is-open", "true");   
+        } else {
+            $(".other-link .fa-angle-down").removeClass("angle-up-animation");
+            $(".other-link .fa-angle-down").addClass("angle-down-animation");
+            $(".other-link > ul").slideUp(500);
+            $(".other-link > ul").attr("data-is-open", "false");   
+        }
+    });
+}
+
+$(window).resize(function () { 
+    if($(window).outerWidth() >= 1200) {
+        $(".other-link > ul").removeAttr("style");
+        $(".other-link > ul").attr("data-is-open", "false");
     }
 });
 
