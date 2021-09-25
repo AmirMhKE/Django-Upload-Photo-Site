@@ -54,6 +54,8 @@
                 <label for="email-lbl">ایمیل: </label>
                 <input class="mr-md-1" type="email" value="{{ user.email }}" id="email-lbl" readonly>
             </p>
+            {% endif %}
+            {% if request.user.is_superuser %}
             <div class="row">
                 <div class="col-12 col-xl-6">
                     <label for="{{ form.is_superuser.id }}" class="ch">:{{ form.is_superuser.label }}</label>
