@@ -209,6 +209,13 @@ body {
     font-weight: bold;
     margin-top: 5em;
 }
+.dropdown-item {
+    color: var(--Main-Gray) !important;
+}
+.dropdown-item:hover {
+    background-color: var(--Main-Red);
+    color: #fff !important;
+}
 html.swal2-shown,
 body.swal2-shown { 
     overflow-y: hidden !important; 

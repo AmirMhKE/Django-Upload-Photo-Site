@@ -650,13 +650,6 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     background-repeat: no-repeat;
     background-size: cover;
 }
-.dropdown-item {
-    color: var(--Main-Gray) !important;
-}
-.dropdown-item:hover {
-    background-color: var(--Main-Red);
-    color: #fff !important;
-}
 .btn:disabled {
     opacity: .5;
     pointer-events: none;
