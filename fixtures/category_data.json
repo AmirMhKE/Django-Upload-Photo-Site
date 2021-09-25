@@ -173,8 +173,8 @@
         "model": "app.category",
         "pk": 18,
         "fields": {
-            "title": "عکس عروسی",
-            "slug": "wedding",
+            "title": "عکس تجاری",
+            "slug": "commercial",
             "position": 17,
             "status": true
         }
@@ -183,8 +183,8 @@
         "model": "app.category",
         "pk": 19,
         "fields": {
-            "title": "عکس تجاری",
-            "slug": "commercial",
+            "title": "عکس آب و هوا",
+            "slug": "weather",
             "position": 18,
             "status": true
         }
@@ -193,8 +193,8 @@
         "model": "app.category",
         "pk": 20,
         "fields": {
-            "title": "عکس آب و هوا",
-            "slug": "weather",
+            "title": "عکس تکنیکی",
+            "slug": "technical",
             "position": 19,
             "status": true
         }
@@ -203,8 +203,8 @@
         "model": "app.category",
         "pk": 21,
         "fields": {
-            "title": "عکس تکنیکی",
-            "slug": "technical",
+            "title": "عکس ماشین",
+            "slug": "car",
             "position": 20,
             "status": true
         }
@@ -213,19 +213,9 @@
         "model": "app.category",
         "pk": 22,
         "fields": {
-            "title": "عکس ماشین",
-            "slug": "car",
-            "position": 21,
-            "status": true
-        }
-    },
-    {
-        "model": "app.category",
-        "pk": 23,
-        "fields": {
             "title": "سایر عکس ها",
             "slug": "others",
-            "position": 22,
+            "position": 21,
             "status": true
         }
     }

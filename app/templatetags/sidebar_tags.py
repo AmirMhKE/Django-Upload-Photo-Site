@@ -52,7 +52,7 @@ def suggestion_posts(request: HttpRequest, num: int) -> dict[str, list[QuerySet]
         
     # ? Set random items
     random_items = []
-    random_items.extend(query.order_by("?")[:num].iterator())
+    random_items.extend([*query.order_by("?").iterator()][:num])
 
     if query is not all_posts_item and query.exists():
         exlude_most_category = all_posts_item \
@@ -60,8 +60,8 @@ def suggestion_posts(request: HttpRequest, num: int) -> dict[str, list[QuerySet]
         
         if query.count() < num and exlude_most_category.exists():
             items_count = num - query.count()
-            random_items.extend(exlude_most_category.order_by("?")
-            [:items_count].iterator())
+            random_items.extend([*exlude_most_category.order_by("?")
+            .iterator()][:items_count])
 
     return {
         "title": settings.SIDEBAR_TAG_TITLES["suggestion"],
@@ -75,8 +75,9 @@ def get_most(m2m_column_name: str, title: str, num: int) -> dict[str, QuerySet]:
     """
     posts = Post.objects.all()
     query = PostOrderingFilter.filter(posts, "-" + m2m_column_name)
+    sidebar_items = [*query.iterator()][:num]
 
     return {
         "title": title,
-        "sidebar_items": query[:num],
+        "sidebar_items": sidebar_items,
     }

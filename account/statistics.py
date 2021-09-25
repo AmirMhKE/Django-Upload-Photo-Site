@@ -1,6 +1,8 @@
+from datetime import datetime, timedelta
+
 from app.models import Download, Hit, Like
 from django.db.models import Count, F
-from jdatetime import date, datetime, timedelta
+from jdatetime import date
 
 
 def user_posts_statistics(user, days_ago, reverse=None):

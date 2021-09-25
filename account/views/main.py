@@ -109,5 +109,5 @@ class UserAboutView(LoginRequiredMixin, DetailView):
         user = self.get_object()
         post_count = settings.USER_LAST_POSTS_COUNT
         context = super().get_context_data(**kwargs)
-        context["last_posts"] = user.posts.all()[:post_count]
+        context["last_posts"] = [*user.posts.all().iterator()][:post_count]
         return context
