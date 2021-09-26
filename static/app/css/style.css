@@ -864,7 +864,7 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
     }
     .search-btn span,
     .menu-bar span {
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
     .upload a {
         font-size: .9rem;

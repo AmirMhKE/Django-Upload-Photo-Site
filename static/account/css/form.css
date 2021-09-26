@@ -124,4 +124,17 @@ label.is_change::before {
     .user-settings form button {
         font-size: .9rem;
     }
+    .user-profile {
+        width: 7.5rem;
+        height: 7.5rem;
+    }
+    .user-profile .profile_image h1 {
+        font-size: 3rem !important;
+    }
+    #add_profile-btn {
+        width: .75em;
+        height: .75em;
+        font-size: 1.5em;
+        left: 4em;
+    }
 }

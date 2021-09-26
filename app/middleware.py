@@ -14,13 +14,17 @@ User = get_user_model()
 class RequestProcessMiddleware:
     minimum_difference_float = settings.MINIMUM_DIFFERENCE_REQUESTS
     max_count = settings.MAX_COUNT_EXCESSIVE_REQUESTS
-    block_time_seconds = None
 
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
+        not_found, internal_server_error = 404, 500
         response = self.get_response(request)
+
+        if response.status_code in [not_found, internal_server_error]:
+            self.process_client_ip(request)
+
         return response
 
     def process_view(self, request, view_func, view_args, view_kwargs):
@@ -33,7 +37,8 @@ class RequestProcessMiddleware:
         user = None
         view_lists = get_apps_views()
 
-        self.process_client_ip(request)
+        if view_func.__name__ in view_lists:
+            self.process_client_ip(request)
 
         if request.user.is_authenticated:
             user = User.objects.get(pk=request.user.pk)
@@ -78,17 +83,19 @@ class RequestProcessMiddleware:
                     user.excessive_requests_count += 1
                     user.save()
 
-                if self.block_time_seconds is not None:
-                    self.block_time_seconds = None 
+                if obj.excessive_request_block_time is not None:
+                    obj.excessive_request_block_time = None
+                    obj.save() 
             else:
-                if self.block_time_seconds is None:
-                    self.block_time_seconds = randint(
+                if obj.excessive_request_block_time is None:
+                    obj.excessive_request_block_time = randint(
                         settings.MIN_BLOCK_TIME_EXCESSIVE_REQUESTS,
                         settings.MAX_BLOCK_TIME_EXCESSIVE_REQUESTS
                     )
+                    obj.save()
 
                 difference_block_time = obj.last_excessive_request_time \
-                + timedelta(seconds=self.block_time_seconds)
+                + timedelta(seconds=obj.excessive_request_block_time)
 
                 if datetime.now().timestamp() < difference_block_time.timestamp():
                     diffrence = difference_block_time.timestamp() - datetime.now().timestamp()

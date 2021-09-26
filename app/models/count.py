@@ -16,6 +16,9 @@ class Ip(models.Model):
     excessive_requests_count = models.PositiveIntegerField(
     verbose_name="تعداد درخواست های بیش از حد اندازه", null=True, 
     blank=True, default=0)
+    excessive_request_block_time = models.PositiveIntegerField(
+    verbose_name="مقدار وقت بلاک شدن درخواست های بیش از حد اندازه", 
+    null=True, blank=True) # seconds
 
     class Meta:
         verbose_name = "آیپی"

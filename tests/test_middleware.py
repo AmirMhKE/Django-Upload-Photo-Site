@@ -48,6 +48,12 @@ class RequestProcessMiddlewareTestCase(TestCase):
         time.sleep(1)
         self.assertEqual(client.get("/").status_code, 200)
 
+        for _ in range(10):
+            client.get("/something")
+
+        self.assertEqual(client.get("/").status_code, 404)
+        time.sleep(1)
+        self.assertEqual(client.get("/").status_code, 200)
         # ? ===== Normal User Test =====
         client.login(username="test1", password="12345")
 
@@ -61,6 +67,16 @@ class RequestProcessMiddlewareTestCase(TestCase):
         self.assertEqual(client.get("/").status_code, 200)
         self.assertEqual(user.excessive_requests_count, 1)
 
+        for _ in range(10):
+            client.get("/something")
+
+        user.refresh_from_db()
+
+        self.assertEqual(client.get("/").status_code, 404)
+        time.sleep(1)
+        self.assertEqual(client.get("/").status_code, 200)
+        self.assertEqual(user.excessive_requests_count, 2)
+
         # ? ===== Super User Test =====
         client.login(username="test2", password="12345")
 
@@ -68,6 +84,14 @@ class RequestProcessMiddlewareTestCase(TestCase):
             client.get("/")
 
         user = User.objects.get(username="test2")
+
+        self.assertEqual(client.get("/").status_code, 200)
+        time.sleep(1)
+        self.assertEqual(client.get("/").status_code, 200)
+        self.assertEqual(user.excessive_requests_count, 0)
+
+        for _ in range(10):
+            client.get("/something")
 
         self.assertEqual(client.get("/").status_code, 200)
         time.sleep(1)
