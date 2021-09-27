@@ -21,9 +21,14 @@ class RequestProcessMiddleware:
     def __call__(self, request):
         not_found, internal_server_error = 404, 500
         response = self.get_response(request)
+        header = response.headers
 
-        if response.status_code in [not_found, internal_server_error]:
-            self.process_client_ip(request)
+        try:
+            if response.status_code in [not_found, internal_server_error] \
+            and header["Content-Type"].split(";")[0] == "text/html":
+                self.process_client_ip(request)
+        except (KeyError, IndexError):
+            pass
 
         return response
 
