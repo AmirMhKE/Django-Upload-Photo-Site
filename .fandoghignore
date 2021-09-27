@@ -1,0 +1,14 @@
+venv
+.venv
+.venv/
+.vscode
+.vscode/
+*.pyc
+*.mo
+local_settings.py
+db.sqlite3
+.git
+venv/
+*.pot
+__pycache__/
+*.log
