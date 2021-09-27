@@ -10,7 +10,7 @@ You can also edit or delete your photos.
  - Backend web framework: [Django](https://www.djangoproject.com/)
  - UI framework: [Bootstrap](https://getbootstrap.com/)
  - Database: [Postgresql](https://www.postgresql.org/)
- - Deploy platform: [Heroku](https://heroku.com/)
+ - Deploy platform: [Fandogh](https://www.fandogh.cloud/) - [More information](https://docs.fandogh.cloud/docs/source-deployments/source-django)
 
 ## How to install and run application
 ```bash
