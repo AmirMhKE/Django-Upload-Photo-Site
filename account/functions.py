@@ -50,13 +50,13 @@ def check_similar_images(model, data, instance_pk=None):
     """
     try:
         query = model.objects.values_list("img_hash")
+        thumbnail = get_file_thumbnail(Image.open(data))
 
         if instance_pk is not None:
             query = query.exclude(pk=instance_pk)
 
         check_images = (
-            compare_similarities_two_images(
-                get_file_thumbnail(Image.open(data)), 
+            compare_similarities_two_images(thumbnail, 
                 convert_nums_to_binary_nparray(img_hash[0])
             )
             for img_hash in query.iterator()

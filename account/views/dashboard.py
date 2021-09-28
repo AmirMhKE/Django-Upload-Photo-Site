@@ -124,6 +124,7 @@ class EditPostView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
         form = self.get_form()
         form.errors.as_data()
         context = {**self.get_context_data(), "form": form}
+        context["post"] = self.get_object()
         get_image = request.FILES.get("img")
 
         if get_image:
