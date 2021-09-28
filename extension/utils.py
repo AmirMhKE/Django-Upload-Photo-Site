@@ -8,6 +8,7 @@ from random import randint
 from typing import Union
 
 import imagehash
+import numpy
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.forms.models import ModelForm
@@ -90,7 +91,32 @@ def set_default_data_forms(form: ModelForm, data: dict, initial_data: dict) -> d
 
     return data
 
-def compare_similarities_two_images(image1, image2):
+def get_file_thumbnail(file) -> numpy.ndarray:
+    return imagehash.average_hash(file).hash
+
+def convert_binary_nparray_to_nums(arr: numpy.ndarray) -> str:
+    result = ""
+
+    for part in arr:
+        for bit in part:
+            result += str(int(bit))
+        result += ","
+
+    return result[:-1]
+
+def convert_nums_to_binary_nparray(nums: str) -> numpy.ndarray:
+    result = []
+
+    for part in nums.split(","):
+        temp_result = []
+        for bit in part:
+            temp_result.append(bool(int(bit)))
+
+        result.append(temp_result)
+
+    return numpy.array(result)
+
+def compare_similarities_two_images(hash1: numpy.ndarray, hash2: numpy.ndarray) -> bool:
     """
     Short description: The hash (or fingerprint, really) is 
     derived from a 8x8 monochrome thumbnail of the image. 
@@ -98,8 +124,8 @@ def compare_similarities_two_images(image1, image2):
     give quite accurate results. Adjust the cutoff to find a balance 
     between false positives and false negatives that is acceptable.
     """    
-    image_hash1 = imagehash.average_hash(image1)
-    image_hash2 = imagehash.average_hash(image2)
+    image_hash1 = imagehash.ImageHash(hash1)
+    image_hash2 = imagehash.ImageHash(hash2)
     cutoff = 5
 
     # ? If the two images are very similar, return True

@@ -122,6 +122,7 @@ class EditPostView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
         self.object = self.get_object()
 
         form = self.get_form()
+        form.errors.as_data()
         context = {**self.get_context_data(), "form": form}
         get_image = request.FILES.get("img")
 
@@ -133,8 +134,6 @@ class EditPostView(LoginRequiredMixin, SuperUserOrUserMixin, UpdateView):
                 return self.render_to_response(context)
 
         if form.is_valid():
-            form = self.form_class(instance=self.object, 
-            data=request.POST, files=request.FILES)
             return self.form_valid(form)
         return self.form_invalid(form)
 

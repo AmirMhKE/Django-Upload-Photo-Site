@@ -13,3 +13,5 @@ spec:
   volume_mounts:
   - mount_path: /usr/src/app/media
     sub_path: akscade/media
+  - mount_path: /usr/src/app/download
+    sub_path: akscade/download

@@ -1,4 +1,3 @@
-import os
 from typing import Union
 
 from django.conf import settings
@@ -7,7 +6,9 @@ from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
-from extension.utils import compare_similarities_two_images
+from extension.utils import (compare_similarities_two_images,
+                             convert_nums_to_binary_nparray,
+                             get_file_thumbnail)
 from PIL import Image, UnidentifiedImageError
 
 User = get_user_model()
@@ -48,22 +49,24 @@ def check_similar_images(model, data, instance_pk=None):
     code 'from app.model import Post' has error occurred. 
     """
     try:
-        query = model.objects.values_list("img")
+        query = model.objects.values_list("img_hash")
 
         if instance_pk is not None:
             query = query.exclude(pk=instance_pk)
 
         check_images = (
-            compare_similarities_two_images(Image.open(data), 
-            Image.open(os.path.join(settings.MEDIA_ROOT, img_path[0])))
-            for img_path in query.iterator()
+            compare_similarities_two_images(
+                get_file_thumbnail(Image.open(data)), 
+                convert_nums_to_binary_nparray(img_hash[0])
+            )
+            for img_hash in query.iterator()
         )
 
         if any(check_images):
             return False
     except UnidentifiedImageError:
         pass
-    
+        
     return True
 
 def check_number_uploaded_images(model, user):

@@ -530,11 +530,11 @@ button[id*="showAllImages-btn"]:hover, .showAllImages:hover {
 .all-items-img .overlay {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.6);
-    width: 82.5%;
+    width: 90%;
     height: 100%;
     visibility: hidden;
     top: 0;
-    left: 4%;
+    left: 0%;
     transition: all 0.3s ease-in-out;
     overflow-y: auto;
 }

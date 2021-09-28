@@ -12,3 +12,7 @@ venv/
 *.pot
 __pycache__/
 *.log
+media
+media/
+download
+download/

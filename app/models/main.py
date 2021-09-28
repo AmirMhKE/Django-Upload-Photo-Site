@@ -4,7 +4,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 from extension.timestamp import TimeStamp
-from extension.utils import get_random_str
+from extension.utils import (convert_binary_nparray_to_nums,
+                             get_file_thumbnail, get_random_str)
 from PIL import Image
 
 __all__ = ("Category", "Post")
@@ -38,6 +39,8 @@ class Post(TimeStamp):
     title = models.CharField(max_length=100, verbose_name="عنوان عکس", db_index=True)
     slug = models.CharField(max_length=250, unique=True, verbose_name="آدرس عکس", blank=True)
     img = models.ImageField(upload_to=upload_location, verbose_name="عکس شما")
+    img_hash = models.CharField(max_length=72, verbose_name="اثر انگشت عکس", 
+    null=True, blank=True)
     original_size_image = models.CharField(max_length=50, verbose_name="سایز پیش فرض عکس", 
     null=True, blank=True)
     publisher = models.ForeignKey(User, on_delete=models.CASCADE, null=True, 
@@ -99,6 +102,10 @@ class Post(TimeStamp):
         download_image = Image.open(self.img)
         download_image.save(os.path.join(settings.DOWNLOAD_ROOT, self.slug,
         f"{get_random_str(10, 50)}-akscade.jpg"), format=download_image.format)
+
+        # ? Save hash image
+        thumbnail = get_file_thumbnail(download_image)
+        self.img_hash = convert_binary_nparray_to_nums(thumbnail)
 
         # ? Save size image
         width, height = download_image.width, download_image.height
