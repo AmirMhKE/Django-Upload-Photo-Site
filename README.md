@@ -17,7 +17,7 @@ You can also edit or delete your photos.
 pip install virtualenv
 python -m virtualenv .venv
 source .venv/bin/activate
-git clone https://github.com/AmirMhKEDjango-Upload-Photo-Site
+git clone https://github.com/AmirMhKE/Django-Upload-Photo-Site
 cd Django-Upload-Photo-Site
 pip install -r requirements.txt
 pip install -r dev-requirements.txt
